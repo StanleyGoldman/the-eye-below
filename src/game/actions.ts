@@ -81,11 +81,13 @@ function tryDoor(state: GameState, x: number, y: number): boolean {
     consume(state, key);
     door.locked = false;
     door.open = true;
+    state.stats.doors++;
     say(state, `You unlock the door with the ${color} key. The key stays in the lock.`, "good");
     emit(state, { kind: "sound", id: "door" });
     return true;
   }
   door.open = true;
+  state.stats.doors++;
   say(state, "You open the door.");
   emit(state, { kind: "sound", id: "door" });
   return true;

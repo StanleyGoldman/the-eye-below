@@ -69,3 +69,29 @@ why. A record, not a request for review.
   retreating up the stairs mid-fight is a tactic worth having.
 - **A potion of hallucination was added (11 potions).** Why: the
   status list includes hallucination and it needs a source.
+- **The unkillable debug option also blocks level drain.** Why:
+  without it the bot, which stands and trades blows, was drained to
+  level 1 by wraiths and vampires and could no longer hit anything.
+  Death by attrition is still death.
+- **The bot clears each level before descending, and reads items'
+  true enchantment and curse state.** Why: rushing left it too weak
+  for the last tier, and wielding unknown cursed weapons stalled it.
+  It cheats at knowing, not at doing; every action goes through the
+  same functions as the keyboard.
+- **Acid and rust stop at -3.** Why: a weapon corroded without limit
+  reached -16 in testing, which is a bug, not a hazard.
+- **Ghoul paralysis is short (1 to 2 s, one time in four) and cannot
+  be renewed while it lasts; vampire and troll regeneration were
+  lowered.** Why: in real time the first numbers were a stun-lock and
+  two stalemates.
+- **No trapdoor opens onto a special level.** Why: special levels
+  are entered by their stairs, so the Stoneyard and its lever are
+  always met from the right side.
+- **Item icons in the HUD are small canvases, not CSS backgrounds.**
+  Why: tinted icons would otherwise have to be exported from a
+  canvas, which fails once generated images are loaded from disk.
+- **Characters have default names (Sigrun, Aldous, Finch).** Why:
+  "Wizard the Wizard" on a tombstone reads as a mistake.
+- **Damage shows as numbers rising in the view** as well as in the
+  log and on the bars. Why: the brief asks for clear feedback for
+  damage, and the log scrolls.

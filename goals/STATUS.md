@@ -1,10 +1,10 @@
 # Status
 
-Current session: 1 (in progress)
+Current session: 2 (not started). Session 1 is complete.
 
 | Session | Release | State |
 |---|---|---|
-| 1 | v0.1 "Bare stone": playable core, code-drawn art, silent | in progress |
+| 1 | v0.1 "Bare stone": playable core, code-drawn art, silent | complete, tag `session-1` |
 | 2 | v0.2 "Lamplight": generated art, shops, NPCs | not started |
 | 3 | v1.0 "Full dark": animation, audio, treasure, review, report | not started |
 
@@ -13,20 +13,25 @@ SESSION=N` runs them.
 
 ## Session 1 checks
 
-- [ ] 1. `make check` exits 0
-- [ ] 2. at least 60 tests pass, 0 fail
-- [ ] 3. `make sweep` prints `unsolvable: 0`
-- [ ] 4. determinism script exits 0
-- [ ] 5. scripted victory run reaches the victory screen
-- [ ] 6. scripted death run reaches the death screen and restarts
-- [ ] 7. five special-level screenshots saved, no console errors
-- [ ] 8. content audit exits 0
-- [ ] 9. no stubs
-- [ ] 10. offline: no URLs or network calls in the page or bundle
-- [ ] 11. repository layout
-- [ ] 12. docs and README
-- [ ] 13. `git status` clean
-- [ ] 14. tag `session-1` at `HEAD`
+All 14 pass at the commit tagged `session-1` (2026-11-17). Checks 13
+and 14 are made true by that commit and tag; the run of
+`make goal-check SESSION=1` that shows all 14 is in the session's
+conversation; `goals/handoff-1.md` has the output for checks 1 to 12.
+
+- [x] 1. `make check` exits 0
+- [x] 2. at least 60 tests pass, 0 fail (110 pass)
+- [x] 3. `make sweep` prints `unsolvable: 0` (2,850 levels)
+- [x] 4. determinism script exits 0
+- [x] 5. scripted victory run reaches the victory screen
+- [x] 6. scripted death run reaches the death screen and restarts
+- [x] 7. five special-level screenshots saved, no console errors
+- [x] 8. content audit exits 0
+- [x] 9. no stubs
+- [x] 10. offline: no URLs or network calls in the page or bundle
+- [x] 11. repository layout
+- [x] 12. docs and README
+- [x] 13. `git status` clean
+- [x] 14. tag `session-1` at `HEAD`
 
 ## Session 2 checks
 

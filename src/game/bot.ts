@@ -3,14 +3,14 @@
 // for the scripted victory and death checks.
 
 import { doorAt, featureAt, inBounds, tileAt } from "../dungeon/grid.ts";
-import { attack, cancelPrompt, cast, castFailure, choose, interact, move, pickUp, turn, useItem } from "./actions.ts";
+import { attack, cancelPrompt, cast, castFailure, choose, interact, move, pickUp, toggleRest, turn, useItem } from "./actions.ts";
 import { itemType } from "./data/items.ts";
 import { monsterType } from "./data/monsters.ts";
 import { spellCost } from "./data/spells.ts";
 import { canAct, countKeys, cur, itemsAt, monsterAt, wornItem } from "./state.ts";
 import { DX, DY, T } from "./types.ts";
 import type { Dir, GameState, Item, Level, Monster, Pos } from "./types.ts";
-import { update, walkableNow } from "./world.ts";
+import { hostileInSight, update, walkableNow } from "./world.ts";
 
 export type BotMode = "win" | "die";
 
@@ -121,6 +121,7 @@ function wanted(state: GameState, item: Item): boolean {
   const p = state.player;
   const type = itemType(item.type);
   if (type.id === "amulet_eye") return true;
+  if (!state.debug.god && type.cls === "potion" && p.inventory.length < 40) return true;
   if (item.buc === "C" || p.inventory.length >= 45) return false;
   const main = wornItem(p, "main");
   if (type.armor) {
@@ -241,9 +242,21 @@ function winStep(state: GameState): void {
     m.nextGearCheck = state.time + 3000;
     if (checkGear(state)) return;
   }
+  // When it can die, it plays with a little care: drinks a healing potion in a pinch, rests when hurt.
+  if (!state.debug.god && p.hp < p.maxHp * 0.35) {
+    const potion = p.inventory.find((it) => (it.type === "potion_healing" || it.type === "potion_extra_healing") && state.discovered[it.type]);
+    if (potion) {
+      useItem(state, potion.uid, "quaff");
+      return;
+    }
+  }
   const foe = adjacentHostile(state, false);
   if (foe) {
     if (face(state, foe.dir)) strikeAhead(state);
+    return;
+  }
+  if (!state.debug.god && p.hp < p.maxHp * 0.6 && !hostileInSight(state)) {
+    toggleRest(state);
     return;
   }
   const loot = itemsAt(level, p.x, p.y).find((it) => wanted(state, it));
@@ -357,7 +370,7 @@ export function botStep(state: GameState, mode: BotMode): void {
     dismissPrompt(state);
     return;
   }
-  if (!canAct(state) || state.time < state.player.stepReady) return;
+  if (!canAct(state) || state.time < state.player.stepReady || state.player.resting) return;
   if (mode === "win") winStep(state);
   else dieStep(state);
 }

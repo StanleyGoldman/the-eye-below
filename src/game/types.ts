@@ -356,5 +356,5 @@ export interface GameState {
   oracleTold: string[];
   debug: DebugFlags;
   /** Counts for the end screens. */
-  stats: { steps: number; potions: number; scrolls: number; spellsCast: number; prayers: number };
+  stats: { steps: number; potions: number; scrolls: number; spellsCast: number; prayers: number; doors: number };
 }

@@ -14,6 +14,8 @@ export interface KitEntry {
 export interface RoleDef {
   id: RoleId;
   name: string;
+  /** What the character is called when the player does not give a name. */
+  defaultName: string;
   blurb: string;
   god: string;
   portrait: string;
@@ -35,6 +37,7 @@ export const ROLES: readonly RoleDef[] = [
   {
     id: "valkyrie",
     name: "Valkyrie",
+    defaultName: "Sigrun",
     blurb: "Sword, shield, and stubbornness. The most hit points, the least magic. Cold does not bother her.",
     god: "the Storm-Father",
     portrait: "portrait_valkyrie",
@@ -57,6 +60,7 @@ export const ROLES: readonly RoleDef[] = [
   {
     id: "wizard",
     name: "Wizard",
+    defaultName: "Aldous",
     blurb: "Fragile, well read, and carrying more unlabelled magic than is wise. Starts with force bolt and the most power.",
     god: "the Lamplighter",
     portrait: "portrait_wizard",
@@ -83,6 +87,7 @@ export const ROLES: readonly RoleDef[] = [
   {
     id: "rogue",
     name: "Rogue",
+    defaultName: "Finch",
     blurb: "Quick and quiet. Strikes twice as hard at anything asleep, held, or running away, and throws daggers two at a time.",
     god: "the Quiet Hand",
     portrait: "portrait_rogue",

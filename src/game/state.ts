@@ -548,7 +548,7 @@ export function newGame(options: NewGameOptions): GameState {
   const runtime = stream(options.seed, `runtime:${options.role}`);
 
   const player: Player = {
-    name: options.name && options.name.trim() ? options.name.trim().slice(0, 16) : role.name,
+    name: options.name && options.name.trim() ? options.name.trim().slice(0, 16) : role.defaultName,
     role: role.id,
     x: 1,
     y: 1,
@@ -624,7 +624,7 @@ export function newGame(options: NewGameOptions): GameState {
     peacefulsKilled: 0,
     oracleTold: [],
     debug: { god: options.god === true },
-    stats: { steps: 0, potions: 0, scrolls: 0, spellsCast: 0, prayers: 0 },
+    stats: { steps: 0, potions: 0, scrolls: 0, spellsCast: 0, prayers: 0, doors: 0 },
   };
 
   // Starting kit: identified, never cursed.
