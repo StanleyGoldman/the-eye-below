@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make *)",
+      "Bash(npm install *)",
+      "Bash(npm ci *)",
+      "Bash(npx tsc *)",
+      "Bash(npx esbuild *)",
+      "Bash(node scripts/*)",
+      "Bash(node --test *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git mv *)",
+      "Bash(git rm *)",
+      "Bash(git tag *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git describe *)",
+      "Bash(git ls-files *)",
+      "Bash(ffmpeg *)",
+      "Bash(ffprobe *)",
+      "Bash(curl -sf http://127.0.0.1:8188/*)",
+      "Bash(curl -s http://127.0.0.1:8188/*)",
+      "Bash(nohup ~/ai/comfyui.sh *)",
+      "Edit(/**)"
+    ],
+    "deny": [
+      "Bash(git push *)",
+      "Bash(git remote *)",
+      "Bash(sudo *)",
+      "Edit(/.claude/**)",
+      "Edit(/PROMPT.md)",
+      "Edit(/workflows/**)",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "blockWritesOutsideWorkingDirectories": true
+  }
+}
