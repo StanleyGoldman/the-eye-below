@@ -341,9 +341,13 @@
   },
   "cropBox": [
    153,
-   137,
+   0,
    718,
-   751
+   888
+  ],
+  "cropSharedWith": [
+   "gate",
+   "gate_open"
   ],
   "fit": "stretch",
   "placedAt": [
@@ -359,7 +363,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 22,
-  "at": "2026-11-18T02:33:43.203Z"
+  "coloursUsed": 21,
+  "at": "2026-11-18T02:57:54.116Z"
  }
 }

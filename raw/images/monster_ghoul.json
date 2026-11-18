@@ -1036,16 +1036,20 @@
    "pixelsRemoved": 934
   },
   "cropBox": [
-   283,
-   123,
-   457,
-   836
+   191,
+   72,
+   646,
+   888
+  ],
+  "cropSharedWith": [
+   "monster_ghoul",
+   "monster_ghoul_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   36,
+   22,
    0,
-   87,
+   116,
    160
   ],
   "targetSize": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 45,
-  "at": "2026-11-18T02:33:39.423Z"
+  "coloursUsed": 44,
+  "at": "2026-11-18T02:57:48.867Z"
  }
 }

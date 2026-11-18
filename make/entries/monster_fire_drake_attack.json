@@ -1,0 +1,24 @@
+{
+ "id": "monster_fire_drake_attack",
+ "type": "frame",
+ "kind": "monster",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same dragon with its jaws wide open and flames in its mouth.",
+  "fragments": [
+   "edit"
+  ]
+ },
+ "size": [
+  160,
+  160
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "reference": "monster_fire_drake",
+ "resolvedPrompt": "Same dragon with its jaws wide open and flames in its mouth., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

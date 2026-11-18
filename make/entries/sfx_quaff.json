@@ -1,0 +1,19 @@
+{
+ "id": "sfx_quaff",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "two quick gulps of liquid from a bottle",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "two quick gulps of liquid from a bottle, one short clean sound effect, close and dry, no music, no voice-over"
+}

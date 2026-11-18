@@ -430,13 +430,17 @@
    341,
    272,
    326,
-   477
+   566
+  ],
+  "cropSharedWith": [
+   "switch_off",
+   "switch_on"
   ],
   "fit": "center",
   "placedAt": [
-   21,
+   23,
    16,
-   22,
+   18,
    32
   ],
   "targetSize": [
@@ -446,7 +450,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 29,
-  "at": "2026-11-18T02:33:43.570Z"
+  "coloursUsed": 28,
+  "at": "2026-11-18T02:57:54.568Z"
  }
 }

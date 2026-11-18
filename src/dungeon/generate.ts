@@ -5,10 +5,12 @@ import { scale3 } from "../core/modifiers.ts";
 import { stream } from "../core/rng.ts";
 import { makeItem, makeMonster, rollItem } from "../game/factory.ts";
 import { keeperName, makeStock, pickShopKind } from "../game/shops.ts";
+import { ITEM_TYPES } from "../game/data/items.ts";
+import { EPITAPHS } from "../game/data/rumors.ts";
 import { monstersOfTier, tierOfDepth } from "../game/data/monsters.ts";
 import type { MonsterType } from "../game/data/monsters.ts";
 import { T } from "../game/types.ts";
-import type { Level, Pos, RunConfig, TrapKind } from "../game/types.ts";
+import type { Item, Level, Pos, RunConfig, TrapKind } from "../game/types.ts";
 import { boneFlag, carve, interiorCells, planLayout, roomCells } from "./layout.ts";
 import type { Carved } from "./layout.ts";
 import { doorIsCut, gateIsCut, solveLevel, startArea } from "./solve.ts";
@@ -93,7 +95,9 @@ function populate(run: RunConfig, carved: Carved): void {
   const openRooms = plan.rooms.filter((r) => !r.closet && !r.shop);
   const shop = plan.shopRoom >= 0 ? plan.rooms[plan.shopRoom]! : null;
   if (shop) for (const c of roomCells(shop)) used.add(at(c.x, c.y));
-  const closets = plan.rooms.filter((r) => r.closet);
+  const closets = plan.rooms.filter((r) => r.closet && !r.vault);
+  const vault = plan.vaultRoom >= 0 ? plan.rooms[plan.vaultRoom]! : null;
+  if (vault) for (const c of roomCells(vault)) used.add(at(c.x, c.y));
 
   // ---- fountains and altars: interior cells only, never side by side ----
   const rf = stream(run.seed, "features", depth);
@@ -272,6 +276,63 @@ function populate(run: RunConfig, carved: Carved): void {
     level.items.push({ x: c.x, y: c.y, item: makeItem(uids, "gold", amount) });
   }
 
+  // ---- the vault's gold ----
+  if (vault) {
+    for (const c of roomCells(vault)) {
+      if (!rg.chance(0.75)) continue;
+      const amount = Math.max(10, Math.round(rg.range(40, 120) * (1 + depth / 3) * goldMod));
+      level.items.push({ x: c.x, y: c.y, item: makeItem(uids, "gold", amount) });
+    }
+  }
+
+  // ---- gems, and glass ----
+  const rj = stream(run.seed, "gems", depth);
+  const gemTypes = ITEM_TYPES.filter((t) => t.cls === "gem" && t.minDepth <= depth + 2);
+  const gemExpected = scale3(mods["gold"] ?? 5, 0.1, 0.6, 1.6);
+  const gemCount = Math.floor(gemExpected) + (rj.chance(gemExpected - Math.floor(gemExpected)) ? 1 : 0);
+  const rollGem = (): Item => makeItem(uids, gemTypes[rj.weighted(gemTypes.map((t) => t.freq))]!.id);
+  for (let i = 0; i < gemCount; i++) {
+    const c = freeIn(rj, roomCells(rj.pick(openRooms)));
+    if (c) level.items.push({ x: c.x, y: c.y, item: rollGem() });
+  }
+
+  // Chests and graves go in after loot and monsters, so they must not land on either.
+  const emptySpots = (): Pos[] => featureSpots().filter((c) => !level.items.some((fi) => fi.x === c.x && fi.y === c.y) && !level.monsters.some((mo) => mo.x === c.x && mo.y === c.y));
+
+  // ---- chests and large boxes ----
+  const rc = stream(run.seed, "chests", depth);
+  const chestExpected = scale3(mods["gold"] ?? 5, 0.2, 0.7, 1.5);
+  const chestCount = Math.floor(chestExpected) + (rc.chance(chestExpected - Math.floor(chestExpected)) ? 1 : 0);
+  for (let i = 0; i < chestCount; i++) {
+    const spots = emptySpots();
+    if (spots.length === 0) break;
+    const c = rc.pick(spots);
+    used.add(at(c.x, c.y));
+    const box = rc.chance(0.25);
+    const loot: Item[] = [makeItem(uids, "gold", Math.max(5, Math.round(rc.range(15, 60) * (1 + depth / 3) * goldMod)))];
+    const extra = rc.range(1, box ? 3 : 2);
+    for (let k = 0; k < extra; k++) loot.push(rollItem(uids, rc, depth + 3, mods));
+    if (rc.chance(0.4)) loot.push(rollGem());
+    const locked = !box && rc.chance(0.4);
+    level.features.push({ kind: "chest", x: c.x, y: c.y, label: box ? "large box" : "chest", locked, trapped: rc.chance(0.2), opened: false, loot });
+    // A locked chest's key is somewhere on the level more often than not; otherwise the lid has to be forced.
+    if (locked && rc.chance(0.65)) {
+      const k = freeIn(rc, roomCells(rc.pick(openRooms)));
+      if (k) level.items.push({ x: k.x, y: k.y, item: makeItem(uids, "chest_key") });
+    }
+  }
+
+  // ---- graves ----
+  const rgv = stream(run.seed, "graves", depth);
+  if (rgv.chance(0.22)) {
+    const spots = emptySpots();
+    if (spots.length > 0) {
+      const c = rgv.pick(spots);
+      used.add(at(c.x, c.y));
+      level.features.push({ kind: "grave", x: c.x, y: c.y, text: rgv.pick(EPITAPHS) });
+    }
+  }
+
   // ---- the bone key for a door on the next level ----
   if (boneFlag(run.seed, depth) && !isSpecialDepth(depth + 1) && buildLayout(run, depth + 1).plan.boneCloset) {
     const rb = stream(run.seed, "bonekey", depth);
@@ -290,6 +351,8 @@ export function generateLevel(run: RunConfig, depth: number): Level {
   const level = carved.level;
   if (!solveLevel(level, { boneKeys: level.meta.boneDoor ? 1 : 0 }).ok) {
     // Fixtures and peaceful characters are the only things added after the layout was verified that can block a cell.
+    // Loot from chests that are removed is not lost: it lies where the chest stood.
+    for (const ft of level.features) for (const it of ft.loot ?? []) level.items.push({ x: ft.x, y: ft.y, item: it });
     level.features = [];
     level.monsters = level.monsters.filter((mo) => !mo.peaceful);
     delete level.meta.shop;

@@ -432,6 +432,10 @@
    575,
    484
   ],
+  "cropSharedWith": [
+   "monster_newt",
+   "monster_newt_attack"
+  ],
   "fit": "bottom",
   "placedAt": [
    0,
@@ -447,6 +451,6 @@
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
   "coloursUsed": 43,
-  "at": "2026-11-18T02:33:37.566Z"
+  "at": "2026-11-18T02:57:46.273Z"
  }
 }

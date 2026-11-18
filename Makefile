@@ -64,7 +64,7 @@ goal-check: ## Run every acceptance check for a session: make goal-check SESSION
 # ---- assets -------------------------------------------------------------
 # Every generated file is a target. The per-asset rules come from the manifest.
 
-make/assets.mk: assets/manifest.json assets/prompts.json assets/fallbacks.json scripts/gen-rules.ts scripts/lib/manifest.ts node_modules/.installed
+make/assets.mk: assets/manifest.json assets/prompts.json assets/fallbacks.json scripts/gen-rules.ts scripts/lib/manifest.ts scripts/lib/comfy-api.ts node_modules/.installed
 	$(NODE) scripts/gen-rules.ts
 
 -include make/assets.mk
@@ -81,12 +81,15 @@ processed: $(ASSETS_PROCESSED) ## Post-process raw files into assets/ (no ComfyU
 # base images, style-matched images, frames, cutouts, music, sound effects, then post-processing.
 assets: $(ASSETS_BASE) $(ASSETS_STYLED) $(ASSETS_FRAMES) $(ASSETS_CUTOUTS) $(ASSETS_MUSIC) $(ASSETS_SFX) $(ASSETS_PROCESSED) ## Generate and post-process everything in the manifest; skips what exists
 
-SHEET_INPUTS := $(ASSETS_PROCESSED) $(wildcard raw/images/*.json)
+SHEET_INPUTS := $(filter %.png,$(ASSETS_PROCESSED)) $(wildcard raw/images/*.json raw/frames/*.json)
 out/sheets/.built: $(SHEET_INPUTS) scripts/sheet.ts
 	$(NODE) scripts/sheet.ts
 	@touch $@
 
 sheet: out/sheets/.built ## Build contact sheets of every image in out/sheets/
+
+report: node_modules/.installed ## Rewrite docs/asset-review.md and docs/final-report.md from the generation records
+	$(NODE) scripts/report.ts
 
 comfy-up: ## Start ComfyUI if it is not already running
 	$(NODE) scripts/comfy.ts up

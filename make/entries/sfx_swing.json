@@ -1,0 +1,19 @@
+{
+ "id": "sfx_swing",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a sword blade swishing through the air",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "a sword blade swishing through the air, one short clean sound effect, close and dry, no music, no voice-over"
+}

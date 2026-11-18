@@ -1,0 +1,21 @@
+{
+ "id": "music_tier4",
+ "type": "music",
+ "kind": "loop",
+ "workflow": "ace_step",
+ "prompt": {
+  "subject": "cold stone keep, martial snare drum and low strings, tense and watchful",
+  "fragments": [
+   "music"
+  ]
+ },
+ "size": [
+  60,
+  90
+ ],
+ "duration": 72,
+ "transparent": false,
+ "bpm": 92,
+ "keyscale": "G minor",
+ "resolvedPrompt": "cold stone keep, martial snare drum and low strings, tense and watchful, instrumental, no vocals, loopable, early-1990s DOS game soundtrack, FM synth and sampled orchestra"
+}

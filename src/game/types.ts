@@ -42,6 +42,8 @@ export interface Door {
   color: KeyColor | null;
   locked: boolean;
   open: boolean;
+  /** A hidden door: it looks like wall until it is noticed. */
+  secret?: boolean;
 }
 
 export type GateKind = "portcullis" | "drawbridge";
@@ -75,15 +77,33 @@ export interface Plate {
   pressed: boolean;
 }
 
-export type FeatureKind = "fountain" | "altar" | "statue" | "boulder";
+export type FeatureKind = "fountain" | "altar" | "statue" | "boulder" | "chest" | "grave";
 
 export interface Feature {
   kind: FeatureKind;
   x: number;
   y: number;
-  /** Statues carry an inscription; fountains count remaining uses. */
+  /** Statues and graves carry an inscription; fountains count remaining uses. */
   text?: string;
   uses?: number;
+  /** Chests and large boxes. */
+  label?: string;
+  locked?: boolean;
+  trapped?: boolean;
+  opened?: boolean;
+  loot?: Item[];
+}
+
+export interface Vault {
+  /** Cells inside the vault. */
+  cells: number[];
+  /** The cell just outside its entrance, where a trespasser is walked to. */
+  outside: Pos;
+  /** Gold the player has picked up inside. */
+  taken: number;
+  /** Milliseconds the player has spent inside this visit. */
+  timeIn: number;
+  guardCalled: boolean;
 }
 
 export type TrapKind = "dart" | "pit" | "gas" | "teleport" | "trapdoor" | "squeak" | "rust" | "flash";
@@ -136,6 +156,7 @@ export interface LevelMeta {
   /** The kind of shop on this level, if there is one, and the cell of its door. */
   shop?: ShopKind;
   shopDoor?: number;
+  vault?: Vault;
   rooms: number;
   locks: number;
   closets: number;
@@ -147,7 +168,7 @@ export interface LevelMeta {
 
 // ---- items ------------------------------------------------------------
 
-export type ItemClass = "weapon" | "armor" | "potion" | "scroll" | "spellbook" | "wand" | "ring" | "amulet" | "tool" | "gold";
+export type ItemClass = "weapon" | "armor" | "potion" | "scroll" | "spellbook" | "wand" | "ring" | "amulet" | "tool" | "gem" | "gold";
 export type Buc = "B" | "U" | "C";
 export type EquipSlot = "main" | "off" | "body" | "helm" | "boots" | "cloak" | "ringL" | "ringR" | "amulet";
 
@@ -217,7 +238,7 @@ export interface Monster {
   npc?: Npc;
 }
 
-export type NpcKind = "oracle" | "shopkeeper" | "priest" | "hermit" | "adventurer" | "gnome";
+export type NpcKind = "oracle" | "shopkeeper" | "priest" | "hermit" | "adventurer" | "gnome" | "guard";
 export type ShopKind = "general" | "weapons" | "armor" | "potions" | "books" | "lighting";
 
 export interface Npc {
@@ -324,7 +345,7 @@ export interface PromptOption {
 }
 
 export type Prompt =
-  | { kind: "menu"; title: string; context: "attackPeaceful" | "fountain" | "altar" | "oracle" | "dip" | "priest" | "talk"; options: PromptOption[]; target: number; speaker?: string }
+  | { kind: "menu"; title: string; context: "attackPeaceful" | "fountain" | "altar" | "oracle" | "dip" | "priest" | "talk" | "chest" | "guard"; options: PromptOption[]; target: number; speaker?: string }
   | { kind: "pick"; title: string; purpose: "identify"; count: number }
   | { kind: "shop"; title: string; keeper: number };
 
@@ -341,6 +362,13 @@ export type GameEvent =
   | { kind: "step" }
   | { kind: "descend" }
   | { kind: "sound"; id: string };
+
+export interface Fallen {
+  name: string;
+  role: string;
+  cause: string;
+  depth: number;
+}
 
 export interface RunConfig {
   seed: string;
@@ -377,6 +405,9 @@ export interface GameState {
   oracleTold: string[];
   /** Set once a peaceful character has been killed: shopkeepers everywhere turn hostile. */
   shopkeepersAngry: boolean;
+  /** The last character to die on this machine, if a run was saved: their grave waits on the level where they fell. */
+  lastDead: Fallen | null;
+  graveRaised: boolean;
   debug: DebugFlags;
   /** Counts for the end screens. */
   stats: { steps: number; potions: number; scrolls: number; spellsCast: number; prayers: number; doors: number };

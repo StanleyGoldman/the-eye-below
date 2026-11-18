@@ -27,6 +27,9 @@ export const FIXTURE_ASSETS: readonly string[] = [
   "altar",
   "statue",
   "boulder",
+  "chest",
+  "chest_open",
+  "grave",
   "plate",
   "trap",
 ];

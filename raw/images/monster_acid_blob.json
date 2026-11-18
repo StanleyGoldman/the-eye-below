@@ -1036,17 +1036,21 @@
    "pixelsRemoved": 131
   },
   "cropBox": [
-   172,
-   297,
-   687,
-   419
+   168,
+   296,
+   691,
+   457
+  ],
+  "cropSharedWith": [
+   "monster_acid_blob",
+   "monster_acid_blob_attack"
   ],
   "fit": "bottom",
   "placedAt": [
    0,
-   62,
+   54,
    160,
-   98
+   106
   ],
   "targetSize": [
    160,
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 44,
-  "at": "2026-11-18T02:33:38.502Z"
+  "coloursUsed": 42,
+  "at": "2026-11-18T03:00:44.394Z"
  }
 }

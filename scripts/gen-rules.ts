@@ -10,7 +10,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, u
 import path from "node:path";
 import { WORKFLOW_FILES } from "./lib/comfy-api.ts";
 import type { WorkflowKey } from "./lib/comfy-api.ts";
-import { PROMPTS_FILE, assetDir, extension, rawDir, readFallbacks, readManifest, readPrompts, resolvePrompt } from "./lib/manifest.ts";
+import { PROMPTS_FILE, animationOf, assetDir, extension, rawDir, readFallbacks, readManifest, readPrompts, resolvePrompt } from "./lib/manifest.ts";
 
 const OUT = "make/assets.mk";
 const ENTRIES = "make/entries";
@@ -31,6 +31,12 @@ const groups: Record<string, string[]> = { base: [], styled: [], frames: [], cut
 const rules: string[] = [];
 let changed = 0;
 const wanted = new Set<string>();
+
+/** The file post-processing reads for an image: its cutout, or the raw image when it is opaque or keyed as a whole. */
+function sourceOf(entry: (typeof manifest.assets)[number]): string {
+  const dir = rawDir(entry.type);
+  return entry.transparent && entry.key !== "all" ? path.join(dir, `${entry.id}.cut.png`) : path.join(dir, `${entry.id}.png`);
+}
 
 for (const entry of manifest.assets) {
   // The entry file holds what generation depends on. The seed is left out: choosing a different
@@ -56,15 +62,18 @@ for (const entry of manifest.assets) {
 
   if (entry.type === "image" || entry.type === "frame") {
     const processed = path.join(assetDir(entry.type), `${entry.id}.png`);
-    const keyAll = entry.key === "all";
-    let source = raw;
-    if (entry.transparent && !keyAll) {
-      const cut = path.join(rawDir(entry.type), `${entry.id}.cut.png`);
+    if (entry.transparent && entry.key !== "all") {
+      const cut = sourceOf(entry);
       rules.push(`${cut}: ${raw} workflows/${WORKFLOW_FILES.birefnet}\n\t$(NODE) scripts/comfy.ts cut --id ${entry.id}\n`);
       groups["cutouts"]!.push(cut);
-      source = cut;
     }
-    rules.push(`${processed}: ${source} ${stamp} scripts/process.ts ${PROMPTS_FILE}\n\t$(NODE) scripts/process.ts --id ${entry.id}\n`);
+    // Frames of one animation share a crop box, so each depends on every member's source.
+    const sources = animationOf(manifest, entry).filter((a) => !fallbacks.has(a.id)).map(sourceOf);
+    rules.push(`${processed}: ${sources.join(" ")} ${stamp} scripts/process.ts ${PROMPTS_FILE}\n\t$(NODE) scripts/process.ts --id ${entry.id}\n`);
+    groups["processed"]!.push(processed);
+  } else {
+    const processed = path.join(assetDir(entry.type), `${entry.id}.${ext}`);
+    rules.push(`${processed}: ${raw} ${stamp} scripts/process.ts scripts/lib/audio-tools.ts\n\t$(NODE) scripts/process.ts --id ${entry.id}\n`);
     groups["processed"]!.push(processed);
   }
 }

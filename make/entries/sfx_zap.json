@@ -1,0 +1,19 @@
+{
+ "id": "sfx_zap",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a magic wand discharging: a sharp electric crackle that rises and fizzles out over one second",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "a magic wand discharging: a sharp electric crackle that rises and fizzles out over one second, one short clean sound effect, close and dry, no music, no voice-over"
+}

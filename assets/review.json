@@ -1,0 +1,34 @@
+{
+ "about": "The reviewer's remarks on single assets, read by scripts/report.ts when it writes docs/asset-review.md. An asset with no remark here gets the remark for its type.",
+ "byType": {
+  "image": "Looked at on the contact sheet at game size; reads as intended.",
+  "frame": "Looked at beside its base picture; same subject, same place in the frame, the change reads at game size.",
+  "music": "Not heard. Measured only: length and level are within limits.",
+  "sfx": "Not heard. Measured only: length and level are within limits."
+ },
+ "notes": {
+  "gate": "Kept with a known flaw: the bars are heavier than asked for and the gaps are keyed from the uncut image, so a few edge pixels are rough.",
+  "gate_open": "Kept with a known flaw: the raised bars still fill the top two fifths of the opening rather than only the tips. It reads as a raised portcullis.",
+  "fountain": "Kept with a known flaw: the model put a small flame on top of the basin. It still reads as a fountain.",
+  "floor_2": "Kept with a known flaw: a faint gravel border shows at the tile edge when the floor repeats.",
+  "ui_button": "Kept on the third and last attempt; the edge is slightly ragged.",
+  "monster_fire_drake": "Kept with a known flaw: the drake has wings, which the brief did not ask for.",
+  "ceil_1": "Regenerated once: the first attempt drew a room in perspective instead of a flat tile.",
+  "chest_open": "Kept with a known flaw: the edit turned the chest to a three-quarter view, so the open chest is not the closed one seen from the same side. Both read clearly.",
+  "door_half": "Looked at beside the closed door: the leaf stands ajar inside an unchanged frame.",
+  "door_open": "Second attempt. The leaf is folded back inside the left jamb and the opening is clean.",
+  "monster_acid_blob_attack": "Second attempt. Still a blob, now with a dripping maw.",
+  "monster_morvane_attack": "Second attempt. The free arm reaches out and the staff is raised.",
+  "monster_minotaur_attack": "Second attempt. One axe, raised overhead. The figure is drawn a little smaller than in the base picture.",
+  "monster_cockatrice_attack": "Kept with a known flaw: the wings spread and the body turns, a bigger change of pose than the other attack frames. It reads as a lunge.",
+  "monster_dwarf_attack": "Kept with a known flaw: the figure is drawn about a tenth smaller than in the base picture to make room for the raised axe.",
+  "monster_hill_orc_attack": "Kept with a known flaw: the figure is drawn a little smaller than in the base picture to make room for the raised club.",
+  "monster_soldier_attack": "Kept with a known flaw: the figure is drawn a little smaller than in the base picture to make room for the raised sword.",
+  "monster_guard": "Two candidates; the second kept for its size in the frame and its readable lantern and keys.",
+  "item_gem": "Second attempt. A faceted white stone, left pale so the game can tint it to each gem's colour.",
+  "item_chest_key": "Second attempt. A key alone.",
+  "sfx_step": "Not heard. Measured only. It holds 0.21 s of sound; the rest of its 1.1 s is padding to reach the minimum length.",
+  "sfx_hit": "Not heard. Measured only. It holds 0.24 s of sound, padded to 1.1 s.",
+  "sfx_zap": "Not heard. Measured only. Second attempt; the first held only 0.10 s of sound."
+ }
+}

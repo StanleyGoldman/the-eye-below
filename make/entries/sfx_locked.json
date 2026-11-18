@@ -1,0 +1,19 @@
+{
+ "id": "sfx_locked",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a locked iron door handle rattling",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "a locked iron door handle rattling, one short clean sound effect, close and dry, no music, no voice-over"
+}

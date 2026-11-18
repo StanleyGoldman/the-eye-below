@@ -1,0 +1,24 @@
+{
+ "id": "chest_open",
+ "type": "image",
+ "kind": "fixture",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same chest with its lid swung fully open, the inside dark and empty.",
+  "fragments": [
+   "edit"
+  ]
+ },
+ "size": [
+  128,
+  128
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "reference": "chest",
+ "resolvedPrompt": "Same chest with its lid swung fully open, the inside dark and empty., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

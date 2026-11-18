@@ -1,0 +1,19 @@
+{
+ "id": "sfx_step",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a single footstep on a stone floor",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "a single footstep on a stone floor, one short clean sound effect, close and dry, no music, no voice-over"
+}

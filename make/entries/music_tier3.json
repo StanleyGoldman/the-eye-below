@@ -1,0 +1,21 @@
+{
+ "id": "music_tier3",
+ "type": "music",
+ "kind": "loop",
+ "workflow": "ace_step",
+ "prompt": {
+  "subject": "catacomb exploration, hollow flute over a slow organ drone, eerie and still",
+  "fragments": [
+   "music"
+  ]
+ },
+ "size": [
+  60,
+  90
+ ],
+ "duration": 72,
+ "transparent": false,
+ "bpm": 60,
+ "keyscale": "C minor",
+ "resolvedPrompt": "catacomb exploration, hollow flute over a slow organ drone, eerie and still, instrumental, no vocals, loopable, early-1990s DOS game soundtrack, FM synth and sampled orchestra"
+}

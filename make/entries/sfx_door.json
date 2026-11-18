@@ -1,0 +1,19 @@
+{
+ "id": "sfx_door",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a heavy wooden door creaking open on rusty hinges",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 2.5,
+ "transparent": false,
+ "resolvedPrompt": "a heavy wooden door creaking open on rusty hinges, one short clean sound effect, close and dry, no music, no voice-over"
+}

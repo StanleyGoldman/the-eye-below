@@ -1037,15 +1037,19 @@
   },
   "cropBox": [
    134,
-   104,
+   31,
    759,
-   802
+   879
+  ],
+  "cropSharedWith": [
+   "monster_minotaur",
+   "monster_minotaur_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   4,
+   11,
    0,
-   151,
+   138,
    160
   ],
   "targetSize": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 33,
-  "at": "2026-11-18T02:33:40.698Z"
+  "coloursUsed": 32,
+  "at": "2026-11-18T03:00:44.665Z"
  }
 }

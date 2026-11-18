@@ -1,0 +1,19 @@
+{
+ "id": "sfx_pickup",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a soft rustle of an item dropped into a leather pack",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "a soft rustle of an item dropped into a leather pack, one short clean sound effect, close and dry, no music, no voice-over"
+}

@@ -12,7 +12,7 @@ import sharp from "sharp";
 import type { OverlayOptions } from "sharp";
 import { parseArgs } from "./lib/args.ts";
 import { readRecord } from "./lib/comfy-api.ts";
-import { assetDir, rawDir, readManifest } from "./lib/manifest.ts";
+import { animationOf, assetDir, rawDir, readManifest } from "./lib/manifest.ts";
 
 const OUT = "out/sheets";
 const args = parseArgs(process.argv.slice(2));
@@ -45,7 +45,7 @@ interface Tile {
   color?: string;
 }
 
-async function sheet(name: string, tiles: Tile[], cell: number, columns: number): Promise<void> {
+async function sheet(name: string, tiles: Tile[], cell: number, columns: number, quiet = false): Promise<void> {
   if (tiles.length === 0) return;
   const rows = Math.ceil(tiles.length / columns);
   const cw = cell + 8;
@@ -68,14 +68,14 @@ async function sheet(name: string, tiles: Tile[], cell: number, columns: number)
   }
   const file = path.join(OUT, `${name}.png`);
   await sharp({ create: { width, height, channels: 3, background: "#14110e" } }).composite(layers).png().toFile(file);
-  console.log(`sheet: ${file} (${tiles.length} images)`);
+  if (!quiet) console.log(`sheet: ${file} (${tiles.length} images)`);
 }
 
 mkdirSync(OUT, { recursive: true });
 if (!args.flags["only"]) for (const f of readdirSync(OUT)) if (f.endsWith(".png")) rmSync(path.join(OUT, f));
 
 const manifest = readManifest();
-const kinds = [...new Set(manifest.assets.map((a) => a.kind))].filter((k) => !args.flags["only"] || k === args.flags["only"]);
+const kinds = [...new Set(manifest.assets.filter((a) => a.type === "image" || a.type === "frame").map((a) => a.kind))].filter((k) => !args.flags["only"] || k === args.flags["only"]);
 let total = 0;
 for (const kind of kinds) {
   const tiles: Tile[] = [];
@@ -92,6 +92,7 @@ for (const kind of kinds) {
 if (!args.flags["only"]) {
   const rows: Tile[] = [];
   for (const entry of manifest.assets) {
+    if (entry.type !== "image" && entry.type !== "frame") continue;
     const record = readRecord(rawDir(entry.type), entry.id);
     if (record.attempts.length < 2) continue;
     for (const a of record.attempts) {
@@ -102,5 +103,22 @@ if (!args.flags["only"]) {
   const perSheet = 24;
   for (let i = 0; i < rows.length; i += perSheet) await sheet(`candidates-${Math.floor(i / perSheet) + 1}`, rows.slice(i, i + perSheet), 200, 6);
   total += rows.length;
+}
+// Animations: each base picture with the frames edited from it, side by side.
+if (!args.flags["only"]) {
+  const bases = manifest.assets.filter((a) => manifest.assets.some((f) => f.workflow === "qwen_edit" && f.reference === a.id));
+  let made = 0;
+  for (const base of bases) {
+    const tiles: Tile[] = [];
+    for (const member of animationOf(manifest, base)) {
+      const file = path.join(assetDir(member.type), `${member.id}.png`);
+      if (existsSync(file)) tiles.push({ file, caption: member.id === base.id ? "base" : member.id.replace(`${base.id}_`, "").replace(/^monster_/, "") });
+    }
+    if (tiles.length < 2) continue;
+    await sheet(`animation-${base.id}`, tiles, 192, tiles.length, true);
+    made++;
+    total += tiles.length;
+  }
+  console.log(`sheet: ${made} animation sheets`);
 }
 console.log(`sheet: ${total} images on sheets in ${OUT}/`);

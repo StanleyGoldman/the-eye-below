@@ -33,6 +33,8 @@ export interface ManifestEntry {
   box?: [number, number, number, number];
   /** "all" removes background colour everywhere, for grids and bars; the default only works inward from the edges. */
   key?: "all" | "edge";
+  /** Audio only: seconds to generate. The size field holds the allowed range. */
+  duration?: number;
   /** Music only. */
   bpm?: number;
   keyscale?: string;
@@ -83,6 +85,15 @@ export function resolvePrompt(prompts: Prompts, entry: ManifestEntry): string {
 /** Changes whenever something that affects the generated picture changes. The seed is left out so choosing another seed is not a new request. */
 export function requestKey(prompts: Prompts, entry: ManifestEntry): string {
   return createHash("sha256").update(JSON.stringify([entry.workflow, resolvePrompt(prompts, entry), entry.gen ?? entry.size, entry.reference ?? "", entry.bpm ?? 0, entry.keyscale ?? ""])).digest("hex").slice(0, 16);
+}
+
+/** The base picture and every frame edited from it: one animation. A picture with no frames is a group of one. */
+export function animationOf(manifest: Manifest, entry: ManifestEntry): ManifestEntry[] {
+  const isEdit = (e: ManifestEntry): boolean => e.workflow === "qwen_edit" && !!e.reference;
+  const baseId = isEdit(entry) ? (entry.reference as string) : entry.id;
+  const base = manifest.assets.find((a) => a.id === baseId);
+  const members = manifest.assets.filter((a) => isEdit(a) && a.reference === baseId);
+  return base ? [base, ...members] : [entry];
 }
 
 export function rawDir(type: AssetType): string {

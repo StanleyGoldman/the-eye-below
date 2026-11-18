@@ -1,0 +1,24 @@
+{
+ "id": "monster_cockatrice_attack",
+ "type": "frame",
+ "kind": "monster",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same cockatrice with wings spread, beak open, neck stretched forward to peck.",
+  "fragments": [
+   "edit"
+  ]
+ },
+ "size": [
+  160,
+  160
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "reference": "monster_cockatrice",
+ "resolvedPrompt": "Same cockatrice with wings spread, beak open, neck stretched forward to peck., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

@@ -326,6 +326,12 @@ export class ViewRenderer {
           if (hit <= 0 || Math.floor(u) !== mapY) continue;
         }
         u -= Math.floor(u);
+        if (door && door.secret) {
+          // A hidden door is drawn as the wall it pretends to be, set back half a cell.
+          solid = hit;
+          this.strip(wallId, u, x, hit, 0.06, "");
+          break;
+        }
         if (door) {
           const stage = this.doorStage(level, door.id, door.open, fx.now);
           const tint = door.color ? KEY_TINT[door.color] : "#c8b090";
@@ -408,8 +414,9 @@ export class ViewRenderer {
     }
     for (const f of level.features) {
       if (!inRange(f.x, f.y)) continue;
-      const height = f.kind === "altar" ? 0.6 : f.kind === "fountain" ? 0.8 : f.kind === "statue" ? 0.9 : 0.8;
-      this.sprite(cam, drawables, (s) => store.shaded(f.kind, s * SHADE_LEVELS), f.x + 0.5, f.y + 0.5, height, 0, 1);
+      const height = f.kind === "altar" ? 0.6 : f.kind === "fountain" ? 0.8 : f.kind === "statue" ? 0.9 : f.kind === "chest" ? 0.5 : f.kind === "grave" ? 0.62 : 0.8;
+      const id = f.kind === "chest" && f.opened ? "chest_open" : f.kind;
+      this.sprite(cam, drawables, (s) => store.shaded(id, s * SHADE_LEVELS), f.x + 0.5, f.y + 0.5, height, 0, 1);
     }
     // Items: up to three shown per cell, spread sideways.
     const perCell = new Map<number, number>();

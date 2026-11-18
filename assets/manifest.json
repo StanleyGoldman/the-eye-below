@@ -2577,6 +2577,1615 @@
    ],
    "transparent": false,
    "fit": "stretch"
+  },
+  {
+   "id": "chest",
+   "type": "image",
+   "kind": "fixture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a closed iron-bound wooden treasure chest with a heavy lock",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 20041,
+   "size": [
+    128,
+    128
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom"
+  },
+  {
+   "id": "chest_open",
+   "type": "image",
+   "kind": "fixture",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same chest with its lid swung fully open, the inside dark and empty.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20082,
+   "size": [
+    128,
+    128
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "chest"
+  },
+  {
+   "id": "grave",
+   "type": "image",
+   "kind": "fixture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a weathered grey tombstone with a rounded top standing in a small mound of earth, blank face",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 20123,
+   "size": [
+    128,
+    128
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom"
+  },
+  {
+   "id": "item_gem",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "one large brilliant-cut diamond seen from the side, a clear faceted jewel with a flat table on top and a pointed bottom, crisp dark facet lines dividing light and shaded triangular faces",
+    "fragments": [
+     "neutral",
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 28083,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_chest_key",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "one small old iron key lying flat, a slender key with a square bow at one end, a thin straight shank, and two teeth at the other end, only the key, no chest, no box, no lock",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 28124,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "monster_guard",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a vault guard, a broad watchman in a studded leather coat and iron cap carrying a lantern and a ring of keys",
+    "fragments": [
+     "peaceful",
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 28165,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_newt_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same newt with its mouth wide open showing small teeth, about to bite.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20287,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt"
+  },
+  {
+   "id": "monster_jackal_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same jackal lunging with its jaws wide open.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20328,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_jackal"
+  },
+  {
+   "id": "monster_kobold_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same kobold with its dagger raised overhead to stab.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20369,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_kobold"
+  },
+  {
+   "id": "monster_giant_bat_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same bat with its wings swept forward and fangs bared wide.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20410,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_giant_bat"
+  },
+  {
+   "id": "monster_acid_blob_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same low dome-shaped blob of slime, still a shapeless mound sitting on the ground, now bulging forward with a wide dripping maw open in its front. It stays a blob: no stalk, no cap, no mushroom.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 28370,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_acid_blob"
+  },
+  {
+   "id": "monster_hill_orc_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same orc with its club raised high overhead to strike.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20492,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_hill_orc"
+  },
+  {
+   "id": "monster_dwarf_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same dwarf with the axe raised overhead to chop.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20533,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_dwarf"
+  },
+  {
+   "id": "monster_soldier_ant_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same ant with its mandibles spread wide open and front legs raised.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20574,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_soldier_ant"
+  },
+  {
+   "id": "monster_cockatrice_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same cockatrice with wings spread, beak open, neck stretched forward to peck.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20615,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_cockatrice"
+  },
+  {
+   "id": "monster_ghoul_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same ghoul with both clawed hands raised to slash and its mouth open.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20656,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_ghoul"
+  },
+  {
+   "id": "monster_leprechaun_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same leprechaun lunging forward with one hand reaching out to grab.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20697,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_leprechaun"
+  },
+  {
+   "id": "monster_troll_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same troll with the stone club raised overhead in both hands.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20738,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_troll"
+  },
+  {
+   "id": "monster_wraith_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same wraith with both ghostly hands thrust forward to grab.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20779,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_wraith"
+  },
+  {
+   "id": "monster_stalker_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same figure with one arm drawn back to strike.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20820,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_stalker"
+  },
+  {
+   "id": "monster_ogre_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same ogre with the spiked club raised high overhead.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20861,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_ogre"
+  },
+  {
+   "id": "monster_vampire_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same vampire with mouth open showing fangs and both clawed hands lunging forward.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20902,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_vampire"
+  },
+  {
+   "id": "monster_minotaur_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same minotaur lifting its one double-bladed axe high above its head with both hands on the single shaft. There is only one axe.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 28862,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_minotaur"
+  },
+  {
+   "id": "monster_fire_drake_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same dragon with its jaws wide open and flames in its mouth.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 20984,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_fire_drake"
+  },
+  {
+   "id": "monster_lich_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same lich with the staff thrust forward and its free hand raised.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 21025,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_lich"
+  },
+  {
+   "id": "monster_water_snake_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same snake with its head darting forward and mouth wide open showing fangs.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 21066,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_water_snake"
+  },
+  {
+   "id": "monster_soldier_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same soldier with the sword raised overhead to strike.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 21107,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_soldier"
+  },
+  {
+   "id": "monster_medusa_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same gorgon with her eyes blazing bright yellow, one clawed hand thrust forward, the snakes rearing.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 21148,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_medusa"
+  },
+  {
+   "id": "monster_morvane_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same hooded robed magus, now with the free arm stretched out toward the viewer, fingers spread, and the torch staff raised high above the head.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 29108,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_morvane"
+  },
+  {
+   "id": "monster_shopkeeper_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same shopkeeper, face furious, one fist raised to strike.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 21230,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_shopkeeper"
+  },
+  {
+   "id": "monster_priest_attack",
+   "type": "frame",
+   "kind": "monster",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same priest, face stern, one hand raised high.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 21271,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_priest"
+  },
+  {
+   "id": "switch_on",
+   "type": "frame",
+   "kind": "overlay",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same lever switch with the lever pulled all the way down.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 21312,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "center",
+   "box": [
+    20,
+    16,
+    24,
+    32
+   ],
+   "reference": "switch_off"
+  },
+  {
+   "id": "torch_2",
+   "type": "frame",
+   "kind": "overlay",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same wall torch with the flame flickering, leaning the other way and a little taller.",
+    "fragments": [
+     "edit"
+    ]
+   },
+   "seed": 21353,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "center",
+   "box": [
+    22,
+    12,
+    20,
+    40
+   ],
+   "reference": "torch_1"
+  },
+  {
+   "id": "door_half",
+   "type": "frame",
+   "kind": "overlay",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same door standing half open: the door leaf swung inward and seen at an angle on the left, the right half of the doorway an empty opening.",
+    "fragments": [
+     "gap",
+     "edit"
+    ]
+   },
+   "seed": 21394,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "stretch",
+   "key": "all",
+   "reference": "door"
+  },
+  {
+   "id": "door_open",
+   "type": "frame",
+   "kind": "overlay",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same doorway with the door leaf swung fully open, folded back flat against the left jamb so that only a narrow strip of its planks shows inside the left edge of the frame. The frame is unchanged, the same size, reaching the same top and bottom. Everything else inside the frame is one clean empty opening with nothing in it: no marks, no specks, no handle, no hinges left behind.",
+    "fragments": [
+     "gap",
+     "edit"
+    ]
+   },
+   "seed": 29354,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "stretch",
+   "key": "all",
+   "reference": "door"
+  },
+  {
+   "id": "gate_open",
+   "type": "frame",
+   "kind": "overlay",
+   "workflow": "qwen_edit",
+   "prompt": {
+    "subject": "Same portcullis raised almost out of sight: only its lowest row of pointed tips still hangs down from the top of the frame, everything below an empty opening.",
+    "fragments": [
+     "gap",
+     "edit"
+    ]
+   },
+   "seed": 21476,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "stretch",
+   "key": "all",
+   "reference": "gate"
+  },
+  {
+   "id": "music_title",
+   "type": "music",
+   "kind": "loop",
+   "workflow": "ace_step",
+   "prompt": {
+    "subject": "ominous slow title theme, low brass and choir pad, a single tolling bell",
+    "fragments": [
+     "music"
+    ]
+   },
+   "seed": 21517,
+   "size": [
+    60,
+    90
+   ],
+   "duration": 72,
+   "transparent": false,
+   "bpm": 66,
+   "keyscale": "D minor"
+  },
+  {
+   "id": "music_tier1",
+   "type": "music",
+   "kind": "loop",
+   "workflow": "ace_step",
+   "prompt": {
+    "subject": "damp cellar exploration, sparse plucked strings and soft dripping water, cautious",
+    "fragments": [
+     "music"
+    ]
+   },
+   "seed": 21558,
+   "size": [
+    60,
+    90
+   ],
+   "duration": 72,
+   "transparent": false,
+   "bpm": 72,
+   "keyscale": "A minor"
+  },
+  {
+   "id": "music_tier2",
+   "type": "music",
+   "kind": "loop",
+   "workflow": "ace_step",
+   "prompt": {
+    "subject": "mine exploration, steady hammered percussion like distant picks, low woodwinds",
+    "fragments": [
+     "music"
+    ]
+   },
+   "seed": 21599,
+   "size": [
+    60,
+    90
+   ],
+   "duration": 72,
+   "transparent": false,
+   "bpm": 84,
+   "keyscale": "E minor"
+  },
+  {
+   "id": "music_tier3",
+   "type": "music",
+   "kind": "loop",
+   "workflow": "ace_step",
+   "prompt": {
+    "subject": "catacomb exploration, hollow flute over a slow organ drone, eerie and still",
+    "fragments": [
+     "music"
+    ]
+   },
+   "seed": 21640,
+   "size": [
+    60,
+    90
+   ],
+   "duration": 72,
+   "transparent": false,
+   "bpm": 60,
+   "keyscale": "C minor"
+  },
+  {
+   "id": "music_tier4",
+   "type": "music",
+   "kind": "loop",
+   "workflow": "ace_step",
+   "prompt": {
+    "subject": "cold stone keep, martial snare drum and low strings, tense and watchful",
+    "fragments": [
+     "music"
+    ]
+   },
+   "seed": 21681,
+   "size": [
+    60,
+    90
+   ],
+   "duration": 72,
+   "transparent": false,
+   "bpm": 92,
+   "keyscale": "G minor"
+  },
+  {
+   "id": "music_tier5",
+   "type": "music",
+   "kind": "loop",
+   "workflow": "ace_step",
+   "prompt": {
+    "subject": "volcanic obsidian depths, heavy low drums and dissonant brass swells, dread",
+    "fragments": [
+     "music"
+    ]
+   },
+   "seed": 21722,
+   "size": [
+    60,
+    90
+   ],
+   "duration": 72,
+   "transparent": false,
+   "bpm": 78,
+   "keyscale": "F minor"
+  },
+  {
+   "id": "music_calm",
+   "type": "music",
+   "kind": "loop",
+   "workflow": "ace_step",
+   "prompt": {
+    "subject": "calm shop and temple theme, warm harp and soft recorder, gentle and safe",
+    "fragments": [
+     "music"
+    ]
+   },
+   "seed": 21763,
+   "size": [
+    60,
+    90
+   ],
+   "duration": 72,
+   "transparent": false,
+   "bpm": 76,
+   "keyscale": "F major"
+  },
+  {
+   "id": "music_boss",
+   "type": "music",
+   "kind": "loop",
+   "workflow": "ace_step",
+   "prompt": {
+    "subject": "boss battle, fast driving percussion and urgent brass stabs, relentless",
+    "fragments": [
+     "music"
+    ]
+   },
+   "seed": 21804,
+   "size": [
+    60,
+    90
+   ],
+   "duration": 72,
+   "transparent": false,
+   "bpm": 140,
+   "keyscale": "D minor"
+  },
+  {
+   "id": "music_death",
+   "type": "music",
+   "kind": "sting",
+   "workflow": "ace_step",
+   "prompt": {
+    "subject": "funeral sting, slow descending organ chords and one final low bell",
+    "fragments": [
+     "sting"
+    ]
+   },
+   "seed": 21845,
+   "size": [
+    5,
+    30
+   ],
+   "duration": 16,
+   "transparent": false,
+   "bpm": 60,
+   "keyscale": "C minor"
+  },
+  {
+   "id": "music_victory",
+   "type": "music",
+   "kind": "sting",
+   "workflow": "ace_step",
+   "prompt": {
+    "subject": "triumphant fanfare, bright brass and timpani, resolving on a major chord",
+    "fragments": [
+     "sting"
+    ]
+   },
+   "seed": 21886,
+   "size": [
+    5,
+    30
+   ],
+   "duration": 16,
+   "transparent": false,
+   "bpm": 110,
+   "keyscale": "C major"
+  },
+  {
+   "id": "sfx_step",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a single footstep on a stone floor",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 21927,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_bump",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a dull thud of a body bumping into a stone wall",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 21968,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_swing",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a sword blade swishing through the air",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22009,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_hit",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a blade striking flesh with a heavy thud",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22050,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_hurt",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a short grunt of pain from a grown adult",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22091,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_growl_beast",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a low animal growl ending in a snarl",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22132,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_growl_humanoid",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a guttural goblin grunt and bark",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22173,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2,
+   "transparent": false
+  },
+  {
+   "id": "sfx_growl_undead",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a dry rasping moan from a corpse",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22214,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_growl_insect",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a giant insect chittering and clicking",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22255,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2,
+   "transparent": false
+  },
+  {
+   "id": "sfx_growl_reptile",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a sharp reptile hiss",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22296,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2,
+   "transparent": false
+  },
+  {
+   "id": "sfx_growl_ooze",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a wet gurgling squelch of slime",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22337,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2,
+   "transparent": false
+  },
+  {
+   "id": "sfx_door",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a heavy wooden door creaking open on rusty hinges",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22378,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_locked",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a locked iron door handle rattling",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22419,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_key",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a small metal key jingling as it is picked up",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22460,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_pickup",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a soft rustle of an item dropped into a leather pack",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22501,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_switch",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a stone lever clunking into place",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22542,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_boulder",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a large boulder grinding across a stone floor",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22583,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_quaff",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "two quick gulps of liquid from a bottle",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22624,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_scroll",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a parchment scroll unrolling and crackling",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22665,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2,
+   "transparent": false
+  },
+  {
+   "id": "sfx_zap",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a magic wand discharging: a sharp electric crackle that rises and fizzles out over one second",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 30625,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_spell",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a shimmering magical whoosh of a spell being cast",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22747,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2,
+   "transparent": false
+  },
+  {
+   "id": "sfx_levelup",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a bright short rising chime",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22788,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2,
+   "transparent": false
+  },
+  {
+   "id": "sfx_stairs",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "hurried footsteps descending stone stairs",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22829,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_coins",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a handful of gold coins clinking together",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22870,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
+  },
+  {
+   "id": "sfx_chest",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a wooden chest lid creaking open",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22911,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2,
+   "transparent": false
+  },
+  {
+   "id": "sfx_shopbell",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "a small brass shop door bell ringing once",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22952,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 2,
+   "transparent": false
+  },
+  {
+   "id": "sfx_purchase",
+   "type": "sfx",
+   "kind": "sfx",
+   "workflow": "stable_audio",
+   "prompt": {
+    "subject": "coins dropped onto a wooden counter",
+    "fragments": [
+     "sfx"
+    ]
+   },
+   "seed": 22993,
+   "size": [
+    1,
+    4
+   ],
+   "duration": 1.5,
+   "transparent": false
   }
  ]
 }

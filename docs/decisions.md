@@ -156,3 +156,74 @@ why. A record, not a request for review.
 - **`raw/` is committed, rejected attempts included (about 220 MB).**
   Why: the brief asks for raw outputs and their records to be kept
   and committed so any asset can be reprocessed or compared.
+
+## Session 3 (2026-11-17 to 2026-11-18)
+
+- **Session 3 ran in the same sitting as sessions 1 and 2.** Why: as
+  before, the stop condition set for the run asks for the whole
+  build.
+- **The frames of one animation are cropped with one box, the union
+  of every frame's own box.** Why: cropping each frame to itself
+  made a monster's feet jump when it raised a weapon. The cost is
+  that a base picture is drawn a little smaller than in 0.2 wherever
+  its attack frame reaches higher or wider.
+- **A frame is "of" a base picture when it is a Qwen edit with that
+  picture as its reference.** The make rules, the crop, the audit,
+  and the contact sheets all use that one definition
+  (`animationOf` in `scripts/lib/manifest.ts`). The open chest is
+  an edit of the closed one and is cropped with it.
+- **The edit prompts forbid motion lines, added effects, and changes
+  of size or place.** Why: the first test edit added speed lines and
+  moved the subject.
+- **Music is normalized to -18 LUFS; effects are peak-normalized to
+  -1 dB.** Why: effects are too short for a loudness measurement to
+  mean anything.
+- **An effect shorter than its one-second minimum is padded with
+  silence, and the record says how much of the file is sound.** A
+  file with less than 0.2 s of sound fails post-processing. Why: the
+  first wand sound held a tenth of a second of sound and would
+  otherwise have passed every check as a second of near silence.
+- **The bundled ffmpeg is from 2018;** padding uses a sample count
+  because that build has no `whole_dur`.
+- **Audio plays through plain audio elements, one per music track
+  and up to three per effect.** Why: decoding through `fetch` does
+  not work from `file://`. Nothing is created or played before the
+  first key press or click.
+- **Which music plays is decided from what is on screen, every
+  frame:** title, death, and victory screens have their own; a shop
+  or priest's panel has the calm theme; a level whose boss is alive
+  has the boss track; otherwise the tier's loop.
+- **Every audio file is unverified by ear** and is listed as such in
+  `docs/final-report.md`. The agent can measure a file but cannot
+  listen to it.
+- **A vault is chosen after the shop and never shares its room.**
+  Why: chosen first, a shop could move into the vault and its keeper
+  ended up sealed in with the gold.
+- **The vault guard arrives after six seconds inside,** steps in
+  beside the player, and the question pauses the world. Closing the
+  question without answering counts as the truth. A lie that works
+  leaves that vault unguarded for the rest of the run.
+- **Hidden doors are found by walking into them, using them, or
+  standing next to one** (about a one in three chance each second),
+  and a blessed scroll of magic mapping shows them. The solvability
+  check never needs one: a hidden door only ever leads to a vault.
+- **Chest contents spill at the player's feet** rather than opening
+  a container panel. Why: one less panel, and picking up is already
+  a key.
+- **Gems are one white picture tinted by the game** to each gem's
+  colour, like potions. Real stones and glass of one colour share a
+  tint and a name until identified.
+- **The last dead character's grave is added when the level is
+  first entered, not by the generator,** and only where all eight
+  neighbouring cells are open floor. Why: the same seed must give
+  everyone the same level, and a grave must never block a way
+  through. It is kept in the browser's local storage, one grave at a
+  time.
+- **The asset review and the final report are generated from the
+  records** by `scripts/report.ts`, with the reviewer's remarks in
+  `assets/review.json`. Why: a hand-written table of 176 rows would
+  be out of date after the first regeneration.
+- **`audit-assets.ts --manifest` now asks for the session 3 counts**
+  (95 images, 28 frames, 10 music, 25 effects), so
+  `make goal-check SESSION=2` holds the manifest to the later,
+  higher bar. The `session-2` tag is unchanged.

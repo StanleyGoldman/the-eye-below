@@ -1,0 +1,24 @@
+{
+ "id": "monster_ghoul_attack",
+ "type": "frame",
+ "kind": "monster",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same ghoul with both clawed hands raised to slash and its mouth open.",
+  "fragments": [
+   "edit"
+  ]
+ },
+ "size": [
+  160,
+  160
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "reference": "monster_ghoul",
+ "resolvedPrompt": "Same ghoul with both clawed hands raised to slash and its mouth open., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

@@ -1,0 +1,24 @@
+{
+ "id": "monster_morvane_attack",
+ "type": "frame",
+ "kind": "monster",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same hooded robed magus, now with the free arm stretched out toward the viewer, fingers spread, and the torch staff raised high above the head.",
+  "fragments": [
+   "edit"
+  ]
+ },
+ "size": [
+  160,
+  160
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "reference": "monster_morvane",
+ "resolvedPrompt": "Same hooded robed magus, now with the free arm stretched out toward the viewer, fingers spread, and the torch staff raised high above the head., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

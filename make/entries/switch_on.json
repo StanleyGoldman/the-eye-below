@@ -1,0 +1,30 @@
+{
+ "id": "switch_on",
+ "type": "frame",
+ "kind": "overlay",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same lever switch with the lever pulled all the way down.",
+  "fragments": [
+   "edit"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "center",
+ "box": [
+  20,
+  16,
+  24,
+  32
+ ],
+ "reference": "switch_off",
+ "resolvedPrompt": "Same lever switch with the lever pulled all the way down., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

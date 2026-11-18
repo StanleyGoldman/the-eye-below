@@ -1,0 +1,19 @@
+{
+ "id": "sfx_spell",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a shimmering magical whoosh of a spell being cast",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 2,
+ "transparent": false,
+ "resolvedPrompt": "a shimmering magical whoosh of a spell being cast, one short clean sound effect, close and dry, no music, no voice-over"
+}

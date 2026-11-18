@@ -1,0 +1,26 @@
+{
+ "id": "door_open",
+ "type": "frame",
+ "kind": "overlay",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same doorway with the door leaf swung fully open, folded back flat against the left jamb so that only a narrow strip of its planks shows inside the left edge of the frame. The frame is unchanged, the same size, reaching the same top and bottom. Everything else inside the frame is one clean empty opening with nothing in it: no marks, no specks, no handle, no hinges left behind.",
+  "fragments": [
+   "gap",
+   "edit"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "stretch",
+ "key": "all",
+ "reference": "door",
+ "resolvedPrompt": "Same doorway with the door leaf swung fully open, folded back flat against the left jamb so that only a narrow strip of its planks shows inside the left edge of the frame. The frame is unchanged, the same size, reaching the same top and bottom. Everything else inside the frame is one clean empty opening with nothing in it: no marks, no specks, no handle, no hinges left behind., Fill every opening with the same flat colour as the background., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

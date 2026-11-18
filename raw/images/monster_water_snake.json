@@ -1037,16 +1037,20 @@
   },
   "cropBox": [
    89,
-   160,
+   143,
    874,
-   751
+   768
+  ],
+  "cropSharedWith": [
+   "monster_water_snake",
+   "monster_water_snake_attack"
   ],
   "fit": "bottom",
   "placedAt": [
    0,
-   23,
+   19,
    160,
-   137
+   141
   ],
   "targetSize": [
    160,
@@ -1056,6 +1060,6 @@
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
   "coloursUsed": 40,
-  "at": "2026-11-18T02:33:41.238Z"
+  "at": "2026-11-18T02:57:51.565Z"
  }
 }

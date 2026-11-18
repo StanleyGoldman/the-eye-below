@@ -298,6 +298,7 @@
    112,
    404
   ],
+  "cropSharedWith": null,
   "fit": "center",
   "placedAt": [
    11,
@@ -313,6 +314,6 @@
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
   "coloursUsed": 20,
-  "at": "2026-11-18T02:33:45.718Z"
+  "at": "2026-11-18T02:57:56.902Z"
  }
 }

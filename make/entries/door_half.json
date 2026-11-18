@@ -1,0 +1,26 @@
+{
+ "id": "door_half",
+ "type": "frame",
+ "kind": "overlay",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same door standing half open: the door leaf swung inward and seen at an angle on the left, the right half of the doorway an empty opening.",
+  "fragments": [
+   "gap",
+   "edit"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "stretch",
+ "key": "all",
+ "reference": "door",
+ "resolvedPrompt": "Same door standing half open: the door leaf swung inward and seen at an angle on the left, the right half of the doorway an empty opening., Fill every opening with the same flat colour as the background., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

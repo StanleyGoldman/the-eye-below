@@ -1,0 +1,19 @@
+{
+ "id": "sfx_growl_beast",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a low animal growl ending in a snarl",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 2.5,
+ "transparent": false,
+ "resolvedPrompt": "a low animal growl ending in a snarl, one short clean sound effect, close and dry, no music, no voice-over"
+}

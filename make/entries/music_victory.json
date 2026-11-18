@@ -1,0 +1,21 @@
+{
+ "id": "music_victory",
+ "type": "music",
+ "kind": "sting",
+ "workflow": "ace_step",
+ "prompt": {
+  "subject": "triumphant fanfare, bright brass and timpani, resolving on a major chord",
+  "fragments": [
+   "sting"
+  ]
+ },
+ "size": [
+  5,
+  30
+ ],
+ "duration": 16,
+ "transparent": false,
+ "bpm": 110,
+ "keyscale": "C major",
+ "resolvedPrompt": "triumphant fanfare, bright brass and timpani, resolving on a major chord, instrumental, no vocals, a single short piece with a clear ending, early-1990s DOS game soundtrack"
+}

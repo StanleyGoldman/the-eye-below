@@ -1,0 +1,19 @@
+{
+ "id": "sfx_growl_humanoid",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a guttural goblin grunt and bark",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 2,
+ "transparent": false,
+ "resolvedPrompt": "a guttural goblin grunt and bark, one short clean sound effect, close and dry, no music, no voice-over"
+}

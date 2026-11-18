@@ -221,6 +221,24 @@ const CLASS_ICONS: Record<string, (p: Pen) => void> = {
       p.px(x - 2, y - 2, "#fff0b0");
     }
   },
+  item_gem: (p) => {
+    p.tri(8, 12, 24, 12, 16, 28, "#e8e8e8");
+    p.tri(8, 12, 12, 6, 20, 6, "#f8f8f8");
+    p.tri(24, 12, 20, 6, 12, 6, "#f8f8f8");
+    p.rect(12, 6, 8, 6, "#ffffff");
+    p.tri(16, 12, 24, 12, 16, 28, "#b8b8b8");
+    p.line(8, 12, 24, 12, "#909090");
+    p.line(12, 6, 16, 12, "#c8c8c8");
+    p.line(20, 6, 16, 12, "#c8c8c8");
+    p.px(11, 9, "#ffffff");
+  },
+  item_chest_key: (p) => {
+    p.rect(6, 6, 8, 8, "#6a7078");
+    p.clear(9, 9, 2, 2);
+    p.line(14, 14, 25, 25, "#8a8f96", 2);
+    p.rect(21, 25, 2, 4, "#6a7078");
+    p.rect(25, 21, 4, 2, "#6a7078");
+  },
   item_lamp: (p) => {
     p.ell(15, 22, 9, 5, "#8a6a2a");
     p.ell(15, 21, 8, 4, "#c9a23a");

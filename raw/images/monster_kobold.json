@@ -1037,15 +1037,19 @@
   },
   "cropBox": [
    255,
-   46,
+   20,
    548,
-   894
+   920
+  ],
+  "cropSharedWith": [
+   "monster_kobold",
+   "monster_kobold_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   31,
+   32,
    0,
-   98,
+   95,
    160
   ],
   "targetSize": [
@@ -1056,6 +1060,6 @@
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
   "coloursUsed": 37,
-  "at": "2026-11-18T02:33:37.948Z"
+  "at": "2026-11-18T02:57:46.816Z"
  }
 }

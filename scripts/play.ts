@@ -7,6 +7,8 @@
 //   node scripts/play.ts --scenario specials   one screenshot from inside each special level
 //   node scripts/play.ts --scenario economy    buy, sell, hear a rumor, pay a priest
 //   node scripts/play.ts --scenario assets     generated images all load; the game also runs with none
+//   node scripts/play.ts --scenario treasure   chests by key and by force, a gem, the vault guard, the grave of the last character to die
+//   node scripts/play.ts --scenario audio      silence before the first input, music by tier and for the boss, mute, saved volumes, and a run with no audio
 //   node scripts/play.ts --scenario keys --seed candle --level 3 --keys "KeyW,KeyW,KeyQ,Space"
 //
 // Options: --seed text, --role valkyrie|wizard|rogue, --mods id=1-9,..., --level 1-25,
@@ -40,13 +42,21 @@ interface Info {
   spellsOpen: boolean;
   selected: number | null;
   inventory: number;
+  gold: number;
+  name: string;
+  chestKeys: number;
+  gems: number;
+  chestsOpened: number;
+  chestsLocked: number;
+  inVault: boolean;
+  guards: number;
   log: string[];
   errors: string[];
 }
 
 const args = parseArgs(process.argv.slice(2));
 if (args.flags["help"]) {
-  console.log('usage: node scripts/play.ts --scenario smoke|victory|death|specials|economy|assets|keys [--seed text] [--role name] [--mods id=n,...] [--level n] [--keys "Code,..."] [--out dir] [--god] [--headed]');
+  console.log('usage: node scripts/play.ts --scenario smoke|victory|death|specials|economy|assets|treasure|audio|keys [--seed text] [--role name] [--mods id=n,...] [--level n] [--keys "Code,..."] [--out dir] [--god] [--headed]');
   process.exit(0);
 }
 const scenario = args.flags["scenario"] ?? "smoke";
@@ -480,7 +490,249 @@ async function assets(browser: Browser): Promise<void> {
   await bare.context().close();
 }
 
-const SCENARIOS: Record<string, (b: Browser) => Promise<void>> = { smoke, victory, death, specials, keys, economy, assets };
+/** A fixed level that has everything the treasure run needs: two locked chests, a chest key, a loose gem, and a vault with gold in it. */
+function findHoard(): { seed: string; depth: number; code: string } {
+  const overrides = { gold: 9, monsterCount: 1 };
+  for (let i = 0; i < 4000; i++) {
+    const seed = `hoard${i}`;
+    const mods = resolveMods(seed, overrides);
+    for (let depth = 1; depth <= 4; depth++) {
+      const level = generateLevel({ seed, mods }, depth);
+      const vault = level.meta.vault;
+      if (!vault) continue;
+      const locked = level.features.filter((f) => f.kind === "chest" && f.locked).length;
+      const keys = level.items.filter((fi) => fi.item.type === "chest_key").length;
+      const gems = level.items.filter((fi) => fi.item.type.startsWith("gem_") || fi.item.type.startsWith("glass_")).length;
+      const vaultGold = level.items.filter((fi) => fi.item.type === "gold" && vault.cells.includes(fi.y * level.w + fi.x)).length;
+      if (locked >= 2 && keys >= 1 && gems >= 1 && vaultGold >= 3) return { seed, depth, code: encodeRunCode(seed, overrides) };
+    }
+  }
+  fail("no level with two locked chests, a chest key, a gem, and a vault was found");
+}
+
+async function treasure(browser: Browser): Promise<void> {
+  const hoard = findHoard();
+  console.log(`  using run code ${hoard.code}, level ${hoard.depth}`);
+  const page = await open(browser, `&start=1&god=1&code=${encodeURIComponent(hoard.code)}&level=${hoard.depth}`);
+  await waitFor(page, "the game to start", (x) => x.screen === "game" && x.depth === hoard.depth);
+  const eye = (expr: string): Promise<unknown> => page.evaluate(`window.__eye.${expr}`);
+
+  // A chest, opened with its key.
+  check((await eye("goto('chest_key')")) === true, "stood on the cell where a chest key lies");
+  await press(page, "KeyG", 250);
+  check((await info(page)).chestKeys === 1, "picked up the chest key");
+  check((await eye("vantage(1, 'chest_locked')")) === true, "stood facing a locked chest");
+  await page.waitForTimeout(300);
+  await shot(page, "01-locked-chest");
+  await press(page, "KeyF", 300);
+  let i = await info(page);
+  check(i.prompt === "chest", "using a locked chest asks how to open it");
+  const lockedBefore = i.chestsLocked;
+  await page.click('[data-option="key"]');
+  await page.waitForTimeout(250);
+  i = await info(page);
+  check(i.chestsOpened === 1 && i.chestKeys === 0 && i.chestsLocked === lockedBefore - 1, "the key opens the chest and is used up");
+  await shot(page, "02-chest-open");
+  await press(page, "KeyG", 250);
+  check((await info(page)).inventory > 1, "what spilled out can be picked up");
+
+  // A second chest, forced.
+  check((await eye("vantage(1, 'chest_locked')")) === true, "stood facing another locked chest");
+  let tries = 0;
+  while (tries < 40 && (await info(page)).chestsOpened < 2) {
+    tries++;
+    await press(page, "KeyF", 150);
+    if ((await info(page)).prompt !== "chest") continue;
+    if (tries === 1) check(!(await page.isVisible('[data-option="key"]')), "with no key left, the key option is not offered");
+    await page.click('[data-option="force"]');
+    await page.waitForTimeout(150);
+  }
+  check((await info(page)).chestsOpened === 2, `forced the second chest open (${tries} ${tries === 1 ? "try" : "tries"})`);
+
+  // A gem. (Wrenching at a lid keeps the hands busy for a moment.)
+  await page.waitForTimeout(1100);
+  const gemsBefore = (await info(page)).gems;
+  check((await eye("goto('gem')")) === true, "stood on a cell with a gem");
+  await press(page, "KeyG", 250);
+  i = await info(page);
+  check(i.gems > gemsBefore, `picked up a gem (${i.log[i.log.length - 1] ?? ""})`);
+
+  // The vault, and its guard.
+  check((await eye("goto('vault')")) === true, "stood inside the vault");
+  const purse = (await info(page)).gold;
+  for (const code of ["KeyW", "KeyE", "KeyW", "KeyE", "KeyW", "KeyE", "KeyW", "KeyE", "KeyW"]) await press(page, code, 220);
+  i = await info(page);
+  check(i.inVault && i.gold > purse, `walked the vault and picked up its gold (${i.gold - purse} gold)`);
+  await shot(page, "03-vault");
+  await eye("speed(4)");
+  i = await waitFor(page, "the vault guard", (x) => x.prompt === "guard", 20000);
+  await eye("speed(1)");
+  check(i.guards === 1, "a guard has come into the vault and asks who you are");
+  await page.waitForTimeout(300);
+  await shot(page, "04-guard");
+  const paused = (await info(page)).time;
+  await page.waitForTimeout(500);
+  check((await info(page)).time === paused, "the world waits for the answer");
+  await page.click('[data-option="truth"]');
+  await page.waitForTimeout(300);
+  i = await info(page);
+  check(i.gold === purse && !i.inVault && i.guards === 0, "telling the truth costs the vault's gold and an escort out");
+  check(i.errors.length === 0, "no errors were caught in the frame loop");
+
+  // A death, saved, and the grave it leaves for the next character.
+  await page.goto(`${indexUrl}?debug=1`);
+  await page.waitForFunction("typeof window.__eye === 'object'", undefined, { timeout: 10000 });
+  await newGameThroughUi(page, { code: "EB1.goal1.mc9mt9", role: "wizard", god: false });
+  await page.click('[data-act="begin"]');
+  i = await waitFor(page, "the mortal run to start", (x) => x.screen === "game");
+  const fallen = i.name;
+  check((await eye("vantage(1, 'grave_fallen')")) === false, "no fresh grave before anyone has died");
+  while (!i.dead && !i.won && i.time < 3600 * 1000) {
+    await page.evaluate("window.__eye.runBot('die', 20000)");
+    i = await info(page);
+  }
+  const fellAt = i.depth;
+  check(i.dead && fallen.length > 0, `${fallen} died on level ${fellAt} (${i.cause})`);
+  await waitFor(page, "the death screen", (x) => x.screen === "dead");
+  await page.click('[data-act="again"]');
+  i = await waitFor(page, "the next run", (x) => x.screen === "game" && !x.dead);
+  check(i.depth === fellAt, "the next character starts on the level where the last one fell");
+  check((await eye("vantage(1, 'grave_fallen')")) === true, "the next run has a fresh grave on that level");
+  await page.waitForTimeout(300);
+  await shot(page, "05-grave");
+  await press(page, "KeyF", 300);
+  i = await info(page);
+  check(i.log.some((line) => line.includes(`Here lies ${fallen}`)), `the stone names the dead character (${i.log[i.log.length - 1] ?? ""})`);
+  check(i.errors.length === 0, "no errors were caught in the frame loop");
+  await page.context().close();
+}
+
+interface AudioReport {
+  enabled: boolean;
+  unlocked: boolean;
+  music: string;
+  musicPlaying: boolean;
+  musicTime: number;
+  musicVolume: number;
+  effectsVolume: number;
+  loudestElement: number;
+  muted: boolean;
+  playing: number;
+  effectsPlayed: number;
+  lastEffect: string;
+  failed: string[];
+}
+
+async function audio(browser: Browser): Promise<void> {
+  const page = await open(browser, "");
+  const report = async (p: Page = page): Promise<AudioReport> => (await p.evaluate("window.__eye.audio()")) as AudioReport;
+  /** Wait until the wanted track is the one named and its clock is moving. */
+  const playing = async (p: Page, track: string): Promise<AudioReport> => {
+    let r = await report(p);
+    for (let n = 0; n < 50 && !(r.music === track && r.musicPlaying && r.musicTime > 0.1); n++) {
+      await p.waitForTimeout(100);
+      r = await report(p);
+    }
+    return r;
+  };
+  // Start from known settings, whatever an earlier run left behind.
+  await page.evaluate("localStorage.removeItem('eye-below.audio.v1')");
+  await page.reload();
+  await page.waitForFunction("typeof window.__eye === 'object'", undefined, { timeout: 10000 });
+
+  // Nothing before the first input.
+  await page.waitForTimeout(900);
+  let r = await report();
+  check(r.enabled && !r.unlocked && r.playing === 0 && !r.musicPlaying, `before any input no audio element is playing (${r.playing} playing)`);
+
+  // The first click starts the title music.
+  await page.click('[data-act="new"]');
+  r = await playing(page, "music_title");
+  check(r.unlocked && r.music === "music_title" && r.musicPlaying && r.musicTime > 0.1, `after the first input the title music plays (${r.musicTime.toFixed(2)} s in)`);
+  await page.click('[data-role="valkyrie"]');
+  await page.check('[data-field="god"]');
+  await page.fill('[data-field="seed"]', "goal-1");
+  await page.click('[data-act="begin"]');
+  await waitFor(page, "the game to start", (x) => x.screen === "game");
+  r = await playing(page, "music_tier1");
+  const t0 = r.musicTime;
+  await page.waitForTimeout(500);
+  const t1 = (await report()).musicTime;
+  check(r.music === "music_tier1" && r.musicPlaying && t1 > t0, `on level 1 the first tier's track is playing (${t0.toFixed(2)} s, then ${t1.toFixed(2)} s)`);
+  check(r.failed.length === 0, `no audio file failed to load (${r.failed.join(", ") || "none"})`);
+
+  // Effects.
+  for (const code of ["KeyW", "KeyW", "KeyE", "KeyW", "KeyW", "KeyQ", "KeyW"]) await press(page, code, 260);
+  r = await report();
+  check(r.effectsPlayed > 0 && r.lastEffect.startsWith("sfx_"), `walking plays sound effects (${r.effectsPlayed} so far, last ${r.lastEffect})`);
+  check(r.loudestElement > 0, "music and effects are audible before muting");
+
+  // The mute key.
+  await press(page, "KeyN", 250);
+  r = await report();
+  check(r.muted && r.musicVolume === 0 && r.effectsVolume === 0 && r.loudestElement === 0, "the mute key silences both music and effects");
+  await press(page, "KeyW", 260);
+  check((await report()).loudestElement === 0, "an effect played while muted is silent too");
+  await shot(page, "01-muted");
+  await press(page, "KeyN", 250);
+  r = await report();
+  check(!r.muted && r.musicVolume > 0 && r.effectsVolume > 0 && r.loudestElement > 0, "pressing it again brings both back");
+
+  // Volumes, set in the settings menu, survive a reload.
+  await press(page, "Escape", 250);
+  await page.click('[data-act="settings"]');
+  await page.waitForTimeout(200);
+  const slide = async (field: string, value: number): Promise<void> => {
+    await page.evaluate(`(() => { const el = document.querySelector('input[data-field="${field}"]'); el.value = "${value}"; el.dispatchEvent(new Event("input", { bubbles: true })); })()`);
+  };
+  await slide("music", 30);
+  await slide("effects", 45);
+  await page.waitForTimeout(150);
+  r = await report();
+  check(Math.abs(r.musicVolume - 0.3) < 0.001 && Math.abs(r.effectsVolume - 0.45) < 0.001, "the settings menu has separate sliders for music and effects");
+  await shot(page, "02-volume-settings");
+  await page.reload();
+  await page.waitForFunction("typeof window.__eye === 'object'", undefined, { timeout: 10000 });
+  await page.waitForTimeout(500);
+  r = await report();
+  check(Math.abs(r.musicVolume - 0.3) < 0.001 && Math.abs(r.effectsVolume - 0.45) < 0.001, `the volumes survive a reload (music ${r.musicVolume}, effects ${r.effectsVolume})`);
+  check(!r.unlocked && r.playing === 0, "and after the reload it is silent again until the next input");
+  await page.evaluate("localStorage.removeItem('eye-below.audio.v1')");
+  await page.context().close();
+
+  // A boss level has its own track.
+  const boss = await open(browser, "&start=1&god=1&seed=goal-1&level=15");
+  await waitFor(boss, "the boss level", (x) => x.screen === "game" && x.depth === 15);
+  check((await report(boss)).playing === 0, "arriving by link is silent until an input");
+  await press(boss, "KeyQ", 300);
+  r = await playing(boss, "music_boss");
+  check(r.music === "music_boss" && r.musicPlaying, `with the level's boss alive the boss track plays (${r.music})`);
+  await boss.context().close();
+  const deep = await open(browser, "&start=1&god=1&seed=goal-1&level=14");
+  await waitFor(deep, "level 14", (x) => x.screen === "game" && x.depth === 14);
+  await press(deep, "KeyQ", 300);
+  r = await playing(deep, "music_tier3");
+  check(r.music === "music_tier3" && r.musicPlaying, `one level up it is the third tier's track (${r.music})`);
+  await deep.context().close();
+
+  // With audio off altogether the game still runs to the end.
+  const quiet = await open(browser, "&noaudio=1");
+  await newGameThroughUi(quiet, { seed: "goal-1", role: "valkyrie", god: true });
+  await quiet.click('[data-act="begin"]');
+  let i = await waitFor(quiet, "the silent run to start", (x) => x.screen === "game");
+  for (const code of ["KeyW", "KeyN", "KeyN", "KeyW"]) await press(quiet, code, 200);
+  while (!i.won && !i.dead && i.time < 12 * 3600 * 1000) {
+    await quiet.evaluate("window.__eye.runBot('win', 60000)");
+    i = await info(quiet);
+  }
+  i = await waitFor(quiet, "the victory screen", (x) => x.screen === "won");
+  r = await report(quiet);
+  check(i.won && !r.enabled && r.playing === 0 && !r.musicPlaying, `with audio disabled the run still reaches the victory screen (level ${i.depth}, nothing playing)`);
+  check(i.errors.length === 0, "no errors were caught in the frame loop");
+  await quiet.context().close();
+}
+
+const SCENARIOS: Record<string, (b: Browser) => Promise<void>> = { smoke, victory, death, specials, keys, economy, assets, treasure, audio };
 const runScenario = SCENARIOS[scenario];
 if (!runScenario) fail(`unknown scenario "${scenario}". Known: ${Object.keys(SCENARIOS).join(", ")}`);
 

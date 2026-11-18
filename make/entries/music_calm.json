@@ -1,0 +1,21 @@
+{
+ "id": "music_calm",
+ "type": "music",
+ "kind": "loop",
+ "workflow": "ace_step",
+ "prompt": {
+  "subject": "calm shop and temple theme, warm harp and soft recorder, gentle and safe",
+  "fragments": [
+   "music"
+  ]
+ },
+ "size": [
+  60,
+  90
+ ],
+ "duration": 72,
+ "transparent": false,
+ "bpm": 76,
+ "keyscale": "F major",
+ "resolvedPrompt": "calm shop and temple theme, warm harp and soft recorder, gentle and safe, instrumental, no vocals, loopable, early-1990s DOS game soundtrack, FM synth and sampled orchestra"
+}

@@ -21,6 +21,9 @@ const prefix = args.flags["prefix"] ?? "sweep";
 let levels = 0;
 let unsolvable = 0;
 let fallbacks = 0;
+let vaults = 0;
+let hiddenDoors = 0;
+let chests = 0;
 const started = Date.now();
 
 function runSeed(seed: string, overrides: Record<string, number>, label: string): void {
@@ -30,6 +33,9 @@ function runSeed(seed: string, overrides: Record<string, number>, label: string)
     const result = solveLevel(level, { boneKeys: level.meta.boneDoor ? 1 : 0 });
     levels++;
     if (level.meta.attempts > 30) fallbacks++;
+    if (level.meta.vault) vaults++;
+    hiddenDoors += level.doors.filter((d) => d.secret).length;
+    chests += level.features.filter((f) => f.kind === "chest").length;
     if (!result.ok) {
       unsolvable++;
       console.log(`UNSOLVABLE: seed "${seed}" ${label} level ${depth}: ${result.reason}`);
@@ -48,5 +54,6 @@ for (const def of MODIFIERS) {
 const seconds = ((Date.now() - started) / 1000).toFixed(1);
 console.log(`sweep: ${seedCount} seeds at their own modifiers (${defaultLevels} levels), ${MODIFIERS.length} modifiers at minimum and maximum on 3 seeds (${levels - defaultLevels} levels)`);
 console.log(`sweep: ${levels} levels generated in ${seconds} s, ${fallbacks} fell back to a lock-free layout`);
+console.log(`sweep: ${vaults} vaults, ${hiddenDoors} hidden doors, ${chests} chests among them`);
 console.log(`unsolvable: ${unsolvable}`);
 process.exit(unsolvable === 0 ? 0 : 1);

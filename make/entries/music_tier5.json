@@ -1,0 +1,21 @@
+{
+ "id": "music_tier5",
+ "type": "music",
+ "kind": "loop",
+ "workflow": "ace_step",
+ "prompt": {
+  "subject": "volcanic obsidian depths, heavy low drums and dissonant brass swells, dread",
+  "fragments": [
+   "music"
+  ]
+ },
+ "size": [
+  60,
+  90
+ ],
+ "duration": 72,
+ "transparent": false,
+ "bpm": 78,
+ "keyscale": "F minor",
+ "resolvedPrompt": "volcanic obsidian depths, heavy low drums and dissonant brass swells, dread, instrumental, no vocals, loopable, early-1990s DOS game soundtrack, FM synth and sampled orchestra"
+}

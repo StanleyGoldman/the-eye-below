@@ -1036,16 +1036,20 @@
    "pixelsRemoved": 2730
   },
   "cropBox": [
-   255,
-   103,
-   503,
-   842
+   248,
+   23,
+   592,
+   922
+  ],
+  "cropSharedWith": [
+   "monster_morvane",
+   "monster_morvane_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   32,
+   28,
    0,
-   96,
+   103,
    160
   ],
   "targetSize": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 31,
-  "at": "2026-11-18T02:33:41.788Z"
+  "coloursUsed": 30,
+  "at": "2026-11-18T03:00:44.930Z"
  }
 }

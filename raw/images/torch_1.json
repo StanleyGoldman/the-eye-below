@@ -428,15 +428,19 @@
   },
   "cropBox": [
    300,
-   65,
-   324,
-   840
+   46,
+   336,
+   860
+  ],
+  "cropSharedWith": [
+   "torch_1",
+   "torch_2"
   ],
   "fit": "center",
   "placedAt": [
    24,
    12,
-   15,
+   16,
    40
   ],
   "targetSize": [
@@ -446,7 +450,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 32,
-  "at": "2026-11-18T02:33:43.933Z"
+  "coloursUsed": 35,
+  "at": "2026-11-18T02:57:55.016Z"
  }
 }

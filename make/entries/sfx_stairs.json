@@ -1,0 +1,19 @@
+{
+ "id": "sfx_stairs",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "hurried footsteps descending stone stairs",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 2.5,
+ "transparent": false,
+ "resolvedPrompt": "hurried footsteps descending stone stairs, one short clean sound effect, close and dry, no music, no voice-over"
+}

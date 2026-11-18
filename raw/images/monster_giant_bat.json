@@ -1037,16 +1037,20 @@
   },
   "cropBox": [
    18,
-   158,
+   146,
    988,
-   593
+   605
+  ],
+  "cropSharedWith": [
+   "monster_giant_bat",
+   "monster_giant_bat_attack"
   ],
   "fit": "bottom",
   "placedAt": [
    0,
-   64,
+   62,
    160,
-   96
+   98
   ],
   "targetSize": [
    160,
@@ -1056,6 +1060,6 @@
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
   "coloursUsed": 35,
-  "at": "2026-11-18T02:33:38.315Z"
+  "at": "2026-11-18T02:57:47.264Z"
  }
 }

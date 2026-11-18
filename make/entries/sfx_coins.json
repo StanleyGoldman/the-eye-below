@@ -1,0 +1,19 @@
+{
+ "id": "sfx_coins",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a handful of gold coins clinking together",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "a handful of gold coins clinking together, one short clean sound effect, close and dry, no music, no voice-over"
+}

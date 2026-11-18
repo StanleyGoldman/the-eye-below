@@ -1,7 +1,7 @@
 // Key bindings: defaults, rebinding, and storage. Bindings use physical
 // key codes so they survive keyboard layouts.
 
-export type ActionId = "forward" | "back" | "strafeLeft" | "strafeRight" | "turnLeft" | "turnRight" | "attack" | "interact" | "pickup" | "throw" | "rest" | "cast" | "inventory" | "map" | "pause";
+export type ActionId = "forward" | "back" | "strafeLeft" | "strafeRight" | "turnLeft" | "turnRight" | "attack" | "interact" | "pickup" | "throw" | "rest" | "cast" | "inventory" | "map" | "mute" | "pause";
 
 export interface ActionDef {
   id: ActionId;
@@ -27,6 +27,7 @@ export const ACTIONS: readonly ActionDef[] = [
   { id: "cast", label: "Cast a spell", help: "Open the spell list, then press a spell's letter.", defaults: ["KeyC", ""], held: false },
   { id: "inventory", label: "Inventory", help: "Then press an item's letter to choose what to do with it.", defaults: ["KeyI", ""], held: false },
   { id: "map", label: "Map", help: "Show or hide the full map of this level.", defaults: ["KeyM", ""], held: false },
+  { id: "mute", label: "Mute", help: "Silence music and effects, or bring them back.", defaults: ["KeyN", ""], held: false },
   { id: "pause", label: "Pause", help: "Open the pause menu. Also closes whatever is open.", defaults: ["Escape", ""], held: false },
 ];
 

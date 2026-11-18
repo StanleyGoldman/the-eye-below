@@ -1,0 +1,24 @@
+{
+ "id": "monster_medusa_attack",
+ "type": "frame",
+ "kind": "monster",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same gorgon with her eyes blazing bright yellow, one clawed hand thrust forward, the snakes rearing.",
+  "fragments": [
+   "edit"
+  ]
+ },
+ "size": [
+  160,
+  160
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "reference": "monster_medusa",
+ "resolvedPrompt": "Same gorgon with her eyes blazing bright yellow, one clawed hand thrust forward, the snakes rearing., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

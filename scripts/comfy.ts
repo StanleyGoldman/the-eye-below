@@ -120,7 +120,7 @@ async function runAttempt(entry: ManifestEntry, n: number, seed: number, status:
     if (!existsSync(input)) fail(`${entry.id} needs ${input} as its reference, and that has not been generated yet`);
     spec.inputName = await upload(input, `eye_${ref.id}.png`);
   }
-  if (entry.type === "music" || entry.type === "sfx") spec.duration = entry.size[1];
+  if (entry.type === "music" || entry.type === "sfx") spec.duration = entry.duration ?? entry.size[1];
   if (entry.bpm) spec.bpm = entry.bpm;
   if (entry.keyscale) spec.keyscale = entry.keyscale;
   const file = attemptFile(entry, n);
@@ -138,7 +138,7 @@ async function runAttempt(entry: ManifestEntry, n: number, seed: number, status:
     models: result.summary["models"],
     loras: result.summary["loras"],
     steps: result.summary["steps"],
-    size: entry.type === "image" || entry.type === "frame" ? `${w}x${h}` : `${entry.size[1]} s`,
+    size: entry.type === "image" || entry.type === "frame" ? `${w}x${h}` : `${entry.duration ?? entry.size[1]} s`,
     input,
     promptId: result.promptId,
     comfyOutput: result.outputFilename,

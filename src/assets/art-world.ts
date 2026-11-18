@@ -336,3 +336,34 @@ export function paintTrapMark(p: Pen): void {
   p.line(6, 6, 25, 25, "#c03a2a", 2);
   p.line(25, 6, 6, 25, "#c03a2a", 2);
 }
+
+export function paintChest(p: Pen, open: boolean): void {
+  p.rect(10, 34, 44, 26, "#5a3d1e");
+  p.rect(10, 34, 44, 2, "#8a5a2b");
+  p.dither(32, 36, 22, 24, "#2a1c0e");
+  for (const x of [10, 30, 50]) p.rect(x, 34, 4, 26, "#50545a");
+  p.rect(10, 58, 44, 2, "#2a1c0e");
+  if (open) {
+    p.rect(12, 12, 40, 20, "#4a2f14");
+    p.rect(12, 12, 40, 2, "#8a5a2b");
+    p.rect(14, 30, 36, 6, "#0a0705");
+    for (const x of [12, 30, 48]) p.rect(x, 12, 4, 20, "#50545a");
+  } else {
+    p.ell(32, 34, 22, 8, "#7a5228");
+    p.rect(10, 30, 44, 6, "#7a5228");
+    p.rect(10, 30, 44, 1, "#b9853f");
+    p.rect(28, 36, 8, 8, "#c9a23a");
+    p.rect(31, 39, 2, 3, "#14110e");
+  }
+}
+
+export function paintGrave(p: Pen): void {
+  p.ell(32, 58, 22, 5, "#4a3218");
+  p.dither(12, 56, 40, 5, "#2a1c0e");
+  p.rect(20, 26, 24, 32, "#7d776a");
+  p.ell(32, 26, 12, 10, "#7d776a");
+  p.ditherEll(36, 30, 8, 9, "#4a463c");
+  p.dither(34, 30, 10, 28, "#4a463c");
+  p.rect(20, 26, 1, 32, "#a39c8a");
+  for (const y of [30, 35, 40]) p.rect(25, y, 14 - (y % 3) * 2, 1, "#2c2a25");
+}

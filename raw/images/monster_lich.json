@@ -1036,16 +1036,20 @@
    "pixelsRemoved": 4844
   },
   "cropBox": [
-   214,
+   163,
    93,
-   568,
+   660,
    853
+  ],
+  "cropSharedWith": [
+   "monster_lich",
+   "monster_lich_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   26,
+   18,
    0,
-   107,
+   124,
    160
   ],
   "targetSize": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 40,
-  "at": "2026-11-18T02:33:41.051Z"
+  "coloursUsed": 38,
+  "at": "2026-11-18T02:57:51.298Z"
  }
 }

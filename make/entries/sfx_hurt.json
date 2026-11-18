@@ -1,0 +1,19 @@
+{
+ "id": "sfx_hurt",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a short grunt of pain from a grown adult",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "a short grunt of pain from a grown adult, one short clean sound effect, close and dry, no music, no voice-over"
+}

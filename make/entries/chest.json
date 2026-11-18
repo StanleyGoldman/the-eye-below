@@ -1,0 +1,24 @@
+{
+ "id": "chest",
+ "type": "image",
+ "kind": "fixture",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "a closed iron-bound wooden treasure chest with a heavy lock",
+  "fragments": [
+   "object",
+   "style"
+  ]
+ },
+ "size": [
+  128,
+  128
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "resolvedPrompt": "a closed iron-bound wooden treasure chest with a heavy lock, single object, front-facing, centered, whole object in frame, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

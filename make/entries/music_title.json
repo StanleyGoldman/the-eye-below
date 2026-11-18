@@ -1,0 +1,21 @@
+{
+ "id": "music_title",
+ "type": "music",
+ "kind": "loop",
+ "workflow": "ace_step",
+ "prompt": {
+  "subject": "ominous slow title theme, low brass and choir pad, a single tolling bell",
+  "fragments": [
+   "music"
+  ]
+ },
+ "size": [
+  60,
+  90
+ ],
+ "duration": 72,
+ "transparent": false,
+ "bpm": 66,
+ "keyscale": "D minor",
+ "resolvedPrompt": "ominous slow title theme, low brass and choir pad, a single tolling bell, instrumental, no vocals, loopable, early-1990s DOS game soundtrack, FM synth and sampled orchestra"
+}

@@ -1036,10 +1036,14 @@
    "pixelsRemoved": 2451
   },
   "cropBox": [
-   138,
+   137,
    124,
-   787,
+   788,
    787
+  ],
+  "cropSharedWith": [
+   "monster_fire_drake",
+   "monster_fire_drake_attack"
   ],
   "fit": "bottom",
   "placedAt": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 35,
-  "at": "2026-11-18T02:33:40.878Z"
+  "coloursUsed": 34,
+  "at": "2026-11-18T02:57:51.034Z"
  }
 }

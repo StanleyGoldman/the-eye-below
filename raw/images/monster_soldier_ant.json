@@ -1041,6 +1041,10 @@
    954,
    896
   ],
+  "cropSharedWith": [
+   "monster_soldier_ant",
+   "monster_soldier_ant_attack"
+  ],
   "fit": "bottom",
   "placedAt": [
    0,
@@ -1056,6 +1060,6 @@
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
   "coloursUsed": 34,
-  "at": "2026-11-18T02:33:39.053Z"
+  "at": "2026-11-18T02:57:48.323Z"
  }
 }

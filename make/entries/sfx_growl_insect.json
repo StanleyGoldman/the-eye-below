@@ -1,0 +1,19 @@
+{
+ "id": "sfx_growl_insect",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a giant insect chittering and clicking",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 2,
+ "transparent": false,
+ "resolvedPrompt": "a giant insect chittering and clicking, one short clean sound effect, close and dry, no music, no voice-over"
+}

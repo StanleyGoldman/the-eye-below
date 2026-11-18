@@ -1,0 +1,21 @@
+{
+ "id": "music_boss",
+ "type": "music",
+ "kind": "loop",
+ "workflow": "ace_step",
+ "prompt": {
+  "subject": "boss battle, fast driving percussion and urgent brass stabs, relentless",
+  "fragments": [
+   "music"
+  ]
+ },
+ "size": [
+  60,
+  90
+ ],
+ "duration": 72,
+ "transparent": false,
+ "bpm": 140,
+ "keyscale": "D minor",
+ "resolvedPrompt": "boss battle, fast driving percussion and urgent brass stabs, relentless, instrumental, no vocals, loopable, early-1990s DOS game soundtrack, FM synth and sampled orchestra"
+}

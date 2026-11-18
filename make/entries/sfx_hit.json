@@ -1,0 +1,19 @@
+{
+ "id": "sfx_hit",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a blade striking flesh with a heavy thud",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "a blade striking flesh with a heavy thud, one short clean sound effect, close and dry, no music, no voice-over"
+}

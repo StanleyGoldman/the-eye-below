@@ -9,7 +9,7 @@ import { MONSTER_TYPES } from "../game/data/monsters.ts";
 import { ROLES } from "../game/data/roles.ts";
 import { ITEM_ICON_IDS, paintButton, paintCompass, paintDialoguePanel, paintFrame, paintItemIcon, paintShopPanel, paintSlot, paintTitle } from "./art-items.ts";
 import { paintMonster, paintPortrait } from "./art-monsters.ts";
-import { paintAltar, paintBoulder, paintCeil, paintDoor, paintDrawbridge, paintFloor, paintFountain, paintGate, paintPlate, paintStairs, paintStatue, paintSwitch, paintTorch, paintTrapMark, paintWall } from "./art-world.ts";
+import { paintAltar, paintBoulder, paintCeil, paintChest, paintGrave, paintDoor, paintDrawbridge, paintFloor, paintFountain, paintGate, paintPlate, paintStairs, paintStatue, paintSwitch, paintTorch, paintTrapMark, paintWall } from "./art-world.ts";
 import type { Pen } from "./pen.ts";
 
 export type AssetKind = "texture" | "overlay" | "sprite" | "icon" | "ui";
@@ -57,6 +57,9 @@ add("fountain", "sprite", 64, 64, paintFountain);
 add("altar", "sprite", 64, 64, paintAltar);
 add("statue", "sprite", 64, 64, paintStatue);
 add("boulder", "sprite", 64, 64, paintBoulder);
+add("chest", "sprite", 64, 64, (p) => paintChest(p, false));
+add("chest_open", "sprite", 64, 64, (p) => paintChest(p, true));
+add("grave", "sprite", 64, 64, paintGrave);
 add("plate", "sprite", 32, 32, paintPlate);
 add("trap", "sprite", 32, 32, paintTrapMark);
 

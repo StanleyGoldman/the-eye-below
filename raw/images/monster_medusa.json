@@ -1041,6 +1041,10 @@
    589,
    982
   ],
+  "cropSharedWith": [
+   "monster_medusa",
+   "monster_medusa_attack"
+  ],
   "fit": "bottom",
   "placedAt": [
    32,
@@ -1056,6 +1060,6 @@
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
   "coloursUsed": 31,
-  "at": "2026-11-18T02:33:41.600Z"
+  "at": "2026-11-18T02:57:52.090Z"
  }
 }

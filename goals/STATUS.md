@@ -1,12 +1,12 @@
 # Status
 
-Current session: 3 (not started). Sessions 1 and 2 are complete.
+All three sessions are complete. The build described in `PROMPT.md` is finished; there is no next session.
 
 | Session | Release | State |
 |---|---|---|
 | 1 | v0.1 "Bare stone": playable core, code-drawn art, silent | complete, tag `session-1` |
 | 2 | v0.2 "Lamplight": generated art, shops, NPCs | complete, tag `session-2` |
-| 3 | v1.0 "Full dark": animation, audio, treasure, review, report | not started |
+| 3 | v1.0 "Full dark": animation, audio, treasure, review, report | complete, tag `session-3` |
 
 The checks are defined in `goals/session-N.md`. `make goal-check
 SESSION=N` runs them.
@@ -66,29 +66,35 @@ conversation.
 
 ## Session 3 checks
 
-- [ ] 1. `make check` exits 0
-- [ ] 2. at least 95 tests pass, 0 fail
-- [ ] 3. `make sweep` prints `unsolvable: 0` (17 modifiers, vaults)
-- [ ] 4. determinism script exits 0
-- [ ] 5. scripted victory run
-- [ ] 6. scripted death run and restart
-- [ ] 7. five special-level screenshots
-- [ ] 8. economy scenario
-- [ ] 9. treasure scenario
-- [ ] 10. audio scenario
-- [ ] 11. manifest counts: 95 images, 28 frames, 10 music, 25 effects
-- [ ] 12. all asset files, raws, and records: `missing: 0`
-- [ ] 13. image sizes, palette, alpha, animation frame sizes
-- [ ] 14. audio lengths, not silent, loudness records
-- [ ] 15. generation records complete
-- [ ] 16. `make -q assets` exits 0
-- [ ] 17. contact sheets including animations
-- [ ] 18. asset review lists every manifest id
-- [ ] 19. final report has its five parts
-- [ ] 20. no ComfyUI instance left running
-- [ ] 21. no stubs
-- [ ] 22. offline
-- [ ] 23. repository layout
-- [ ] 24. docs and README
-- [ ] 25. `git status` clean
-- [ ] 26. tag `session-3` at `HEAD`
+All 26 pass at the commit tagged `session-3` (2026-11-18). Checks 25
+and 26 are made true by that commit and tag; the run of
+`make goal-check SESSION=3` that shows all 26 is in the session's
+conversation. Every audio file is unverified by ear: see
+`docs/final-report.md`.
+
+- [x] 1. `make check` exits 0
+- [x] 2. at least 95 tests pass, 0 fail (140 pass)
+- [x] 3. `make sweep` prints `unsolvable: 0` (3,300 levels, 17 modifiers, 259 vaults)
+- [x] 4. determinism script exits 0
+- [x] 5. scripted victory run
+- [x] 6. scripted death run and restart
+- [x] 7. five special-level screenshots
+- [x] 8. economy scenario
+- [x] 9. treasure scenario
+- [x] 10. audio scenario
+- [x] 11. manifest counts: 109 images, 30 frames, 10 music, 27 effects
+- [x] 12. all asset files, raws, and records: `missing: 0`, no fallbacks
+- [x] 13. image sizes, palette, alpha, animation frame sizes
+- [x] 14. audio lengths, not silent, loudness records
+- [x] 15. generation records complete (223 attempts, 349 jobs logged)
+- [x] 16. `make -q assets` exits 0
+- [x] 17. contact sheets including one per animation
+- [x] 18. asset review lists every manifest id (176 rows)
+- [x] 19. final report has its five parts
+- [x] 20. no ComfyUI instance left running
+- [x] 21. no stubs
+- [x] 22. offline
+- [x] 23. repository layout
+- [x] 24. docs and README
+- [x] 25. `git status` clean
+- [x] 26. tag `session-3` at `HEAD`

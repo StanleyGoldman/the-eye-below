@@ -1,0 +1,21 @@
+{
+ "id": "music_tier2",
+ "type": "music",
+ "kind": "loop",
+ "workflow": "ace_step",
+ "prompt": {
+  "subject": "mine exploration, steady hammered percussion like distant picks, low woodwinds",
+  "fragments": [
+   "music"
+  ]
+ },
+ "size": [
+  60,
+  90
+ ],
+ "duration": 72,
+ "transparent": false,
+ "bpm": 84,
+ "keyscale": "E minor",
+ "resolvedPrompt": "mine exploration, steady hammered percussion like distant picks, low woodwinds, instrumental, no vocals, loopable, early-1990s DOS game soundtrack, FM synth and sampled orchestra"
+}

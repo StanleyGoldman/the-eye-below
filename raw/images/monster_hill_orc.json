@@ -1037,15 +1037,19 @@
   },
   "cropBox": [
    233,
-   64,
+   31,
    629,
-   914
+   947
+  ],
+  "cropSharedWith": [
+   "monster_hill_orc",
+   "monster_hill_orc_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   25,
+   27,
    0,
-   110,
+   106,
    160
   ],
   "targetSize": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 43,
-  "at": "2026-11-18T02:33:38.686Z"
+  "coloursUsed": 42,
+  "at": "2026-11-18T02:57:47.779Z"
  }
 }

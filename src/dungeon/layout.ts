@@ -45,11 +45,13 @@ export interface Room {
   closet: boolean;
   /** A shop: one door, a shopkeeper, nothing else generated inside. */
   shop: boolean;
+  /** A sealed room of gold behind a switch-gate or a hidden door. */
+  vault: boolean;
   /** Holds a key, switch, or plate, so it must stay reachable. */
   holdsOpener: boolean;
 }
 
-export type LockKind = "key" | "switch" | "plate";
+export type LockKind = "key" | "switch" | "plate" | "secret";
 
 export interface LockPlan {
   edge: number;
@@ -85,6 +87,8 @@ export interface Plan {
   boneCloset: boolean;
   /** Room that is a shop, or -1. */
   shopRoom: number;
+  /** Room that is a vault, or -1. */
+  vaultRoom: number;
 }
 
 /** Does the level above carry a bone key for a door on this one? Decided by the seed alone. */
@@ -120,7 +124,7 @@ export function planLayout(run: RunConfig, depth: number, attempt: number, withL
 
   const rooms: Room[] = [];
   for (let id = 0; id < count; id++) {
-    const room: Room = { id, c: id % cols, r: Math.floor(id / cols), x: 0, y: 0, w: 1, h: 1, region: 0, closet: false, shop: false, holdsOpener: false };
+    const room: Room = { id, c: id % cols, r: Math.floor(id / cols), x: 0, y: 0, w: 1, h: 1, region: 0, closet: false, shop: false, vault: false, holdsOpener: false };
     if (rl.chance(0.14)) {
       room.x = room.c * SECT + 1 + rl.range(0, 5);
       room.y = room.r * SECT + 1 + rl.range(0, 5);
@@ -240,6 +244,23 @@ export function planLayout(run: RunConfig, depth: number, attempt: number, withL
     }
   }
 
+  // A vault, now and then: a small dead-end room, sealed, that no route needs. Chosen after the shop, which has first claim.
+  let vaultRoom = -1;
+  const rv = stream(run.seed, "vault", key);
+  if (withLocks && rv.chance(0.18)) {
+    const spots = rooms.filter((r) => adj[r.id]!.length === 1 && r.id !== start && r.id !== end && !path.includes(r.id) && !r.shop);
+    if (spots.length > 0) {
+      const room = rv.pick(spots);
+      room.vault = true;
+      room.closet = true;
+      room.w = rv.range(2, 3);
+      room.h = rv.range(2, 3);
+      room.x = room.c * SECT + 1 + rv.range(0, 6 - room.w);
+      room.y = room.r * SECT + 1 + rv.range(0, 6 - room.h);
+      vaultRoom = room.id;
+    }
+  }
+
   const pickOpenerRoom = (maxRegion: number): number => {
     const candidates = rooms.filter((r) => r.region <= maxRegion && !r.closet && !r.shop);
     const weights = candidates.map((r) => (r.region === maxRegion ? 3 : 1) * (onPath.has(r.id) ? 1 : 2));
@@ -264,10 +285,24 @@ export function planLayout(run: RunConfig, depth: number, attempt: number, withL
     edges[ei]!.lock = locks.length - 1;
   });
 
+  if (vaultRoom >= 0) {
+    const other = adj[vaultRoom]![0] as number;
+    const ei = edgeOf.get(`${Math.min(vaultRoom, other)},${Math.max(vaultRoom, other)}`) as number;
+    const secret = rv.chance(0.5);
+    let openerRoom = -1;
+    if (!secret) {
+      const holder = rv.pick(rooms.filter((r) => !r.closet && !r.shop));
+      holder.holdsOpener = true;
+      openerRoom = holder.id;
+    }
+    locks.push({ edge: ei, kind: secret ? "secret" : "switch", color: null, from: other, to: vaultRoom, openerRoom, onPath: false });
+    edges[ei]!.lock = locks.length - 1;
+  }
+
   // Closets: dead-end rooms off the path behind a coloured door, holding better loot.
   let boneCloset = false;
   if (withLocks) {
-    const leaves = rp.shuffle(rooms.filter((r) => adj[r.id]!.length === 1 && !onPath.has(r.id) && !r.holdsOpener && !r.shop).map((r) => r.id));
+    const leaves = rp.shuffle(rooms.filter((r) => adj[r.id]!.length === 1 && !onPath.has(r.id) && !r.holdsOpener && !r.shop && !r.closet).map((r) => r.id));
     const wantBone = boneFlag(run.seed, depth - 1);
     let wantClosets = CLOSETS[(run.mods["puzzles"] ?? 5) - 1] ?? 0;
     for (const leaf of leaves) {
@@ -310,7 +345,7 @@ export function planLayout(run: RunConfig, depth: number, attempt: number, withL
 
   for (const e of edges) if (e.lock === -1 && rl.chance(0.25)) e.plainDoor = true;
 
-  return { cols, rows, w: cols * SECT + 1, h: rows * SECT + 1, rooms, edges, start, end, path, locks, boneCloset, shopRoom };
+  return { cols, rows, w: cols * SECT + 1, h: rows * SECT + 1, rooms, edges, start, end, path, locks, boneCloset, shopRoom, vaultRoom };
 }
 
 function corridorCells(rng: Rng, a: Room, b: Room): Pos[] {
@@ -437,7 +472,14 @@ export function carve(run: RunConfig, depth: number, attempt: number, plan: Plan
     const vertical = plan.rooms[edge.a]!.c === plan.rooms[edge.b]!.c;
     const cell = (lock.to === edge.b ? edge.cells[edge.cells.length - 1] : edge.cells[0]) as Pos;
     used.add(at(cell.x, cell.y));
-    if (lock.kind === "key") {
+    if (lock.to === plan.vaultRoom && plan.vaultRoom >= 0) {
+      const outside = (lock.to === edge.b ? edge.cells[edge.cells.length - 2] : edge.cells[1]) ?? cell;
+      level.meta.vault = { cells: roomCells(plan.rooms[plan.vaultRoom]!).map((c) => at(c.x, c.y)), outside: { x: outside.x, y: outside.y }, taken: 0, timeIn: 0, guardCalled: false };
+    }
+    if (lock.kind === "secret") {
+      level.tiles[at(cell.x, cell.y)] = T.DOOR;
+      level.doors.push({ id: level.doors.length, x: cell.x, y: cell.y, vertical, color: null, locked: false, open: false, secret: true });
+    } else if (lock.kind === "key") {
       level.tiles[at(cell.x, cell.y)] = T.DOOR;
       level.doors.push({ id: level.doors.length, x: cell.x, y: cell.y, vertical, color: lock.color, locked: true, open: false });
       if (lock.openerRoom >= 0 && lock.color) {

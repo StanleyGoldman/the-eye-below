@@ -5,13 +5,14 @@
 //
 //   node scripts/audit.ts
 
+import { readFileSync, readdirSync } from "node:fs";
 import { ASSETS } from "../src/assets/table.ts";
 import { MODIFIERS } from "../src/core/modifiers.ts";
 import { requiredAssetIds } from "../src/game/data/assets.ts";
 import { EFFECTS, lookupEffect } from "../src/game/data/effects.ts";
 import { ITEM_TYPES } from "../src/game/data/items.ts";
-import { MONSTER_TYPES, regularMonsters } from "../src/game/data/monsters.ts";
-import { RUMORS } from "../src/game/data/rumors.ts";
+import { MONSTER_TYPES, regularMonsters, soundFamily } from "../src/game/data/monsters.ts";
+import { EPITAPHS, RUMORS } from "../src/game/data/rumors.ts";
 import { SHOPS } from "../src/game/shops.ts";
 import { ROLES } from "../src/game/data/roles.ts";
 import { SPELLS } from "../src/game/data/spells.ts";
@@ -50,6 +51,31 @@ atLeast("kinds of peaceful character", MONSTER_TYPES.filter((m) => m.peaceful).l
 atLeast("rumor lines", RUMORS.length, 40);
 atLeast("rumor lines marked true", RUMORS.filter((r) => r.truth).length, 10);
 atLeast("rumor lines marked false", RUMORS.filter((r) => !r.truth).length, 10);
+atLeast("epitaphs", EPITAPHS.length, 12);
+const gems = ofClass("gem");
+atLeast("gems", gems.filter((t) => t.cost >= 100).length, 6);
+atLeast("kinds of worthless glass", gems.filter((t) => t.cost < 10).length, 6);
+const colours = [...new Set(gems.map((t) => t.gemColor))];
+const paired = colours.filter((c) => gems.some((t) => t.gemColor === c && t.cost >= 100) && gems.some((t) => t.gemColor === c && t.cost < 10));
+check(paired.length === colours.length, `gem colours that have both a real stone and a glass look-alike: ${paired.length} of ${colours.length}`);
+
+// Every sound the game asks for has a file in the manifest, and every file is asked for.
+const sources = ["src/main.ts", ...readdirSync("src/game").filter((f) => f.endsWith(".ts")).map((f) => `src/game/${f}`)].map((f) => readFileSync(f, "utf8")).join("\n");
+const asked = new Set<string>();
+for (const m of sources.matchAll(/kind: "sound", id: ([^}]+)\}/g)) for (const q of (m[1] as string).replace(/===\s*"[a-z_]+"/g, "").matchAll(/"([a-z_]+)"/g)) asked.add(`sfx_${q[1]}`);
+for (const m of sources.matchAll(/audio\.effect\("(sfx_[a-z_]+)"\)/g)) asked.add(m[1] as string);
+for (const t of MONSTER_TYPES) asked.add(`sfx_growl_${soundFamily(t.id)}`);
+asked.delete("sfx_growl_");
+const manifest = JSON.parse(readFileSync("assets/manifest.json", "utf8")) as { assets: { id: string; type: string }[] };
+const effects = new Set(manifest.assets.filter((a) => a.type === "sfx").map((a) => a.id));
+const noFile = [...asked].filter((id) => !effects.has(id));
+const unplayed = [...effects].filter((id) => !asked.has(id));
+check(noFile.length === 0, `sounds the game plays that have a manifest entry: ${asked.size - noFile.length} of ${asked.size}${noFile.length ? ` (${noFile.join(", ")})` : ""}`);
+check(unplayed.length === 0, `sound effects in the manifest that nothing plays: ${unplayed.length}${unplayed.length ? ` (${unplayed.join(", ")})` : ""}`);
+const tracks = new Set(manifest.assets.filter((a) => a.type === "music").map((a) => a.id));
+const wanted = ["music_title", "music_calm", "music_boss", "music_death", "music_victory", "music_tier1", "music_tier2", "music_tier3", "music_tier4", "music_tier5"];
+const noTrack = wanted.filter((id) => !tracks.has(id) || (!sources.includes(`"${id}"`) && !id.startsWith("music_tier")));
+check(noTrack.length === 0 && tracks.size === wanted.length, `music tracks the game plays that have a manifest entry: ${wanted.length - noTrack.length} of ${wanted.length}`);
 
 const ops = (id: string, buc: Buc, confused: boolean): string => JSON.stringify(lookupEffect(id, { buc, has: (s) => confused && s === "confused", roll: () => 0.999 }).ops);
 let distinct = 0;

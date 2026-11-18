@@ -10,6 +10,7 @@ import { APPEARANCES, itemType, typeKnown } from "./data/items.ts";
 import { monsterType } from "./data/monsters.ts";
 import { roleDef } from "./data/roles.ts";
 import { NPC_GREETING, donate, donationFor, nextRumor, openShop } from "./shops.ts";
+import { answerChest, answerGuard, approachChest } from "./treasure.ts";
 import { spellCost, spellDef } from "./data/spells.ts";
 import { applyOps, applyRule, canRead, identifyItem, isUnidentified, spellFailure } from "./effects.ts";
 import {
@@ -130,6 +131,10 @@ export function move(state: GameState, rel: MoveRel): void {
   if (t === T.WALL) return blocked("You bump into the wall.");
   if (t === T.DOOR) {
     const door = doorAt(level, nx, ny);
+    if (door && door.secret) {
+      door.secret = false;
+      return blocked("You walk into the wall, and the wall gives a little. There is a hidden door here.");
+    }
     if (door && !door.open) {
       p.stepReady = state.time + stepMs;
       if (!tryDoor(state, nx, ny)) emit(state, { kind: "bump" });
@@ -153,6 +158,10 @@ export function move(state: GameState, rel: MoveRel): void {
       say(state, result === "filled" ? "The boulder drops into the pit and fills it." : "With great effort you move the boulder.", result === "filled" ? "good" : "info");
     } else if (f.kind === "statue") {
       return blocked(f.text ?? "A statue.");
+    } else if (f.kind === "chest") {
+      return blocked(`A ${f.label ?? "chest"}. Face it and use it to open it.`);
+    } else if (f.kind === "grave") {
+      return blocked("A grave. Face it and use it to read the stone.");
     } else {
       return blocked(f.kind === "fountain" ? "A fountain. Face it and use it to drink." : "An altar. Face it and use it to pray.");
     }
@@ -324,6 +333,11 @@ export function interact(state: GameState): void {
   const t = tileAt(level, ahead.x, ahead.y);
   if (t === T.DOOR) {
     const door = doorAt(level, ahead.x, ahead.y);
+    if (door && door.secret) {
+      door.secret = false;
+      say(state, "You run a hand over the wall and find a seam. A hidden door.", "good");
+      return;
+    }
     if (door && door.open) {
       if (itemsAt(level, ahead.x, ahead.y).length > 0) {
         say(state, "Something is in the doorway.");
@@ -364,6 +378,10 @@ export function interact(state: GameState): void {
       };
     } else if (f.kind === "statue") {
       say(state, f.text ?? "A statue.");
+    } else if (f.kind === "chest") {
+      approachChest(state, f);
+    } else if (f.kind === "grave") {
+      say(state, `The stone reads: ${f.text ?? "nothing you can make out."}`, "npc");
     } else {
       say(state, "A boulder. Walk into it to push it.");
     }
@@ -595,6 +613,11 @@ export function choose(state: GameState, optionId: string): void {
   const prompt = state.prompt;
   if (!prompt || prompt.kind !== "menu") return;
   state.prompt = null;
+  if (prompt.context === "guard" && optionId !== "lie") {
+    // Saying nothing is taken as having nothing good to say.
+    answerGuard(state, prompt.target, "truth");
+    return;
+  }
   if (optionId === "leave" || optionId === "no" || optionId === "cancel") return;
   switch (prompt.context) {
     case "attackPeaceful":
@@ -614,6 +637,12 @@ export function choose(state: GameState, optionId: string): void {
       break;
     case "talk":
       if (optionId === "more") talk(state, prompt.target);
+      break;
+    case "chest":
+      answerChest(state, prompt.target, optionId);
+      break;
+    case "guard":
+      answerGuard(state, prompt.target, optionId);
       break;
     case "dip": {
       const item = findItem(state, prompt.target);

@@ -1037,15 +1037,19 @@
   },
   "cropBox": [
    216,
-   194,
-   498,
-   637
+   48,
+   506,
+   784
+  ],
+  "cropSharedWith": [
+   "monster_dwarf",
+   "monster_dwarf_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   17,
+   28,
    0,
-   125,
+   103,
    160
   ],
   "targetSize": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 39,
-  "at": "2026-11-18T02:33:38.864Z"
+  "coloursUsed": 38,
+  "at": "2026-11-18T02:57:48.059Z"
  }
 }

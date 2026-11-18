@@ -6,7 +6,8 @@ import { scale3 } from "../core/modifiers.ts";
 import { doorAt, featureAt, floodDistances, gateAt, inBounds, isOpenCell, lineOfSight, tileAt } from "../dungeon/grid.ts";
 import { clearLine, monsterInSight, monsterShoots, monsterStrikes } from "./combat.ts";
 import { itemType } from "./data/items.ts";
-import { monsterType, monstersOfTier, tierOfDepth } from "./data/monsters.ts";
+import { monsterType, monstersOfTier, soundFamily, tierOfDepth } from "./data/monsters.ts";
+import { noteGold, tickVault } from "./treasure.ts";
 import { isLit, addStatus, addToPack, capital, cur, die, discover, emit, ensureLevel, has, hurt, isFree, itemsAt, mintMonster, monsterAt, nameOf, placeAt, rng, say, theMonster, tickStatuses, wearing, wornItem } from "./state.ts";
 import { DX, DY, T } from "./types.ts";
 import type { Dir, GameState, Level, Monster, Pos, Trap } from "./types.ts";
@@ -23,7 +24,7 @@ export function walkableNow(level: Level, x: number, y: number, levitating = fal
   if (t === T.WATER || t === T.PIT) return levitating;
   if (t === T.DOOR) {
     const d = doorAt(level, x, y);
-    if (d && !d.open && d.locked) return false;
+    if (d && !d.open && (d.locked || d.secret)) return false;
   }
   if (t === T.GATE) {
     const g = gateAt(level, x, y);
@@ -185,7 +186,10 @@ export function mapLevel(state: GameState, mode: "full" | "partial" | "reveal"):
       for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (inBounds(level, x + dx, y + dy)) level.seen[(y + dy) * level.w + x + dx] = 1;
     }
   }
-  if (mode === "reveal") for (const t of level.traps) t.found = true;
+  if (mode === "reveal") {
+    for (const t of level.traps) t.found = true;
+    for (const d of level.doors) if (d.secret) d.secret = false;
+  }
 }
 
 // ---- arriving in a cell ----------------------------------------------
@@ -310,7 +314,9 @@ export function arrive(state: GameState): void {
     const type = itemType(item.type);
     if (type.cls !== "gold" && !type.keyColor) continue;
     const label = nameOf(state, item);
+    const amount = type.cls === "gold" ? item.qty : 0;
     if (addToPack(state, item)) {
+      if (amount > 0) noteGold(state, amount);
       level.items = level.items.filter((fi) => fi.item !== item);
       say(state, type.cls === "gold" ? `You pick up ${label}.` : `You pick up ${label}. It will fit a lock of the same colour.`, "loot");
       emit(state, { kind: "sound", id: type.cls === "gold" ? "coins" : "key" });
@@ -494,8 +500,10 @@ function tickMonsters(state: GameState, ms: number): void {
     }
     if (!m.aware) {
       const noticeRange = playerHidden && !type.boss ? 2 : 7;
-      if (dist <= noticeRange && lineOfSight(level, m.x, m.y, p.x, p.y)) m.aware = true;
-      else continue;
+      if (dist <= noticeRange && lineOfSight(level, m.x, m.y, p.x, p.y)) {
+        m.aware = true;
+        emit(state, { kind: "sound", id: `growl_${soundFamily(m.type)}` });
+      } else continue;
     }
 
     if (m.windupUntil > 0) {
@@ -668,6 +676,18 @@ function tickRest(state: GameState, ms: number): void {
   }
 }
 
+/** Standing next to a hidden door, the player notices it before long. */
+function noticeSecrets(state: GameState, ms: number): void {
+  const level = cur(state);
+  const p = state.player;
+  for (const d of level.doors) {
+    if (!d.secret || Math.abs(d.x - p.x) + Math.abs(d.y - p.y) !== 1) continue;
+    if (has(state, "blind") || !rng(state).chance((0.35 * ms) / 1000)) continue;
+    d.secret = false;
+    say(state, "You notice a draught, and then a seam in the wall. A hidden door.", "good");
+  }
+}
+
 function simTick(state: GameState, ms: number): void {
   state.time += ms;
   tickStatuses(state, ms);
@@ -675,6 +695,8 @@ function simTick(state: GameState, ms: number): void {
   if (state.dead) return;
   tickRegen(state, ms);
   tickRest(state, ms);
+  tickVault(state, ms);
+  noticeSecrets(state, ms);
   tickMonsters(state, ms);
   if (!state.dead) updateSeen(state);
 }

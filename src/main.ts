@@ -4,6 +4,7 @@
 
 import fontUrl from "@fontsource/vt323/files/vt323-latin-400-normal.woff2";
 import { AssetStore } from "./assets/store.ts";
+import { AudioEngine } from "./audio/audio.ts";
 import { decodeRunCode, randomSeed } from "./core/modifiers.ts";
 import type { Mods } from "./core/modifiers.ts";
 import { attack, cancelPrompt, cast, choose, interact, itemActions, move, pickItem, pickUp, quickThrow, resetPuzzle, toggleRest, turn, useItem } from "./game/actions.ts";
@@ -13,10 +14,11 @@ import type { BotMode } from "./game/bot.ts";
 import { clearSave, hasSave, loadGame, saveGame } from "./game/save.ts";
 import { buy, closeShop, sell } from "./game/shops.ts";
 import type { StorageLike } from "./game/save.ts";
-import { monsterType } from "./game/data/monsters.ts";
+import { monsterType, tierOfDepth } from "./game/data/monsters.ts";
 import { newGame, placeAt } from "./game/state.ts";
 import { DX, DY } from "./game/types.ts";
-import type { Dir, GameState, RoleId } from "./game/types.ts";
+import { roleDef } from "./game/data/roles.ts";
+import type { Dir, Fallen, GameState, RoleId } from "./game/types.ts";
 import { update, updateSeen, walkableNow } from "./game/world.ts";
 import { installTooltips } from "./hud/dom.ts";
 import { Hud, ITEM_ACTION_KEYS } from "./hud/hud.ts";
@@ -28,6 +30,7 @@ import type { ActionId } from "./input/keys.ts";
 import { ViewRenderer } from "./render/view.ts";
 import type { ViewFx } from "./render/view.ts";
 
+const GRAVE_KEY = "eye-below.grave.v1";
 const WIDTH = 960;
 const HEIGHT = 540;
 
@@ -46,6 +49,7 @@ class App {
   private readonly storage = safeStorage();
   private readonly store: AssetStore;
   private readonly keys = new KeyMap(this.storage);
+  private readonly audio: AudioEngine;
   private readonly hud: Hud;
   private readonly screens: Screens;
   private readonly renderer: ViewRenderer;
@@ -67,6 +71,7 @@ class App {
   constructor(store: AssetStore) {
     this.store = store;
     this.debug = this.params.has("debug");
+    this.audio = new AudioEngine(this.storage, !this.params.has("noaudio"));
     const style = document.createElement("style");
     style.textContent = `@font-face{font-family:"VT323";src:url(${fontUrl}) format("woff2");font-display:block;}\n${css}\n.btn{background-image:url(${this.store.url("ui_button")});background-size:100% 100%;}`;
     document.head.appendChild(style);
@@ -95,6 +100,14 @@ class App {
       this.store,
       this.keys,
       {
+        sound: {
+          music: () => this.audio.settings.music,
+          effects: () => this.audio.settings.effects,
+          muted: () => this.audio.settings.muted,
+          setMusic: (v) => this.audio.setVolume("music", v),
+          setEffects: (v) => this.audio.setVolume("effects", v),
+          toggleMute: () => void this.audio.toggleMute(),
+        },
         continueGame: () => this.continueGame(),
         start: (o) => this.start(o),
         resume: () => this.resume(),
@@ -107,6 +120,9 @@ class App {
     installTooltips(this.root, () => this.scale);
 
     window.addEventListener("resize", () => this.fit());
+    // Sound starts with the first input of any kind, never before.
+    window.addEventListener("keydown", () => this.audio.unlock(), true);
+    window.addEventListener("mousedown", () => this.audio.unlock(), true);
     window.addEventListener("keydown", (e) => this.onKeyDown(e));
     window.addEventListener("keyup", (e) => this.onKeyUp(e));
     window.addEventListener("blur", () => this.held.clear());
@@ -148,7 +164,7 @@ class App {
 
   private start(options: StartOptions, startDepth = 1): void {
     this.last = { ...options, overrides: { ...options.overrides } };
-    this.state = newGame({ seed: options.seed, overrides: options.overrides, role: options.role, name: options.name, god: options.god, startDepth });
+    this.state = newGame({ seed: options.seed, overrides: options.overrides, role: options.role, name: options.name, god: options.god, startDepth, lastDead: this.loadFallen() });
     this.enterGame();
     this.save();
   }
@@ -195,6 +211,28 @@ class App {
     this.screens.preset({ seed: randomSeed(Date.now()), overrides: {}, role, name: prev?.name ?? "", god: prev?.god ?? false });
     this.state = null;
     this.screens.show("newgame");
+  }
+
+  /** Keep the dead character's name, so the next run can find the grave. */
+  private rememberFallen(state: GameState): void {
+    if (!this.storage) return;
+    try {
+      const fallen: Fallen = { name: state.player.name, role: roleDef(state.player.role).name, cause: state.cause || "died of unknown causes", depth: state.depth };
+      this.storage.setItem(GRAVE_KEY, JSON.stringify(fallen));
+    } catch {
+      // No storage, no grave.
+    }
+  }
+
+  private loadFallen(): Fallen | null {
+    if (!this.storage) return null;
+    try {
+      const data = JSON.parse(this.storage.getItem(GRAVE_KEY) ?? "null") as Partial<Fallen> | null;
+      if (!data || typeof data.name !== "string" || typeof data.role !== "string" || typeof data.cause !== "string" || typeof data.depth !== "number") return null;
+      return { name: data.name.slice(0, 16), role: data.role.slice(0, 16), cause: data.cause.slice(0, 80), depth: data.depth };
+    } catch {
+      return null;
+    }
   }
 
   private save(): void {
@@ -257,6 +295,11 @@ class App {
     if (state.dead || state.won) return;
     if (action === "map") {
       this.hud.setMapOpen(!this.hud.isMapOpen());
+      return;
+    }
+    if (action === "mute") {
+      const muted = this.audio.toggleMute();
+      this.hud.float(muted ? "muted" : "sound on", "miss");
       return;
     }
     if (state.prompt) return;
@@ -429,8 +472,15 @@ class App {
   private drainEvents(state: GameState, now: number): void {
     for (const ev of state.events) {
       switch (ev.kind) {
+        case "sound":
+          this.audio.effect(`sfx_${ev.id}`);
+          break;
+        case "step":
+          this.audio.effect("sfx_step");
+          break;
         case "locked":
           this.fx.shakeUntil = now + 220;
+          this.audio.effect("sfx_locked");
           break;
         case "hit":
           this.hud.float(`-${ev.amount}`, "hit");
@@ -443,6 +493,7 @@ class App {
           break;
         case "bump":
           this.fx.shakeUntil = Math.max(this.fx.shakeUntil, now + 90);
+          this.audio.effect("sfx_bump");
           break;
         case "ray":
           this.fx.rays.push({ cells: ev.cells, color: ev.color, until: now + 280 });
@@ -454,9 +505,11 @@ class App {
         case "levelup":
           this.fx.flashColor = "#e0b040";
           this.fx.flashUntil = now + 320;
+          this.audio.effect("sfx_levelup");
           break;
         case "descend":
           this.fx.fadeUntil = now + 320;
+          this.audio.effect("sfx_stairs");
           this.save();
           break;
         default:
@@ -472,6 +525,7 @@ class App {
     this.lastFrame = now;
     this.fx.now = now;
     const state = this.state;
+    this.audio.setMusic(this.musicFor(state));
     try {
       if (state) {
         const running = this.screens.current() === null && !state.dead && !state.won;
@@ -490,6 +544,7 @@ class App {
           if (this.endAt === 0) {
             this.endAt = now + (this.auto || this.timeScale > 1 ? 50 : 1100);
             clearSave(this.storage);
+            if (state.dead) this.rememberFallen(state);
             this.closePanels();
             this.hud.setMapOpen(false);
           } else if (now >= this.endAt) {
@@ -502,6 +557,20 @@ class App {
       console.error(err);
     }
     requestAnimationFrame((t) => this.frame(t));
+  }
+
+  /** Which track fits what is on screen. */
+  private musicFor(state: GameState | null): string {
+    const screen = this.screens.current();
+    if (screen === "dead") return "music_death";
+    if (screen === "won") return "music_victory";
+    if (!state || screen === "title" || screen === "newgame") return "music_title";
+    if (state.dead || state.won) return "";
+    const level = state.levels[state.depth];
+    const prompt = state.prompt;
+    if (prompt && (prompt.kind === "shop" || (prompt.kind === "menu" && prompt.context === "priest"))) return "music_calm";
+    if (level && level.monsters.some((m) => m.hp > 0 && !m.peaceful && monsterType(m.type).boss)) return "music_boss";
+    return `music_tier${tierOfDepth(state.depth)}`;
   }
 
   // ---- debugging and the scripted checks ------------------------------
@@ -537,6 +606,13 @@ class App {
           inventory: s?.player.inventory.length ?? 0,
           prompt: s?.prompt ? (s.prompt.kind === "menu" ? s.prompt.context : s.prompt.kind) : "",
           gold: s?.player.gold ?? 0,
+          chestKeys: s ? s.player.inventory.filter((it) => it.type === "chest_key").length : 0,
+          gems: s ? s.player.inventory.filter((it) => it.type.startsWith("gem_") || it.type.startsWith("glass_")).length : 0,
+          chestsOpened: level ? level.features.filter((f) => f.kind === "chest" && f.opened).length : 0,
+          chestsLocked: level ? level.features.filter((f) => f.kind === "chest" && f.locked && !f.opened).length : 0,
+          inVault: !!(s && level?.meta.vault && level.meta.vault.cells.includes(s.player.y * level.w + s.player.x)),
+          guards: level ? level.monsters.filter((m) => m.npc?.kind === "guard").length : 0,
+          name: s?.player.name ?? "",
           protection: s?.player.protection ?? 0,
           shop: level?.meta.shop ?? "",
           seed: s?.run.seed ?? "",
@@ -556,9 +632,31 @@ class App {
       },
       state: (): GameState | null => this.state,
       assets: (): { expected: number; loaded: number; failed: string[] } => this.store.report(),
+      audio: (): unknown => this.audio.report(),
       /** Stand the player a few cells from the level's main attraction, facing it. For screenshots. */
       gold: (amount: number): void => {
         if (this.state) this.state.player.gold = amount;
+      },
+      /** Put the player on a cell: one holding an item of a type or class ("chest_key", "gem"), or inside the vault ("vault"). */
+      goto: (what: string): boolean => {
+        const s = this.state;
+        const level = s ? s.levels[s.depth] : undefined;
+        if (!s || !level) return false;
+        let cell = -1;
+        if (what === "vault") {
+          const vault = level.meta.vault;
+          if (!vault) return false;
+          for (const d of level.doors) if (d.secret) d.secret = false;
+          cell = vault.cells.find((c) => !level.monsters.some((m) => m.y * level.w + m.x === c)) ?? -1;
+        } else {
+          const fi = level.items.find((x) => x.item.type === what || (what === "gem" && (x.item.type.startsWith("gem_") || x.item.type.startsWith("glass_"))));
+          if (fi && !level.monsters.some((m) => m.x === fi.x && m.y === fi.y)) cell = fi.y * level.w + fi.x;
+        }
+        if (cell < 0) return false;
+        placeAt(s, cell % level.w, Math.floor(cell / level.w));
+        s.player.pdir = s.player.dir;
+        updateSeen(s);
+        return true;
       },
       vantage: (only?: number, type?: string): boolean => {
         const s = this.state;
@@ -567,6 +665,12 @@ class App {
         const targets: { x: number; y: number }[] = [];
         if (type) {
           for (const m of level.monsters) if (m.type === type || m.npc?.kind === type) targets.push(m);
+          for (const f of level.features) {
+            if (type === "chest_locked" && f.kind === "chest" && f.locked && !f.opened) targets.push(f);
+            if (type === "chest_unlocked" && f.kind === "chest" && !f.locked && !f.opened) targets.push(f);
+            if (type === "grave" && f.kind === "grave") targets.push(f);
+            if (type === "grave_fallen" && f.kind === "grave" && (f.text ?? "").startsWith("Here lies")) targets.push(f);
+          }
           if (targets.length === 0) return false;
         }
         if (!type) {

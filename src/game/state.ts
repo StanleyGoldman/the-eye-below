@@ -13,10 +13,10 @@ import { monsterType } from "./data/monsters.ts";
 import { MAX_LEVEL, XP_FOR_LEVEL, roleDef } from "./data/roles.ts";
 import { makeItem, makeMonster, rollItem } from "./factory.ts";
 import type { UidSource } from "./factory.ts";
-import { DX, DY, PERMANENT, STATUS_IDS } from "./types.ts";
-import type { Buc, Dir, EquipSlot, GameEvent, GameState, Item, ItemClass, Level, Monster, MsgKind, Player, Pos, RoleId, StatusId } from "./types.ts";
+import { DX, DY, PERMANENT, STATUS_IDS, T } from "./types.ts";
+import type { Buc, Dir, EquipSlot, Fallen, GameEvent, GameState, Item, ItemClass, Level, Monster, MsgKind, Player, Pos, RoleId, StatusId } from "./types.ts";
 
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 const LOG_LIMIT = 200;
 const INVENTORY_LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -63,8 +63,41 @@ export function ensureLevel(state: GameState, depth: number): Level {
   if (!level) {
     level = generateLevel(state.run, depth);
     state.levels[depth] = level;
+    raiseGrave(state, level);
   }
   return level;
+}
+
+/**
+ * The last dead character's grave, on the level where they fell. Added
+ * when the level is first entered, not by the generator, so the same
+ * seed still gives the same level to everyone.
+ */
+function raiseGrave(state: GameState, level: Level): void {
+  const fallen = state.lastDead;
+  if (!fallen || state.graveRaised || fallen.depth !== level.depth) return;
+  const tile = (x: number, y: number): number => level.tiles[y * level.w + x] ?? T.WALL;
+  // Ground a walker can cross with nothing standing on it.
+  const clear = (x: number, y: number): boolean => (tile(x, y) === T.FLOOR || tile(x, y) === T.STAIRS_UP || tile(x, y) === T.STAIRS_DOWN) && !featureAt(level, x, y);
+  const fits = (i: number): boolean => {
+    const x = i % level.w;
+    const y = (i - x) / level.w;
+    if (tile(x, y) !== T.FLOOR || featureAt(level, x, y)) return false;
+    if (Math.abs(x - level.up.x) + Math.abs(y - level.up.y) < 2) return false;
+    if (level.monsters.some((m) => m.x === x && m.y === y) || level.items.some((fi) => fi.x === x && fi.y === y)) return false;
+    if (level.traps.some((t) => t.x === x && t.y === y) || level.switches.some((sw) => sw.x === x && sw.y === y)) return false;
+    // All eight neighbours clear, so the grave can never stand in a doorway or split a room.
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (!clear(x + dx, y + dy)) return false;
+    return true;
+  };
+  // Near the way in if there is room there; otherwise anywhere it fits.
+  let spots = level.startArea.filter(fits);
+  if (spots.length === 0) spots = level.tiles.map((_, i) => i).filter(fits);
+  if (spots.length === 0) return;
+  const i = spots[stream(state.run.seed, "fallen", level.depth).int(spots.length)] as number;
+  const x = i % level.w;
+  level.features.push({ kind: "grave", x, y: (i - x) / level.w, text: `Here lies ${fallen.name} the ${fallen.role}, ${fallen.cause}. The mound is fresh.` });
+  state.graveRaised = true;
 }
 
 export function monsterAt(level: Level, x: number, y: number): Monster | undefined {
@@ -96,7 +129,7 @@ export function nameOf(state: GameState, item: Item, withArticle = true): string
 /** Learn what an item type is. Returns true if this was news. */
 export function discover(state: GameState, typeId: string): boolean {
   const type = itemType(typeId);
-  if (!isMagicClass(type.cls) || state.discovered[typeId]) return false;
+  if ((!isMagicClass(type.cls) && type.cls !== "gem") || state.discovered[typeId]) return false;
   state.discovered[typeId] = true;
   return true;
 }
@@ -331,7 +364,7 @@ export function addToPack(state: GameState, item: Item): Item | null {
   return item;
 }
 
-const CLASS_RANK: Record<ItemClass, number> = { weapon: 0, armor: 1, potion: 2, scroll: 3, spellbook: 4, wand: 5, ring: 6, amulet: 7, tool: 8, gold: 9 };
+const CLASS_RANK: Record<ItemClass, number> = { weapon: 0, armor: 1, potion: 2, scroll: 3, spellbook: 4, wand: 5, ring: 6, amulet: 7, tool: 8, gem: 9, gold: 10 };
 
 function sortPack(p: Player): void {
   p.inventory.sort((a, b) => {
@@ -513,6 +546,15 @@ export function score(state: GameState): { total: number; lines: ScoreLine[] } {
     { label: `Gold carried (${p.gold})`, points: p.gold },
     { label: `Deepest level reached (${p.deepest})`, points: 50 * (p.deepest - 1) + 1000 * Math.max(0, p.deepest - 20) },
   ];
+  let gems = 0;
+  let gemValue = 0;
+  for (const it of p.inventory) {
+    const type = itemType(it.type);
+    if (type.cls !== "gem") continue;
+    gems += it.qty;
+    gemValue += type.cost * it.qty;
+  }
+  if (gems > 0) lines.push({ label: `Gems and glass carried (${gems}), at their true worth`, points: gemValue });
   if (state.won) lines.push({ label: "The Unblinking Eye, recovered", points: 25000 });
   if (state.peacefulsKilled > 0) lines.push({ label: `Peaceful creatures killed (${state.peacefulsKilled})`, points: -500 * state.peacefulsKilled });
   let total = 0;
@@ -530,6 +572,8 @@ export interface NewGameOptions {
   god?: boolean;
   /** Start on this level instead of level 1 (debugging and the scripted checks). */
   startDepth?: number;
+  /** The last character who died, if one was saved. */
+  lastDead?: Fallen | null;
 }
 
 function shuffledAppearances(seed: string): Record<string, number> {
@@ -631,6 +675,8 @@ export function newGame(options: NewGameOptions): GameState {
     peacefulsKilled: 0,
     oracleTold: [],
     shopkeepersAngry: false,
+    lastDead: options.lastDead ?? null,
+    graveRaised: false,
     debug: { god: options.god === true },
     stats: { steps: 0, potions: 0, scrolls: 0, spellsCast: 0, prayers: 0, doors: 0 },
   };

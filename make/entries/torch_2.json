@@ -1,0 +1,30 @@
+{
+ "id": "torch_2",
+ "type": "frame",
+ "kind": "overlay",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same wall torch with the flame flickering, leaning the other way and a little taller.",
+  "fragments": [
+   "edit"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "center",
+ "box": [
+  22,
+  12,
+  20,
+  40
+ ],
+ "reference": "torch_1",
+ "resolvedPrompt": "Same wall torch with the flame flickering, leaning the other way and a little taller., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

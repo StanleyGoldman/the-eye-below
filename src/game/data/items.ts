@@ -37,6 +37,8 @@ export interface ItemType {
   /** Spellbooks: the spell taught and its level. */
   spell?: string;
   level?: number;
+  /** Gems and glass: the colour, which is all an unidentified one shows. */
+  gemColor?: string;
   artifact?: boolean;
   keyColor?: KeyColor;
   /** Fixed tint for the icon, where the type has one. */
@@ -53,10 +55,11 @@ export const CLASS_SYMBOL: Record<ItemClass, string> = {
   ring: "=",
   amulet: '"',
   tool: "(",
+  gem: "*",
   gold: "$",
 };
 
-export const CLASS_ORDER: readonly ItemClass[] = ["weapon", "armor", "potion", "scroll", "spellbook", "wand", "ring", "amulet", "tool", "gold"];
+export const CLASS_ORDER: readonly ItemClass[] = ["weapon", "armor", "potion", "scroll", "spellbook", "wand", "ring", "amulet", "tool", "gem", "gold"];
 
 export const CLASS_NAME: Record<ItemClass, string> = {
   weapon: "Weapons",
@@ -67,7 +70,8 @@ export const CLASS_NAME: Record<ItemClass, string> = {
   wand: "Wands",
   ring: "Rings",
   amulet: "Amulets",
-  tool: "Keys",
+  tool: "Keys and tools",
+  gem: "Gems",
   gold: "Gold",
 };
 
@@ -82,6 +86,10 @@ export const CLASS_WEIGHT: Partial<Record<ItemClass, number>> = {
   ring: 4,
   amulet: 2,
 };
+
+function gem(id: string, name: string, color: string, tint: string, cost: number, freq: number, minDepth: number): ItemType {
+  return { id, cls: "gem", name, icon: "item_gem", freq, minDepth, cost, stack: true, gemColor: color, tint };
+}
 
 function w(id: string, name: string, dice: [number, number], cooldown: number, cost: number, freq: number, minDepth: number, extra: Partial<WeaponData> = {}, more: Partial<ItemType> = {}): ItemType {
   return {
@@ -212,7 +220,22 @@ export const ITEM_TYPES: readonly ItemType[] = [
   magic("amulet", "amulet_strangulation", "amulet of strangulation", 150, 30),
   { id: "amulet_eye", cls: "amulet", name: "Unblinking Eye", icon: "item_eye", freq: 0, minDepth: 25, cost: 30000, stack: false, artifact: true },
 
+  // ---- gems, and the glass that passes for them ----
+  gem("gem_diamond", "diamond", "white", "#f4f4f4", 4000, 3, 12),
+  gem("gem_ruby", "ruby", "red", "#c03a2a", 3500, 4, 9),
+  gem("gem_sapphire", "sapphire", "blue", "#3a6ac0", 3000, 4, 7),
+  gem("gem_emerald", "emerald", "green", "#4a9a4a", 2500, 5, 5),
+  gem("gem_citrine", "citrine", "yellow", "#e0b040", 1500, 6, 3),
+  gem("gem_amethyst", "amethyst", "violet", "#6a4a8a", 600, 8, 1),
+  gem("glass_white", "worthless piece of white glass", "white", "#f4f4f4", 2, 8, 1),
+  gem("glass_red", "worthless piece of red glass", "red", "#c03a2a", 2, 8, 1),
+  gem("glass_blue", "worthless piece of blue glass", "blue", "#3a6ac0", 2, 8, 1),
+  gem("glass_green", "worthless piece of green glass", "green", "#4a9a4a", 2, 8, 1),
+  gem("glass_yellow", "worthless piece of yellow glass", "yellow", "#e0b040", 2, 8, 1),
+  gem("glass_violet", "worthless piece of violet glass", "violet", "#6a4a8a", 2, 8, 1),
+
   // ---- tools ----
+  { id: "chest_key", cls: "tool", name: "chest key", icon: "item_chest_key", freq: 0, minDepth: 1, cost: 20, stack: true },
   { id: "lamp", cls: "tool", name: "oil lamp", icon: "item_lamp", freq: 0, minDepth: 1, cost: 60, stack: false },
 
   // ---- keys and gold ----
@@ -334,12 +357,15 @@ export function appearanceOf(k: Knowledge, type: ItemType): Appearance | null {
 }
 
 export function typeKnown(k: Knowledge, type: ItemType): boolean {
+  // A gem is only a colour until something identifies it: real stones and glass look alike.
+  if (type.cls === "gem") return k.discovered[type.id] === true;
   return !isMagicClass(type.cls) || type.artifact === true || k.discovered[type.id] === true;
 }
 
 function plural(name: string): string {
   if (name.startsWith("potion ")) return `potions ${name.slice(7)}`;
   if (name.startsWith("scroll ")) return `scrolls ${name.slice(7)}`;
+  if (name.startsWith("worthless piece ")) return `worthless pieces ${name.slice(16)}`;
   if (name.endsWith("s") || name.endsWith("x")) return `${name}es`;
   if (name.endsWith("key")) return `${name}s`;
   return `${name}s`;
@@ -356,6 +382,8 @@ export function baseName(k: Knowledge, item: Item): string {
   let core: string;
   if (typeKnown(k, type)) {
     core = type.name;
+  } else if (type.cls === "gem") {
+    core = item.qty > 1 ? `${type.gemColor} gems` : `${type.gemColor} gem`;
   } else {
     const look = appearanceOf(k, type);
     const text = look ? look.text : "strange";
@@ -364,7 +392,7 @@ export function baseName(k: Knowledge, item: Item): string {
     else if (type.cls === "spellbook") core = `${text} spellbook`;
     else core = `${text} ${type.cls}`;
   }
-  if (item.qty > 1) core = typeKnown(k, type) ? plural(core) : core.replace(/^scroll /, "scrolls ").replace(/ potion$/, " potions");
+  if (item.qty > 1 && !(type.cls === "gem" && !typeKnown(k, type))) core = typeKnown(k, type) ? plural(core) : core.replace(/^scroll /, "scrolls ").replace(/ potion$/, " potions");
   const showEnch = item.known && (type.cls === "weapon" || type.cls === "armor" || type.id === "ring_protection");
   if (showEnch) core = `${item.ench >= 0 ? "+" : ""}${item.ench} ${core}`;
   if (item.proof && item.known) core = `rustproof ${core}`;

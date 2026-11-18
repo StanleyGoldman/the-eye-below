@@ -1,0 +1,19 @@
+{
+ "id": "sfx_switch",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a stone lever clunking into place",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "a stone lever clunking into place, one short clean sound effect, close and dry, no music, no voice-over"
+}

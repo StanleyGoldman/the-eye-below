@@ -1036,10 +1036,14 @@
    "pixelsRemoved": 5536
   },
   "cropBox": [
-   218,
+   217,
    64,
-   567,
+   568,
    907
+  ],
+  "cropSharedWith": [
+   "monster_jackal",
+   "monster_jackal_attack"
   ],
   "fit": "bottom",
   "placedAt": [
@@ -1056,6 +1060,6 @@
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
   "coloursUsed": 40,
-  "at": "2026-11-18T02:33:37.761Z"
+  "at": "2026-11-18T02:57:46.546Z"
  }
 }

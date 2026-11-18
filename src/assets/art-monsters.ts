@@ -66,6 +66,7 @@ export const MONSTER_LOOKS: Record<string, Look> = {
   hermit: { plan: "humanoid", height: 48, width: 18, skin: "#d8c0a0", cloth: "#7a5a3a", dark: "#4a3420", eye: "#101010", weapon: "staff", hat: "hood", robe: true, calm: true, beard: "#d8d2bd", hunched: true },
   adventurer: { plan: "humanoid", height: 52, width: 20, skin: "#d0a080", cloth: "#6a7a5a", dark: "#3a4430", eye: "#101010", weapon: "none", hat: "none", calm: true },
   gnome: { plan: "humanoid", height: 30, width: 16, skin: "#e0b090", cloth: "#3a6ac0", dark: "#1a2a60", eye: "#101010", weapon: "none", hat: "hat", calm: true, beard: "#f4f4f4" },
+  guard: { plan: "humanoid", height: 52, width: 22, skin: "#d0a080", cloth: "#5a4a3a", dark: "#2a2018", eye: "#101010", weapon: "none", hat: "helm", calm: true },
   oracle: { plan: "humanoid", height: 54, width: 18, skin: "#e0c8b0", cloth: "#c8d8e8", dark: "#7a8aa0", eye: "#3a6ac0", weapon: "none", hat: "hood", robe: true, calm: true },
 };
 

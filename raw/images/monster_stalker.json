@@ -1036,16 +1036,20 @@
    "pixelsRemoved": 1811
   },
   "cropBox": [
-   337,
+   258,
    39,
-   340,
+   419,
    945
+  ],
+  "cropSharedWith": [
+   "monster_stalker",
+   "monster_stalker_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   51,
+   44,
    0,
-   58,
+   71,
    160
   ],
   "targetSize": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 31,
-  "at": "2026-11-18T02:33:40.155Z"
+  "coloursUsed": 30,
+  "at": "2026-11-18T02:57:49.966Z"
  }
 }

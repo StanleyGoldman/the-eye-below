@@ -1,0 +1,26 @@
+{
+ "id": "gate_open",
+ "type": "frame",
+ "kind": "overlay",
+ "workflow": "qwen_edit",
+ "prompt": {
+  "subject": "Same portcullis raised almost out of sight: only its lowest row of pointed tips still hangs down from the top of the frame, everything below an empty opening.",
+  "fragments": [
+   "gap",
+   "edit"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "stretch",
+ "key": "all",
+ "reference": "gate",
+ "resolvedPrompt": "Same portcullis raised almost out of sight: only its lowest row of pointed tips still hangs down from the top of the frame, everything below an empty opening., Fill every opening with the same flat colour as the background., Same size and same place in the frame. No motion lines, no speed lines, no added effects, no text. Keep the flat background exactly as it is."
+}

@@ -216,6 +216,87 @@ SESSIONS[2] = [
   { name: "tag session-2 at HEAD", run: tagAtHead(2) },
 ];
 
+function sweepWithVaults(): Result {
+  const r = sh("make", ["-s", "sweep"]);
+  const vaults = Number(/sweep: (\d+) vaults/.exec(r.out)?.[1] ?? 0);
+  const plan = /sweep: \d+ seeds[^\n]*/.exec(r.out)?.[0].replace("sweep: ", "") ?? "";
+  const ok = r.code === 0 && /^unsolvable: 0$/m.test(r.out) && vaults > 0 && plan.includes("17 modifiers");
+  return { ok, note: `${plan}; ${vaults} vaults; ${lastLine(r.out)}` };
+}
+
+function animationSheets(): Result {
+  const r = sh("make", ["-s", "sheet"]);
+  const files = existsSync("out/sheets") ? readdirSync("out/sheets").filter((f) => f.endsWith(".png")) : [];
+  const manifest = JSON.parse(readFileSync("assets/manifest.json", "utf8")) as { assets: { id: string; workflow: string; reference?: string }[] };
+  const bases = [...new Set(manifest.assets.filter((a) => a.workflow === "qwen_edit" && a.reference).map((a) => a.reference as string))];
+  const lacking = bases.filter((b) => !files.includes(`animation-${b}.png`));
+  const ok = r.code === 0 && lacking.length === 0 && files.length > bases.length;
+  return { ok, note: ok ? `${files.length} contact sheets in out/sheets/, one for each of the ${bases.length} animations` : `exit ${r.code}; animations without a sheet: ${lacking.slice(0, 5).join(", ") || "none"}` };
+}
+
+function assetReview(): Result {
+  if (!existsSync("docs/asset-review.md")) return { ok: false, note: "docs/asset-review.md is missing" };
+  const manifest = JSON.parse(readFileSync("assets/manifest.json", "utf8")) as { assets: { id: string }[] };
+  const rows = new Map<string, string>();
+  for (const line of readFileSync("docs/asset-review.md", "utf8").split("\n")) {
+    const m = /^\| `([a-z0-9_]+)` \|.*\| (kept attempt \d+|fallback) \|/.exec(line);
+    if (m) rows.set(m[1] as string, m[2] as string);
+  }
+  const lacking = manifest.assets.filter((a) => !rows.has(a.id)).map((a) => a.id);
+  // The verdicts must be the ones the records hold, not a stale copy.
+  const stale: string[] = [];
+  for (const a of manifest.assets as { id: string; type: string }[]) {
+    const file = `raw/${a.type === "image" ? "images" : a.type === "frame" ? "frames" : a.type}/${a.id}.json`;
+    if (!existsSync(file)) continue;
+    const record = JSON.parse(readFileSync(file, "utf8")) as { kept: number; fallback: boolean };
+    const verdict = record.fallback ? "fallback" : `kept attempt ${record.kept}`;
+    if (rows.has(a.id) && rows.get(a.id) !== verdict) stale.push(a.id);
+  }
+  const ok = lacking.length === 0 && stale.length === 0 && rows.size === manifest.assets.length;
+  return { ok, note: ok ? `${rows.size} rows with a verdict for ${manifest.assets.length} manifest entries, all matching the records` : `${rows.size} rows for ${manifest.assets.length} entries; without a row: ${lacking.slice(0, 5).join(", ") || "none"}; out of date: ${stale.slice(0, 5).join(", ") || "none"}` };
+}
+
+function finalReport(): Result {
+  if (!existsSync("docs/final-report.md")) return { ok: false, note: "docs/final-report.md is missing" };
+  const text = readFileSync("docs/final-report.md", "utf8");
+  const parts = ["Time per job", "Assets generated", "Assets that fell back", "Audio files unverified by ear", "Make targets"];
+  const lacking = parts.filter((p) => !new RegExp(`^## .*${p}`, "m").test(text));
+  const manifest = JSON.parse(readFileSync("assets/manifest.json", "utf8")) as { assets: { id: string; type: string }[] };
+  const audio = manifest.assets.filter((a) => a.type === "music" || a.type === "sfx");
+  const unlisted = audio.filter((a) => !text.includes(`${a.id}.mp3`)).map((a) => a.id);
+  const ok = lacking.length === 0 && unlisted.length === 0;
+  return { ok, note: ok ? `all five parts present; all ${audio.length} audio files listed as unverified by ear` : `missing parts: ${lacking.join(", ") || "none"}; audio files not listed: ${unlisted.slice(0, 5).join(", ") || "none"}` };
+}
+
+SESSIONS[3] = [
+  { name: "make check exits 0", run: command("make", ["-s", "check"]) },
+  { name: "at least 95 tests pass, 0 fail", run: testCount(95) },
+  { name: "make sweep prints unsolvable: 0, 17 modifiers, vaults present", run: sweepWithVaults },
+  { name: "determinism across two processes", run: command("node", ["scripts/determinism.ts"], (out) => out.trim().split("\n").slice(0, 2).join("; ").replace(/determinism: /g, "")) },
+  { name: "scripted run reaches the victory screen", run: play("victory") },
+  { name: "scripted run reaches the death screen and restarts", run: play("death") },
+  { name: "five special-level screenshots, no console errors", run: specials },
+  { name: "economy scenario: buy, sell, paused clock, rumor, priest", run: play("economy") },
+  { name: "treasure scenario: chest by key, chest by force, gem, vault guard, grave", run: play("treasure") },
+  { name: "audio scenario: silent until input, tier and boss tracks, mute, saved volumes, runs without audio", run: play("audio") },
+  { name: "manifest valid: at least 95 image, 28 frame, 10 music, 25 effect entries", run: auditAssets("--manifest") },
+  { name: "files, raws, and records for images, frames, music, effects", run: auditAssets("--files", "image", "frame", "music", "sfx") },
+  { name: "sizes, palette, alpha, frames of an animation share a size", run: auditAssets("--pixels") },
+  { name: "audio lengths, levels, trim and loudness records", run: auditAssets("--audio") },
+  { name: "generation records complete, every job in the log", run: auditAssets("--records") },
+  { name: "make -q assets exits 0; nothing left to generate", run: assetsUpToDate },
+  { name: "contact sheets built, one per animation", run: animationSheets },
+  { name: "asset review lists every manifest id with a verdict", run: assetReview },
+  { name: "final report has its five parts", run: finalReport },
+  { name: "no ComfyUI instance left running by this build", run: comfyStopped },
+  { name: "no stubs", run: noStubs },
+  { name: "offline: no URLs or network calls", run: offline },
+  { name: "repository layout", run: layout },
+  { name: "docs and README", run: docs(3) },
+  { name: "git status clean", run: gitClean },
+  { name: "tag session-3 at HEAD", run: tagAtHead(3) },
+];
+
 const session = Number(process.argv[2] ?? 1);
 const checks = SESSIONS[session];
 if (!checks) {

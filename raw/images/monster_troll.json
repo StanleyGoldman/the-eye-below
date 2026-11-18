@@ -1037,15 +1037,19 @@
   },
   "cropBox": [
    270,
-   259,
+   62,
    536,
-   629
+   826
+  ],
+  "cropSharedWith": [
+   "monster_troll",
+   "monster_troll_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   12,
+   28,
    0,
-   136,
+   104,
    160
   ],
   "targetSize": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 35,
-  "at": "2026-11-18T02:33:39.787Z"
+  "coloursUsed": 34,
+  "at": "2026-11-18T02:57:49.408Z"
  }
 }

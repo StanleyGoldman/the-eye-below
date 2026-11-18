@@ -1036,16 +1036,20 @@
    "pixelsRemoved": 1351
   },
   "cropBox": [
-   225,
+   185,
    45,
-   576,
+   657,
    973
+  ],
+  "cropSharedWith": [
+   "monster_wraith",
+   "monster_wraith_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   32,
+   26,
    0,
-   95,
+   108,
    160
   ],
   "targetSize": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 31,
-  "at": "2026-11-18T02:33:39.962Z"
+  "coloursUsed": 33,
+  "at": "2026-11-18T02:57:49.680Z"
  }
 }

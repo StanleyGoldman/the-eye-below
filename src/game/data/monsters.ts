@@ -130,6 +130,7 @@ export const MONSTER_TYPES: readonly MonsterType[] = [
   m({ id: "hermit", name: "hermit", glyph: "@", tier: 0, level: 3, ac: 8, moveMs: 800, attackMs: 1300, attacks: [atk(1, 6, "thumps")], size: 0.8, peaceful: true, gold: 0, freq: 0 }),
   m({ id: "adventurer", name: "lost adventurer", glyph: "@", tier: 0, level: 5, ac: 5, moveMs: 600, attackMs: 1100, attacks: [atk(1, 8, "slashes")], size: 0.85, peaceful: true, gold: 0.5, freq: 0 }),
   m({ id: "gnome", name: "gnome", glyph: "@", tier: 0, level: 1, ac: 8, moveMs: 700, attackMs: 1200, attacks: [atk(1, 4, "jabs")], size: 0.5, peaceful: true, gold: 0.3, freq: 0 }),
+  m({ id: "guard", name: "vault guard", glyph: "@", tier: 0, level: 12, ac: 2, moveMs: 480, attackMs: 950, attacks: [atk(2, 6, "strikes"), atk(2, 6, "strikes")], size: 0.85, peaceful: true, bonusHp: 60, gold: 0, freq: 0 }),
   m({ id: "oracle", name: "oracle", glyph: "@", tier: 0, level: 12, ac: 0, moveMs: 0, attackMs: 1200, attacks: [atk(2, 8, "rebukes")], size: 0.85, peaceful: true, bonusHp: 60, gold: 0, freq: 0 }),
 ];
 
@@ -155,6 +156,40 @@ export function tierOfDepth(depth: number): number {
 }
 
 export const TIER_NAMES: readonly string[] = ["", "The Cellars", "The Mines", "The Catacombs", "The Undercroft", "The Tower Roots"];
+
+export type SoundFamily = "beast" | "humanoid" | "undead" | "insect" | "reptile" | "ooze";
+
+const FAMILY: Record<string, SoundFamily> = {
+  newt: "reptile",
+  jackal: "beast",
+  kobold: "humanoid",
+  floating_eye: "ooze",
+  giant_bat: "beast",
+  acid_blob: "ooze",
+  hill_orc: "humanoid",
+  dwarf: "humanoid",
+  soldier_ant: "insect",
+  cockatrice: "reptile",
+  ghoul: "undead",
+  leprechaun: "humanoid",
+  troll: "beast",
+  wraith: "undead",
+  stalker: "ooze",
+  ogre: "beast",
+  vampire: "undead",
+  minotaur: "beast",
+  fire_drake: "reptile",
+  lich: "undead",
+  water_snake: "reptile",
+  soldier: "humanoid",
+  medusa: "reptile",
+  morvane: "undead",
+};
+
+/** Which growl a monster makes. */
+export function soundFamily(typeId: string): SoundFamily {
+  return FAMILY[typeId] ?? "humanoid";
+}
 
 export function experienceFor(type: MonsterType, level: number): number {
   let xp = 1 + level * level + level * 2;

@@ -1037,15 +1037,19 @@
   },
   "cropBox": [
    198,
-   62,
+   39,
    605,
-   891
+   914
+  ],
+  "cropSharedWith": [
+   "monster_soldier",
+   "monster_soldier_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   25,
+   27,
    0,
-   109,
+   106,
    160
   ],
   "targetSize": [
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 40,
-  "at": "2026-11-18T02:33:41.415Z"
+  "coloursUsed": 39,
+  "at": "2026-11-18T02:57:51.824Z"
  }
 }

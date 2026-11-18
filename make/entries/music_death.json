@@ -1,0 +1,21 @@
+{
+ "id": "music_death",
+ "type": "music",
+ "kind": "sting",
+ "workflow": "ace_step",
+ "prompt": {
+  "subject": "funeral sting, slow descending organ chords and one final low bell",
+  "fragments": [
+   "sting"
+  ]
+ },
+ "size": [
+  5,
+  30
+ ],
+ "duration": 16,
+ "transparent": false,
+ "bpm": 60,
+ "keyscale": "C minor",
+ "resolvedPrompt": "funeral sting, slow descending organ chords and one final low bell, instrumental, no vocals, a single short piece with a clear ending, early-1990s DOS game soundtrack"
+}

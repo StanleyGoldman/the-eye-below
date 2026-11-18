@@ -57,3 +57,23 @@ export const RUMORS: readonly Rumor[] = [
   f("Wraiths cannot cross a doorway."),
   f("A cursed sword cuts deeper."),
 ];
+
+/** What is carved on the graves down here. */
+export const EPITAPHS: readonly string[] = [
+  "Here lies a hero who read every scroll he found. The last one was fire.",
+  "Here lies a careful man. He was careful about the wrong things.",
+  "She tested the potion on herself. It worked.",
+  "Rested. Was interrupted.",
+  "He hit the floating eye. Twice, to be sure.",
+  "Here lies a rogue who found the trapdoor before she found the stairs.",
+  "Killed by a newt. Tell no one.",
+  "He prayed. He prayed again. That was the mistake.",
+  "Went back for the gold.",
+  "Here lies a wizard in plate mail. The spell failed; the armor did not help either.",
+  "She knew the cockatrice was dangerous. She did not know which end.",
+  "Starved? No. Nobody starves down here. Something always gets you first.",
+  "The door was locked. The thing behind him was not.",
+  "He sold his sword for a lamp. The lamp shows where he fell.",
+  "Thought it was a statue.",
+  "Here lies a shoplifter. The shopkeeper paid for the stone.",
+];

@@ -1,0 +1,19 @@
+{
+ "id": "sfx_growl_reptile",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "a sharp reptile hiss",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 2,
+ "transparent": false,
+ "resolvedPrompt": "a sharp reptile hiss, one short clean sound effect, close and dry, no music, no voice-over"
+}

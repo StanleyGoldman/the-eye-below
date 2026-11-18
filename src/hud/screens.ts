@@ -12,7 +12,7 @@ import type { ActionId, KeyMap } from "../input/keys.ts";
 import { button, clear, el, tip } from "./dom.ts";
 
 export const GAME_TITLE = "The Eye Below";
-export const GAME_VERSION = "0.1";
+export const GAME_VERSION = "1.0";
 
 export type ScreenName = "title" | "newgame" | "pause" | "settings" | "dead" | "won";
 
@@ -24,7 +24,17 @@ export interface StartOptions {
   god: boolean;
 }
 
+export interface SoundControls {
+  music(): number;
+  effects(): number;
+  muted(): boolean;
+  setMusic(v: number): void;
+  setEffects(v: number): void;
+  toggleMute(): void;
+}
+
 export interface ScreenCallbacks {
+  sound: SoundControls;
   continueGame(): void;
   start(options: StartOptions): void;
   resume(): void;
@@ -367,6 +377,38 @@ export class Screens {
     const page = el("div", "page settingspage");
     page.appendChild(el("h2", "", "Settings and controls"));
     page.appendChild(el("div", "note", "Click a key to change it, then press the new key. Esc cancels; Backspace clears. With a list open, letters pick an item or spell."));
+    const sound = el("div", "soundrow");
+    const slider = (label: string, help: string, id: string, value: number, set: (v: number) => void): void => {
+      const wrap = el("label", "soundctl");
+      wrap.appendChild(tip(el("span", "", label), help));
+      const input = el("input", "slider");
+      input.type = "range";
+      input.min = "0";
+      input.max = "100";
+      input.step = "5";
+      input.value = String(Math.round(value * 100));
+      input.dataset["field"] = id;
+      const shown = el("span", "soundvalue", `${Math.round(value * 100)}`);
+      input.addEventListener("input", () => {
+        set(Number(input.value) / 100);
+        shown.textContent = input.value;
+      });
+      wrap.append(input, shown);
+      sound.appendChild(wrap);
+    };
+    slider("Music", "How loud the music is.", "music", this.cb.sound.music(), (v) => this.cb.sound.setMusic(v));
+    slider("Effects", "How loud footsteps, blows, doors, and the rest are.", "effects", this.cb.sound.effects(), (v) => this.cb.sound.setEffects(v));
+    const mute = el("label", "soundctl");
+    const box = el("input");
+    box.type = "checkbox";
+    box.checked = this.cb.sound.muted();
+    box.dataset["field"] = "muted";
+    box.addEventListener("change", () => {
+      if (box.checked !== this.cb.sound.muted()) this.cb.sound.toggleMute();
+    });
+    mute.append(box, tip(el("span", "", "Mute everything"), "The mute key does the same in play."));
+    sound.appendChild(mute);
+    page.appendChild(sound);
     const table = el("div", "keytable");
     for (const action of ACTIONS) {
       const row = el("div", "keyrow");

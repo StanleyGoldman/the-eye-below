@@ -1036,17 +1036,21 @@
    "pixelsRemoved": 1385
   },
   "cropBox": [
-   268,
-   165,
-   525,
-   696
+   39,
+   133,
+   941,
+   728
+  ],
+  "cropSharedWith": [
+   "monster_cockatrice",
+   "monster_cockatrice_attack"
   ],
   "fit": "bottom",
   "placedAt": [
-   19,
    0,
-   121,
-   160
+   36,
+   160,
+   124
   ],
   "targetSize": [
    160,
@@ -1055,7 +1059,7 @@
   "scaling": "nearest neighbour",
   "palette": "assets/prompts.json (64 colours)",
   "dither": "ordered 4x4, strength 9",
-  "coloursUsed": 43,
-  "at": "2026-11-18T02:33:39.244Z"
+  "coloursUsed": 42,
+  "at": "2026-11-18T02:57:48.602Z"
  }
 }

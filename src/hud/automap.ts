@@ -27,10 +27,12 @@ export const MAP_LEGEND: readonly [string, string, string][] = [
   ["{", "#60a0f0", "fountain"],
   ["_", "#d0d0d0", "altar"],
   ["&", "#a0a090", "statue"],
+  ["(", "#c9853f", "chest or box"],
+  ["|", "#b0b0b8", "grave"],
   ["0", "#b0a080", "boulder"],
   ["~", "#4070c0", "water"],
   ["$", "#f0d040", "gold"],
-  [") [ ! ?", "#c0c0c0", "items, by class"],
+  [") [ ! ? *", "#c0c0c0", "items, by class"],
   ["a-Z", "#f06050", "monsters in view"],
   ["@", "#60e0e0", "peaceful"],
 ];
@@ -50,6 +52,7 @@ function baseGlyph(level: Level, x: number, y: number): Glyph | null {
   if (t === T.PIT) return { ch: "o", color: "#a04030" };
   if (t === T.DOOR) {
     const d = level.doors.find((o) => o.x === x && o.y === y);
+    if (d && d.secret) return { ch: "#", color: "#5c5348" };
     if (d) {
       const shop = level.meta.shopDoor === i;
       if (d.open) return { ch: "'", color: shop ? "#f0d040" : "#8a7050" };
@@ -68,6 +71,8 @@ function baseGlyph(level: Level, x: number, y: number): Glyph | null {
     if (f.kind === "fountain") return { ch: "{", color: "#60a0f0" };
     if (f.kind === "altar") return { ch: "_", color: "#e0e0e0" };
     if (f.kind === "statue") return { ch: "&", color: "#a0a090" };
+    if (f.kind === "chest") return { ch: "(", color: f.opened ? "#6a5030" : "#c9853f" };
+    if (f.kind === "grave") return { ch: "|", color: "#b0b0b8" };
     return { ch: "0", color: "#b0a080" };
   }
   const trap = level.traps.find((o) => o.x === x && o.y === y && o.found);

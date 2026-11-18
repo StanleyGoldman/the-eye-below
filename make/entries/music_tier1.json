@@ -1,0 +1,21 @@
+{
+ "id": "music_tier1",
+ "type": "music",
+ "kind": "loop",
+ "workflow": "ace_step",
+ "prompt": {
+  "subject": "damp cellar exploration, sparse plucked strings and soft dripping water, cautious",
+  "fragments": [
+   "music"
+  ]
+ },
+ "size": [
+  60,
+  90
+ ],
+ "duration": 72,
+ "transparent": false,
+ "bpm": 72,
+ "keyscale": "A minor",
+ "resolvedPrompt": "damp cellar exploration, sparse plucked strings and soft dripping water, cautious, instrumental, no vocals, loopable, early-1990s DOS game soundtrack, FM synth and sampled orchestra"
+}

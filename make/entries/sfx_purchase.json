@@ -1,0 +1,19 @@
+{
+ "id": "sfx_purchase",
+ "type": "sfx",
+ "kind": "sfx",
+ "workflow": "stable_audio",
+ "prompt": {
+  "subject": "coins dropped onto a wooden counter",
+  "fragments": [
+   "sfx"
+  ]
+ },
+ "size": [
+  1,
+  4
+ ],
+ "duration": 1.5,
+ "transparent": false,
+ "resolvedPrompt": "coins dropped onto a wooden counter, one short clean sound effect, close and dry, no music, no voice-over"
+}
