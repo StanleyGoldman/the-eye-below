@@ -1,0 +1,24 @@
+{
+ "id": "portrait_valkyrie",
+ "type": "image",
+ "kind": "portrait",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "a stern young woman warrior with blonde braids and a winged steel helm",
+  "fragments": [
+   "portrait",
+   "style"
+  ]
+ },
+ "size": [
+  48,
+  48
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "a stern young woman warrior with blonde braids and a winged steel helm, head and shoulders portrait, facing the viewer, plain dark background, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

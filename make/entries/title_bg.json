@@ -1,0 +1,24 @@
+{
+ "id": "title_bg",
+ "type": "image",
+ "kind": "ui",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "a wide stone stairway descending into the dark between two rows of pillars; far below, a single huge glowing orange eye with a slit pupil watches",
+  "fragments": [
+   "scene",
+   "style"
+  ]
+ },
+ "size": [
+  320,
+  180
+ ],
+ "gen": [
+  1280,
+  720
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "a wide stone stairway descending into the dark between two rows of pillars; far below, a single huge glowing orange eye with a slit pupil watches, wide establishing view, no text, no letters, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

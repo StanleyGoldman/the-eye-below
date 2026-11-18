@@ -11,6 +11,7 @@ import type { ItemAction } from "./game/actions.ts";
 import { botStep, runBot } from "./game/bot.ts";
 import type { BotMode } from "./game/bot.ts";
 import { clearSave, hasSave, loadGame, saveGame } from "./game/save.ts";
+import { buy, closeShop, sell } from "./game/shops.ts";
 import type { StorageLike } from "./game/save.ts";
 import { monsterType } from "./game/data/monsters.ts";
 import { newGame, placeAt } from "./game/state.ts";
@@ -43,7 +44,7 @@ function safeStorage(): StorageLike | null {
 class App {
   private readonly root: HTMLElement;
   private readonly storage = safeStorage();
-  private readonly store = new AssetStore();
+  private readonly store: AssetStore;
   private readonly keys = new KeyMap(this.storage);
   private readonly hud: Hud;
   private readonly screens: Screens;
@@ -63,10 +64,11 @@ class App {
   private timeScale = 1;
   private readonly errors: string[] = [];
 
-  constructor() {
+  constructor(store: AssetStore) {
+    this.store = store;
     this.debug = this.params.has("debug");
     const style = document.createElement("style");
-    style.textContent = `@font-face{font-family:"VT323";src:url(${fontUrl}) format("woff2");font-display:block;}\n${css}`;
+    style.textContent = `@font-face{font-family:"VT323";src:url(${fontUrl}) format("woff2");font-display:block;}\n${css}\n.btn{background-image:url(${this.store.url("ui_button")});background-size:100% 100%;}`;
     document.head.appendChild(style);
     document.title = GAME_TITLE;
 
@@ -83,6 +85,9 @@ class App {
       cancelPrompt: () => this.withState((s) => cancelPrompt(s)),
       resetPuzzle: () => this.withState((s) => resetPuzzle(s)),
       selectItem: (uid) => this.hud.setSelected(uid, this.state),
+      shopBuy: (uid) => this.withState((s) => void buy(s, uid)),
+      shopSell: (uid) => this.withState((s) => void sell(s, uid)),
+      shopClose: () => this.withState((s) => closeShop(s)),
     });
     this.renderer = new ViewRenderer(this.hud.view, this.store);
     this.screens = new Screens(
@@ -310,7 +315,9 @@ class App {
   private closePanels(): boolean {
     const state = this.state;
     if (state?.prompt) {
-      if (state.prompt.kind === "menu") {
+      if (state.prompt.kind === "shop") {
+        closeShop(state);
+      } else if (state.prompt.kind === "menu") {
         const way = state.prompt.options.find((o) => o.id === "leave" || o.id === "no" || o.id === "cancel");
         choose(state, way ? way.id : "leave");
       } else {
@@ -362,6 +369,7 @@ class App {
 
     // A question is open: numbers answer a menu, letters pick an item.
     if (state.prompt) {
+      if (state.prompt.kind === "shop") return;
       if (state.prompt.kind === "menu") {
         const n = Number(e.key);
         const option = Number.isInteger(n) && n >= 1 ? state.prompt.options[n - 1] : undefined;
@@ -528,6 +536,9 @@ class App {
           monsters: level ? level.monsters.length : 0,
           inventory: s?.player.inventory.length ?? 0,
           prompt: s?.prompt ? (s.prompt.kind === "menu" ? s.prompt.context : s.prompt.kind) : "",
+          gold: s?.player.gold ?? 0,
+          protection: s?.player.protection ?? 0,
+          shop: level?.meta.shop ?? "",
           seed: s?.run.seed ?? "",
           god: s?.debug.god ?? false,
           log: s ? s.log.slice(-5).map((m) => m.text) : [],
@@ -544,17 +555,27 @@ class App {
         this.timeScale = Math.max(0.1, Math.min(50, n));
       },
       state: (): GameState | null => this.state,
+      assets: (): { expected: number; loaded: number; failed: string[] } => this.store.report(),
       /** Stand the player a few cells from the level's main attraction, facing it. For screenshots. */
-      vantage: (only?: number): boolean => {
+      gold: (amount: number): void => {
+        if (this.state) this.state.player.gold = amount;
+      },
+      vantage: (only?: number, type?: string): boolean => {
         const s = this.state;
         const level = s ? s.levels[s.depth] : undefined;
         if (!s || !level) return false;
         const targets: { x: number; y: number }[] = [];
-        for (const m of level.monsters) if (monsterType(m.type).boss || m.peaceful) targets.push(m);
-        for (const f of level.features) if (f.kind === "boulder") targets.push(f);
-        for (const g of level.gates) if (g.kind === "drawbridge") targets.push(...g.cells);
-        for (const f of level.features) if (f.kind === "fountain") targets.push(f);
-        for (const m of level.monsters) targets.push(m);
+        if (type) {
+          for (const m of level.monsters) if (m.type === type || m.npc?.kind === type) targets.push(m);
+          if (targets.length === 0) return false;
+        }
+        if (!type) {
+          for (const m of level.monsters) if (monsterType(m.type).boss || m.peaceful) targets.push(m);
+          for (const f of level.features) if (f.kind === "boulder") targets.push(f);
+          for (const g of level.gates) if (g.kind === "drawbridge") targets.push(...g.cells);
+          for (const f of level.features) if (f.kind === "fountain") targets.push(f);
+          for (const m of level.monsters) targets.push(m);
+        }
         const start = new Set(level.startArea);
         // First try to stand somewhere the player could have walked to unaided; failing that, anywhere.
         for (const strict of [true, false])
@@ -586,9 +607,12 @@ class App {
   }
 }
 
-function boot(): void {
-  new App();
+async function boot(): Promise<void> {
+  const store = new AssetStore();
+  // "noassets" plays on code-drawn art alone, which is also what happens when files are missing.
+  if (!new URLSearchParams(window.location.search).has("noassets")) await store.loadFiles();
+  new App(store);
 }
 
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
-else boot();
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => void boot());
+else void boot();

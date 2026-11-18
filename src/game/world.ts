@@ -7,7 +7,7 @@ import { doorAt, featureAt, floodDistances, gateAt, inBounds, isOpenCell, lineOf
 import { clearLine, monsterInSight, monsterShoots, monsterStrikes } from "./combat.ts";
 import { itemType } from "./data/items.ts";
 import { monsterType, monstersOfTier, tierOfDepth } from "./data/monsters.ts";
-import { addStatus, addToPack, capital, cur, die, discover, emit, ensureLevel, has, hurt, isFree, itemsAt, mintMonster, monsterAt, nameOf, placeAt, rng, say, theMonster, tickStatuses, wearing, wornItem } from "./state.ts";
+import { isLit, addStatus, addToPack, capital, cur, die, discover, emit, ensureLevel, has, hurt, isFree, itemsAt, mintMonster, monsterAt, nameOf, placeAt, rng, say, theMonster, tickStatuses, wearing, wornItem } from "./state.ts";
 import { DX, DY, T } from "./types.ts";
 import type { Dir, GameState, Level, Monster, Pos, Trap } from "./types.ts";
 
@@ -156,7 +156,7 @@ export function updateSeen(state: GameState): void {
   const p = state.player;
   level.seen[p.y * level.w + p.x] = 1;
   if (has(state, "blind")) return;
-  const lit = p.litUntil > state.time;
+  const lit = isLit(state);
   const radius = lit ? 7 : 5;
   const fx = DX[p.dir] as number;
   const fy = DY[p.dir] as number;
@@ -323,6 +323,10 @@ export function arrive(state: GameState): void {
 
 // ---- monsters ---------------------------------------------------------
 
+function dist0(m: Monster, p: { x: number; y: number }): number {
+  return Math.abs(m.x - p.x) + Math.abs(m.y - p.y);
+}
+
 function speedMod(state: GameState): number {
   return scale3(state.run.mods["monsterSpeed"] ?? 5, 0.65, 1, 1.6);
 }
@@ -471,6 +475,11 @@ function tickMonsters(state: GameState, ms: number): void {
       continue;
     }
     if (type.regen > 0 && m.hp < m.maxHp) m.hp = Math.min(m.maxHp, m.hp + (type.regen * ms) / 1000);
+    if (m.peaceful && state.shopkeepersAngry && m.type === "shopkeeper" && dist0(m, p) <= 6 && lineOfSight(level, m.x, m.y, p.x, p.y)) {
+      m.peaceful = false;
+      m.aware = true;
+      say(state, `${m.npc?.name ?? "The shopkeeper"} has heard what you did. "Murderer!"`, "danger");
+    }
     if (m.peaceful) continue;
     if (m.heldUntil > time || m.sleepUntil > time) {
       m.windupUntil = 0;

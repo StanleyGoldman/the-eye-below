@@ -179,6 +179,20 @@ One STYLE string is appended to every image prompt (it goes into
 - Code-drawn placeholders (session 1) follow the same palette and
   the same sizes, so swapping in generated art changes nothing else.
 
+## Amendments
+
+- Session 2: the STYLE string and every other prompt fragment now
+  live in `assets/prompts.json`, with the shared 64-colour palette.
+  Reason: one place for the exact wording, as the build brief asks.
+- Session 2: an **oil lamp** joins the item list (a tool; Old Wick
+  sells it). Reason: the lamp shop needed stock.
+- Session 2: shopkeepers have names drawn from a short list by the
+  seed; the lamp shop's keeper is always Old Wick. The priest, the
+  hermit, the lost adventurer, and the gnome are nameless.
+- Session 2: the fire drake kept its wings. Both generated candidates
+  had them and it reads better as a drake than a wingless one did in
+  the code-drawn art.
+
 ## Interface rules
 
 - Logical screen 960x540, scaled to the window by whole steps where

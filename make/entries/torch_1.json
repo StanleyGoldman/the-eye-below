@@ -1,0 +1,30 @@
+{
+ "id": "torch_1",
+ "type": "image",
+ "kind": "overlay",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "a wall torch in an iron bracket burning with an orange flame",
+  "fragments": [
+   "object",
+   "style"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "center",
+ "box": [
+  22,
+  12,
+  20,
+  40
+ ],
+ "resolvedPrompt": "a wall torch in an iron bracket burning with an orange flame, single object, front-facing, centered, whole object in frame, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

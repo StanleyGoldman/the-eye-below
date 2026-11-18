@@ -1,0 +1,24 @@
+{
+ "id": "wall_1",
+ "type": "image",
+ "kind": "texture",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "damp grey-brown cellar brick wall, old mortar, a few darker stains",
+  "fragments": [
+   "texture",
+   "style"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "damp grey-brown cellar brick wall, old mortar, a few darker stains, flat, straight-on, evenly lit, edge to edge, no perspective, no objects, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

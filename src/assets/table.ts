@@ -7,12 +7,15 @@
 
 import { MONSTER_TYPES } from "../game/data/monsters.ts";
 import { ROLES } from "../game/data/roles.ts";
-import { ITEM_ICON_IDS, paintButton, paintCompass, paintFrame, paintItemIcon, paintSlot, paintTitle } from "./art-items.ts";
+import { ITEM_ICON_IDS, paintButton, paintCompass, paintDialoguePanel, paintFrame, paintItemIcon, paintShopPanel, paintSlot, paintTitle } from "./art-items.ts";
 import { paintMonster, paintPortrait } from "./art-monsters.ts";
 import { paintAltar, paintBoulder, paintCeil, paintDoor, paintDrawbridge, paintFloor, paintFountain, paintGate, paintPlate, paintStairs, paintStatue, paintSwitch, paintTorch, paintTrapMark, paintWall } from "./art-world.ts";
 import type { Pen } from "./pen.ts";
 
 export type AssetKind = "texture" | "overlay" | "sprite" | "icon" | "ui";
+
+/** How a frame can be made from its base picture when it has no file of its own. */
+export type FrameOp = "same" | "flipV" | "flipH" | "leftHalf" | "leftEdge" | "topStrip";
 
 export interface AssetDef {
   id: string;
@@ -20,12 +23,14 @@ export interface AssetDef {
   w: number;
   h: number;
   paint: (p: Pen) => void;
+  /** Set on animation frames: the base image they are a frame of. Frames are not "images" in the manifest's sense. */
+  frame?: { of: string; op: FrameOp };
 }
 
 const table: Record<string, AssetDef> = {};
 
-function add(id: string, kind: AssetKind, w: number, h: number, paint: (p: Pen) => void): void {
-  table[id] = { id, kind, w, h, paint };
+function add(id: string, kind: AssetKind, w: number, h: number, paint: (p: Pen) => void, frame?: { of: string; op: FrameOp }): void {
+  table[id] = frame ? { id, kind, w, h, paint, frame } : { id, kind, w, h, paint };
 }
 
 for (let tier = 1; tier <= 5; tier++) {
@@ -35,16 +40,16 @@ for (let tier = 1; tier <= 5; tier++) {
 }
 
 add("door", "overlay", 64, 64, (p) => paintDoor(p, "closed"));
-add("door_half", "overlay", 64, 64, (p) => paintDoor(p, "half"));
-add("door_open", "overlay", 64, 64, (p) => paintDoor(p, "open"));
+add("door_half", "overlay", 64, 64, (p) => paintDoor(p, "half"), { of: "door", op: "leftHalf" });
+add("door_open", "overlay", 64, 64, (p) => paintDoor(p, "open"), { of: "door", op: "leftEdge" });
 add("gate", "overlay", 64, 64, (p) => paintGate(p, false));
-add("gate_open", "overlay", 64, 64, (p) => paintGate(p, true));
+add("gate_open", "overlay", 64, 64, (p) => paintGate(p, true), { of: "gate", op: "topStrip" });
 add("drawbridge", "overlay", 64, 64, paintDrawbridge);
 add("switch_off", "overlay", 64, 64, (p) => paintSwitch(p, "off"));
-add("switch_on", "overlay", 64, 64, (p) => paintSwitch(p, "on"));
+add("switch_on", "overlay", 64, 64, (p) => paintSwitch(p, "on"), { of: "switch_off", op: "flipV" });
 add("lever", "overlay", 64, 64, (p) => paintSwitch(p, "reset"));
 add("torch_1", "overlay", 64, 64, (p) => paintTorch(p, 0));
-add("torch_2", "overlay", 64, 64, (p) => paintTorch(p, 1));
+add("torch_2", "overlay", 64, 64, (p) => paintTorch(p, 1), { of: "torch_1", op: "flipH" });
 
 add("stairs_down", "sprite", 64, 64, (p) => paintStairs(p, true));
 add("stairs_up", "sprite", 64, 64, (p) => paintStairs(p, false));
@@ -57,7 +62,7 @@ add("trap", "sprite", 32, 32, paintTrapMark);
 
 for (const type of MONSTER_TYPES) {
   add(`monster_${type.id}`, "sprite", 64, 64, (p) => paintMonster(p, type.id, false));
-  add(`monster_${type.id}_attack`, "sprite", 64, 64, (p) => paintMonster(p, type.id, true));
+  add(`monster_${type.id}_attack`, "sprite", 64, 64, (p) => paintMonster(p, type.id, true), { of: `monster_${type.id}`, op: "same" });
 }
 
 for (const id of ITEM_ICON_IDS) add(id, "icon", 32, 32, (p) => void paintItemIcon(p, id));
@@ -69,5 +74,7 @@ add("ui_slot", "ui", 40, 40, paintSlot);
 add("ui_button", "ui", 48, 24, paintButton);
 add("ui_compass", "ui", 48, 48, paintCompass);
 add("title_bg", "ui", 320, 180, paintTitle);
+add("ui_shop", "ui", 320, 200, paintShopPanel);
+add("ui_dialogue", "ui", 320, 80, paintDialoguePanel);
 
 export const ASSETS: Readonly<Record<string, AssetDef>> = table;

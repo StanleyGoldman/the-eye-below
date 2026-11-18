@@ -1,0 +1,24 @@
+{
+ "id": "ui_button",
+ "type": "image",
+ "kind": "ui",
+ "workflow": "zimage",
+ "prompt": {
+  "subject": "one blank wide rectangular stone button with a bevelled iron edge",
+  "fragments": [
+   "object",
+   "style"
+  ]
+ },
+ "size": [
+  48,
+  24
+ ],
+ "gen": [
+  1024,
+  512
+ ],
+ "transparent": true,
+ "fit": "stretch",
+ "resolvedPrompt": "one blank wide rectangular stone button with a bevelled iron edge, single object, front-facing, centered, whole object in frame, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

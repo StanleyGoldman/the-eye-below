@@ -1,0 +1,25 @@
+{
+ "id": "gate",
+ "type": "image",
+ "kind": "overlay",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "an iron portcullis, a grid of thick vertical and horizontal iron bars with pointed tips at the bottom, seen straight on, the magenta background showing through the gaps between the bars",
+  "fragments": [
+   "object",
+   "style"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "stretch",
+ "key": "all",
+ "resolvedPrompt": "an iron portcullis, a grid of thick vertical and horizontal iron bars with pointed tips at the bottom, seen straight on, the magenta background showing through the gaps between the bars, single object, front-facing, centered, whole object in frame, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

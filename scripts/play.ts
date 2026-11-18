@@ -5,6 +5,8 @@
 //   node scripts/play.ts --scenario victory    a whole run to the victory screen (unkillable debug option)
 //   node scripts/play.ts --scenario death      a run to the death screen, then restart
 //   node scripts/play.ts --scenario specials   one screenshot from inside each special level
+//   node scripts/play.ts --scenario economy    buy, sell, hear a rumor, pay a priest
+//   node scripts/play.ts --scenario assets     generated images all load; the game also runs with none
 //   node scripts/play.ts --scenario keys --seed candle --level 3 --keys "KeyW,KeyW,KeyQ,Space"
 //
 // Options: --seed text, --role valkyrie|wizard|rogue, --mods id=1-9,..., --level 1-25,
@@ -15,7 +17,8 @@ import { mkdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright-core";
 import type { Browser, Page } from "playwright-core";
-import { encodeRunCode } from "../src/core/modifiers.ts";
+import { encodeRunCode, resolveMods } from "../src/core/modifiers.ts";
+import { generateLevel } from "../src/dungeon/generate.ts";
 import { fail, parseArgs, parseOverrides } from "./lib/args.ts";
 
 interface Info {
@@ -43,7 +46,7 @@ interface Info {
 
 const args = parseArgs(process.argv.slice(2));
 if (args.flags["help"]) {
-  console.log('usage: node scripts/play.ts --scenario smoke|victory|death|specials|keys [--seed text] [--role name] [--mods id=n,...] [--level n] [--keys "Code,..."] [--out dir] [--god] [--headed]');
+  console.log('usage: node scripts/play.ts --scenario smoke|victory|death|specials|economy|assets|keys [--seed text] [--role name] [--mods id=n,...] [--level n] [--keys "Code,..."] [--out dir] [--god] [--headed]');
   process.exit(0);
 }
 const scenario = args.flags["scenario"] ?? "smoke";
@@ -346,7 +349,138 @@ async function keys(browser: Browser): Promise<void> {
   await page.context().close();
 }
 
-const SCENARIOS: Record<string, (b: Browser) => Promise<void>> = { smoke, victory, death, specials, keys };
+/** A level, found by generating, that has a shop, a priest, and someone with rumors. */
+function findMarket(): { seed: string; depth: number; code: string } {
+  const overrides = { shopFrequency: 9, npcs: 9, fountains: 9 };
+  for (let i = 0; i < 300; i++) {
+    const seed = `market${i}`;
+    const mods = resolveMods(seed, overrides);
+    for (let depth = 1; depth <= 4; depth++) {
+      const level = generateLevel({ seed, mods }, depth);
+      const kinds = new Set(level.monsters.map((m) => m.npc?.kind));
+      if (kinds.has("shopkeeper") && kinds.has("priest") && (kinds.has("hermit") || kinds.has("adventurer") || kinds.has("gnome"))) return { seed, depth, code: encodeRunCode(seed, overrides) };
+    }
+  }
+  fail("no level with a shop, a priest, and a rumor-monger was found");
+}
+
+async function economy(browser: Browser): Promise<void> {
+  const market = findMarket();
+  console.log(`  using run code ${market.code}, level ${market.depth}`);
+  const page = await open(browser, `&start=1&god=1&code=${encodeURIComponent(market.code)}&level=${market.depth}`);
+  await waitFor(page, "the game to start", (x) => x.screen === "game" && x.depth === market.depth);
+  await page.evaluate("window.__eye.gold(5000)");
+  const eye = (expr: string): Promise<unknown> => page.evaluate(`window.__eye.${expr}`);
+  const gold = async (): Promise<number> => ((await info(page)) as Info & { gold: number }).gold;
+
+  // The shop.
+  check((await eye("vantage(1, 'shopkeeper')")) === true, "stood next to the shopkeeper");
+  await page.waitForTimeout(300);
+  await press(page, "KeyF", 300);
+  check((await info(page)).prompt === "shop" && (await page.isVisible(".shop")), "talking to the shopkeeper opens the buy and sell panel");
+  const t0 = (await info(page)).time;
+  await page.waitForTimeout(700);
+  check((await info(page)).time === t0, "the world clock is paused while the panel is open");
+  await shot(page, "01-shop");
+  const buyRow = page.locator("[data-shop-buy]:not(.dim)").first();
+  const buyPrice = Number(await buyRow.getAttribute("data-price"));
+  const before = await gold();
+  await buyRow.click();
+  await page.waitForTimeout(150);
+  check((await gold()) === before - buyPrice && buyPrice > 0, `buying takes the quoted price (${buyPrice} gold)`);
+  const sellRow = page.locator('[data-shop-sell]:not([data-price=""])').first();
+  check((await sellRow.count()) > 0, "something in the pack can be sold here");
+  const sellPrice = Number(await sellRow.getAttribute("data-price"));
+  const mid = await gold();
+  await sellRow.click();
+  await page.waitForTimeout(150);
+  check((await gold()) === mid + sellPrice && sellPrice > 0, `selling pays the quoted price (${sellPrice} gold)`);
+  await shot(page, "02-shop-after");
+  await press(page, "Escape", 200);
+  check((await info(page)).prompt === "", "Esc leaves the shop");
+  const t1 = (await info(page)).time;
+  await page.waitForTimeout(400);
+  check((await info(page)).time > t1, "the clock runs again outside the shop");
+
+  // A rumor.
+  let talker = "";
+  for (const kind of ["hermit", "adventurer", "gnome"]) {
+    if ((await eye(`vantage(1, '${kind}')`)) === true) {
+      talker = kind;
+      break;
+    }
+  }
+  check(talker !== "", `stood next to someone with rumors (${talker})`);
+  await page.waitForTimeout(300);
+  await press(page, "KeyF", 300);
+  check((await info(page)).prompt === "talk" && (await page.isVisible(".modal.dialogue")), "talking opens the dialogue panel");
+  const said = (await page.textContent(".modal .modaltitle")) ?? "";
+  check(said.length > 20, `a rumor is told (${said.slice(0, 60)}...)`);
+  await shot(page, "03-rumor");
+  await press(page, "Digit1", 250);
+  const again = (await page.textContent(".modal .modaltitle")) ?? "";
+  check(again.length > 20 && again !== said, "asking again gets a different rumor");
+  await press(page, "Escape", 200);
+
+  // A priest.
+  check((await eye("vantage(1, 'priest')")) === true, "stood next to the priest");
+  await page.waitForTimeout(300);
+  await press(page, "KeyF", 300);
+  const atPriest = await info(page);
+  check(atPriest.prompt === "priest", `talking to the priest offers a donation (prompt "${atPriest.prompt}", log: ${atPriest.log.slice(-2).join(" / ")})`);
+  await shot(page, "04-priest");
+  const purse = await gold();
+  await page.click('[data-option="large"]');
+  await page.waitForTimeout(200);
+  const after = (await info(page)) as Info & { gold: number; protection: number };
+  check(after.protection === 1 && after.gold < purse, `a large donation buys protection (${purse - after.gold} gold)`);
+  check(after.errors.length === 0, "no errors were caught in the frame loop");
+  await page.context().close();
+}
+
+interface AssetReport {
+  expected: number;
+  loaded: number;
+  failed: string[];
+}
+
+async function assets(browser: Browser): Promise<void> {
+  // First pass: every generated image must load.
+  const page = await open(browser, "&start=1&god=1&seed=goal-1&level=1");
+  await waitFor(page, "the game to start", (x) => x.screen === "game");
+  const report = (await page.evaluate("window.__eye.assets()")) as AssetReport;
+  check(report.expected >= 90, `the manifest lists ${report.expected} generated images to load`);
+  check(report.failed.length === 0 && report.loaded === report.expected, `${report.loaded} of ${report.expected} images loaded, ${report.failed.length} failed${report.failed.length ? ` (${report.failed.slice(0, 6).join(", ")})` : ""}`);
+  await page.waitForTimeout(400);
+  await shot(page, "01-generated-art");
+  await page.evaluate("window.__eye.vantage()");
+  await page.waitForTimeout(300);
+  await shot(page, "02-generated-art-monster");
+  check((await info(page)).errors.length === 0, "no errors with generated art");
+  await page.context().close();
+
+  // Second pass: no files at all. The game must run the same on its code-drawn art.
+  const bare = await open(browser, "&noassets=1&start=1&god=1&seed=goal-1&level=1");
+  await waitFor(bare, "the game to start without assets", (x) => x.screen === "game");
+  const none = (await bare.evaluate("window.__eye.assets()")) as AssetReport;
+  check(none.loaded === 0, "with asset loading disabled, nothing is loaded");
+  for (const code of ["KeyE", "KeyW", "KeyW", "KeyM", "KeyM", "KeyI", "Escape"]) await press(bare, code, 200);
+  await bare.evaluate("window.__eye.speed(8); window.__eye.auto('win')");
+  let i = await info(bare);
+  const started = Date.now();
+  while ((i.kills < 1 || i.steps < 30) && Date.now() - started < 60000) {
+    await bare.waitForTimeout(500);
+    i = await info(bare);
+  }
+  await bare.evaluate("window.__eye.auto(null); window.__eye.speed(1)");
+  check(i.steps >= 30 && i.kills >= 1, `on code-drawn art alone the run still walks and fights (${i.steps} steps, ${i.kills} kills)`);
+  await bare.waitForTimeout(300);
+  await shot(bare, "03-code-drawn-art");
+  check((await info(bare)).errors.length === 0, "no errors on code-drawn art");
+  await bare.context().close();
+}
+
+const SCENARIOS: Record<string, (b: Browser) => Promise<void>> = { smoke, victory, death, specials, keys, economy, assets };
 const runScenario = SCENARIOS[scenario];
 if (!runScenario) fail(`unknown scenario "${scenario}". Known: ${Object.keys(SCENARIOS).join(", ")}`);
 

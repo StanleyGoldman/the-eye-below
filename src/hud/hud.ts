@@ -12,7 +12,8 @@ import { roleDef, XP_FOR_LEVEL } from "../game/data/roles.ts";
 import { spellCost, spellDef } from "../game/data/spells.ts";
 import { ITEM_BLURB, STATUS_INFO, STAT_HELP } from "../game/data/text.ts";
 import { isUnidentified } from "../game/effects.ts";
-import { activeStatuses, armorClass, capital, facing, has, monsterAt, wornItem } from "../game/state.ts";
+import { buyPrice, sellPrice, shopBuys } from "../game/shops.ts";
+import { activeStatuses, armorClass, capital, facing, has, isLit, monsterAt, wornItem } from "../game/state.ts";
 import { DIR_NAMES, PERMANENT } from "../game/types.ts";
 import type { GameState, Item, ItemClass, Msg, Prompt } from "../game/types.ts";
 import type { ActionId, KeyMap } from "../input/keys.ts";
@@ -35,6 +36,7 @@ export const ITEM_ACTION_KEYS: Record<ItemAction, string> = {
   read: "r",
   zap: "z",
   throw: "t",
+  apply: "a",
   dip: "D",
   drop: "d",
 };
@@ -48,6 +50,9 @@ export interface HudCallbacks {
   cancelPrompt(): void;
   resetPuzzle(): void;
   selectItem(uid: number | null): void;
+  shopBuy(uid: number): void;
+  shopSell(uid: number): void;
+  shopClose(): void;
 }
 
 function describeItem(state: GameState, item: Item): string {
@@ -117,6 +122,8 @@ export class Hud {
   private readonly modal: HTMLElement;
   private readonly itemMenu: HTMLElement;
   private readonly spellBox: HTMLElement;
+  private readonly shopBox: HTMLElement;
+  private shopSig = "";
   private readonly resetButton: HTMLElement;
   private readonly floats: HTMLElement;
 
@@ -284,7 +291,10 @@ export class Hud {
     this.itemMenu.hidden = true;
     this.spellBox = el("div", "spellbox");
     this.spellBox.hidden = true;
-    this.root.append(this.modal, this.itemMenu, this.spellBox);
+    this.shopBox = el("div", "shop");
+    this.shopBox.hidden = true;
+    this.shopBox.style.backgroundImage = `url(${store.url("ui_shop")})`;
+    this.root.append(this.modal, this.itemMenu, this.spellBox, this.shopBox);
   }
 
   /** A number or word that rises from the middle of the view and fades: damage dealt and taken. */
@@ -424,7 +434,7 @@ export class Hud {
     const extra: string[] = [];
     if (p.stoning > 0) extra.push("stone");
     if (p.strangling > 0) extra.push("strangle");
-    if (p.litUntil > state.time) extra.push("lit");
+    if (isLit(state)) extra.push("lit");
     const statusSig = statuses.map((s) => `${s.id}:${s.left >= PERMANENT ? "p" : Math.ceil(s.left / 1000)}`).join(",") + extra.join(",") + (p.stoning > 0 ? Math.ceil(p.stoning / 1000) : "") + (p.strangling > 0 ? Math.ceil(p.strangling / 1000) : "");
     if (statusSig !== this.statusSig) {
       this.statusSig = statusSig;
@@ -448,8 +458,8 @@ export class Hud {
       };
       if (p.stoning > 0) special("Turning to stone", "#c0c0c0", `You will be a statue in ${Math.ceil(p.stoning / 1000)} seconds. Anything that heals stops it: a potion of healing, the healing spell, or prayer at an altar.`);
       if (p.strangling > 0) special("Strangling", "#e04040", `The amulet kills you in ${Math.ceil(p.strangling / 1000)} seconds. Remove it; if it is cursed, lift the curse or pray.`);
-      if (p.litUntil > state.time) {
-        const chip = tip(el("div", "status"), "A lit field surrounds you: you see further, in every direction.");
+      if (isLit(state)) {
+        const chip = tip(el("div", "status"), "Light surrounds you, from a spell or a lamp: you see further, in every direction.");
         const glyph = el("span", "statusglyph", "*");
         glyph.style.color = "#f0e080";
         chip.append(glyph, el("span", "", "Lit"));
@@ -543,6 +553,67 @@ export class Hud {
       this.renderPrompt(state.prompt);
     }
     if (this.spellsOpen) this.renderSpells(state);
+    this.renderShop(state);
+  }
+
+  private renderShop(state: GameState): void {
+    const prompt = state.prompt;
+    const keeper = prompt && prompt.kind === "shop" ? state.levels[state.depth]?.monsters.find((x) => x.uid === prompt.keeper) : undefined;
+    const npc = keeper?.npc;
+    if (!prompt || prompt.kind !== "shop" || !npc || !npc.stock || !npc.shop) {
+      if (!this.shopBox.hidden) {
+        this.shopBox.hidden = true;
+        this.shopSig = "";
+      }
+      return;
+    }
+    const p = state.player;
+    const sig = `${prompt.keeper}|${p.gold}|${npc.stock.map((it) => `${it.uid}.${it.qty}`).join(",")}|${p.inventory.map((it) => `${it.uid}.${it.qty}.${it.slot ?? ""}`).join(",")}|${Object.keys(state.discovered).length}`;
+    if (sig === this.shopSig) return;
+    this.shopSig = sig;
+    const kind = npc.shop;
+    clear(this.shopBox);
+    this.shopBox.hidden = false;
+    this.shopBox.appendChild(el("div", "shoptitle", prompt.title));
+    const gold = el("div", "shopgold", `Your gold: ${p.gold}`);
+    gold.dataset["gold"] = String(p.gold);
+    this.shopBox.appendChild(gold);
+    const cols = el("div", "shopcols");
+    const list = (title: string, hint: string): HTMLElement => {
+      const col = el("div", "shopcol");
+      col.appendChild(tip(el("div", "shophead", title), hint));
+      const body = el("div", "shoplist");
+      col.appendChild(body);
+      cols.appendChild(col);
+      return body;
+    };
+    const forSale = list("For sale", "Prices follow what a thing really is, so an odd price is a clue. Click to buy one.");
+    for (const item of npc.stock) {
+      const price = buyPrice(state, item);
+      const row = button("", () => this.cb.shopBuy(item.uid), `btn shoprow${p.gold < price ? " dim" : ""}`);
+      row.dataset["shopBuy"] = String(item.uid);
+      row.dataset["price"] = String(price);
+      row.append(el("span", "shopname", itemName(state, item)), el("span", "shopprice", `${price}`));
+      tip(row, `${describeItem(state, item)}\n${price} gold each.`);
+      forSale.appendChild(row);
+    }
+    if (npc.stock.length === 0) forSale.appendChild(el("div", "shopempty", "Sold out."));
+    const mine = list("Your pack", "A shop buys only its own kind of goods, at half their worth. Click to sell one.");
+    for (const item of p.inventory) {
+      const wanted = shopBuys(kind, item);
+      const price = sellPrice(state, item);
+      const row = button("", () => this.cb.shopSell(item.uid), `btn shoprow${wanted ? "" : " dim"}`);
+      row.dataset["shopSell"] = String(item.uid);
+      row.dataset["price"] = wanted ? String(price) : "";
+      row.append(el("span", "shopname", `${item.letter} - ${itemName(state, item)}`), el("span", "shopprice", wanted ? `${price}` : "-"));
+      tip(row, wanted ? `${describeItem(state, item)}\nSells for ${price} gold each.` : item.slot ? "Take it off or put it away before selling it." : "This shop does not buy that.");
+      mine.appendChild(row);
+    }
+    this.shopBox.appendChild(cols);
+    const close = button("[Esc] Leave the shop", () => this.cb.shopClose(), "btn shopclose");
+    close.dataset["act"] = "shopclose";
+    this.shopBox.appendChild(close);
+    this.shopBox.appendChild(el("div", "shopnote", "The world waits while you haggle."));
   }
 
   /** Icons are drawn onto small canvases, tint and all, so nothing ever needs an image's pixels read back. */
@@ -613,7 +684,15 @@ export class Hud {
       this.modal.hidden = true;
       return;
     }
+    if (prompt.kind === "shop") {
+      this.modal.hidden = true;
+      return;
+    }
     this.modal.hidden = false;
+    const spoken = prompt.kind === "menu" && prompt.speaker !== undefined;
+    this.modal.classList.toggle("dialogue", spoken);
+    this.modal.style.backgroundImage = spoken ? `url(${this.store.url("ui_dialogue")})` : "";
+    if (prompt.kind === "menu" && prompt.speaker) this.modal.appendChild(el("div", "speaker", prompt.speaker));
     this.modal.appendChild(el("div", "modaltitle", prompt.title));
     if (prompt.kind === "pick") {
       this.modal.appendChild(el("div", "modalhint", "Click an item in your pack, or press its letter."));

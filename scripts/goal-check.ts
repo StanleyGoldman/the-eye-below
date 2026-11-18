@@ -103,6 +103,37 @@ function layout(): Result {
   return { ok, note: ok ? `7 workflow files in workflows/; ${roots.length} root entries, all in the layout` : `stray root entries: ${stray.join(", ") || "none"}; missing workflows: ${missing.join(", ") || "none"}` };
 }
 
+function assetsUpToDate(): Result {
+  const q = sh("make", ["-q", "assets"]);
+  const again = sh("make", ["-s", "assets"]);
+  const jobs = again.out.split("\n").filter((l) => /attempt \d+:|^cut: |^process: /.test(l)).length;
+  const ok = q.code === 0 && again.code === 0 && jobs === 0;
+  return { ok, note: ok ? "make -q assets exits 0; a second make assets ran no jobs" : `make -q assets exit ${q.code}; a second make assets ran ${jobs} job(s), exit ${again.code}` };
+}
+
+function sheets(): Result {
+  const r = sh("make", ["-s", "sheet"]);
+  const files = existsSync("out/sheets") ? readdirSync("out/sheets").filter((f) => f.endsWith(".png")) : [];
+  return { ok: r.code === 0 && files.length >= 1, note: `${files.length} contact sheet(s) in out/sheets/` };
+}
+
+function comfyStopped(): Result {
+  const r = sh("node", ["scripts/comfy.ts", "status"]);
+  const text = lastLine(r.out);
+  return { ok: r.code === 0 && text.includes("no instance from this build is left running"), note: text };
+}
+
+function auditAssets(...flags: string[]): () => Result {
+  return () => {
+    const r = sh("node", ["scripts/audit-assets.ts", ...flags]);
+    const lines = r.out.trim().split("\n");
+    const fails = lines.filter((l) => l.startsWith("FAIL"));
+    const missing = lines.find((l) => l.startsWith("missing:"));
+    const oks = lines.filter((l) => l.startsWith("ok  ")).map((l) => l.slice(5));
+    return { ok: r.code === 0, note: r.code === 0 ? `${missing ? `${missing}; ` : ""}${oks[oks.length - 1] ?? "ok"}` : fails.map((l) => l.slice(5)).join("; ").slice(0, 400) };
+  };
+}
+
 function docs(session: number): () => Result {
   return () => {
     const problems: string[] = [];
@@ -110,6 +141,8 @@ function docs(session: number): () => Result {
     for (const f of need) if (!existsSync(f) || statSync(f).size < 200) problems.push(`${f} is missing or empty`);
     const readme = existsSync("README.md") ? readFileSync("README.md", "utf8") : "";
     if (!/^##+ What is in this version/m.test(readme)) problems.push('README.md has no "What is in this version" section');
+    if (session >= 2 && !/^##+ Regenerating assets/m.test(readme)) problems.push('README.md has no "Regenerating assets" section');
+    if (session >= 2 && !/make assets/.test(readme)) problems.push("README.md does not say how to run make assets");
     const scripts = readdirSync("scripts").filter((f) => f.endsWith(".ts"));
     const unlisted = scripts.filter((f) => !readme.includes(`scripts/${f}`));
     if (unlisted.length > 0) problems.push(`README.md does not name ${unlisted.join(", ")}`);
@@ -152,6 +185,36 @@ const SESSIONS: Record<number, Check[]> = {
     { name: "tag session-1 at HEAD", run: tagAtHead(1) },
   ],
 };
+
+const common = (minTests: number): Check[] => [
+  { name: "make check exits 0", run: command("make", ["-s", "check"]) },
+  { name: `at least ${minTests} tests pass, 0 fail`, run: testCount(minTests) },
+  { name: "make sweep prints unsolvable: 0", run: command("make", ["-s", "sweep"], (out) => `${/sweep: \d+ seeds[^\n]*/.exec(out)?.[0].replace("sweep: ", "") ?? ""}; ${lastLine(out)}`) },
+  { name: "determinism across two processes", run: command("node", ["scripts/determinism.ts"], (out) => out.trim().split("\n").slice(0, 2).join("; ").replace(/determinism: /g, "")) },
+  { name: "scripted run reaches the victory screen", run: play("victory") },
+  { name: "scripted run reaches the death screen and restarts", run: play("death") },
+  { name: "five special-level screenshots, no console errors", run: specials },
+];
+
+SESSIONS[2] = [
+  ...common(80),
+  { name: "economy scenario: buy, sell, paused clock, rumor, priest", run: play("economy") },
+  { name: "content audit with shops, peaceful folk, rumors", run: command("node", ["scripts/audit.ts"]) },
+  { name: "manifest valid, at least 90 image entries", run: auditAssets("--manifest") },
+  { name: "image files, raws, and records", run: auditAssets("--files", "image") },
+  { name: "image sizes, palette, alpha", run: auditAssets("--pixels") },
+  { name: "all seven workflows have a timed successful job", run: auditAssets("--workflows") },
+  { name: "make -q assets exits 0; nothing left to generate", run: assetsUpToDate },
+  { name: "contact sheets built", run: sheets },
+  { name: "assets scenario: all images load; runs without them", run: play("assets") },
+  { name: "no ComfyUI instance left running by this build", run: comfyStopped },
+  { name: "no stubs", run: noStubs },
+  { name: "offline: no URLs or network calls", run: offline },
+  { name: "repository layout", run: layout },
+  { name: "docs and README", run: docs(2) },
+  { name: "git status clean", run: gitClean },
+  { name: "tag session-2 at HEAD", run: tagAtHead(2) },
+];
 
 const session = Number(process.argv[2] ?? 1);
 const checks = SESSIONS[session];

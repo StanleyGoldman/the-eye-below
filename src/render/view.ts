@@ -4,13 +4,13 @@
 // glide. Floors and ceilings are drawn a row at a time. Sprites are
 // clipped against the walls column by column.
 
-import type { AssetStore } from "../assets/store.ts";
+import type { AssetStore, Pic } from "../assets/store.ts";
 import { SHADE_LEVELS } from "../assets/store.ts";
 import { doorAt, gateAt } from "../dungeon/grid.ts";
 import { monsterSprite } from "../game/data/assets.ts";
 import { APPEARANCES, KEY_TINT, itemType } from "../game/data/items.ts";
 import { monsterType, regularMonsters, tierOfDepth } from "../game/data/monsters.ts";
-import { has } from "../game/state.ts";
+import { has, isLit } from "../game/state.ts";
 import { T } from "../game/types.ts";
 import type { GameState, Item, Level, Pos } from "../game/types.ts";
 
@@ -22,7 +22,6 @@ const WALL_SCALE = VIEW_W * 0.62;
 const BACK = 0.3;
 const STEP_TWEEN = 190;
 const TURN_TWEEN = 140;
-const TEX = 64;
 
 export interface ViewFx {
   /** Real-time clock, milliseconds. */
@@ -125,6 +124,8 @@ export class ViewRenderer {
     const floor = this.pattern(`floor_${tier}`);
     const ceil = this.pattern(`ceil_${tier}`);
     const half = VIEW_H / 2;
+    // Texture pixels per cell: the floor image's own width, whatever size it was made at.
+    const TEX = this.store.get(`floor_${tier}`).width;
     const sx = (2 * cam.px) / VIEW_W;
     const sy = (2 * cam.py) / VIEW_W;
     for (let row = 0; row < half; row++) {
@@ -253,7 +254,7 @@ export class ViewRenderer {
     const shade = Math.min(1, this.shadeOf(dist) + darker);
     if (shade >= 1) return;
     const img = this.store.shaded(id, shade * SHADE_LEVELS, tint);
-    const tx = Math.min(TEX - 1, Math.max(0, Math.floor(u * img.width)));
+    const tx = Math.min(img.width - 1, Math.max(0, Math.floor(u * img.width)));
     this.g.drawImage(img, tx, 0, 1, img.height, x, top, 1, lineH);
   }
 
@@ -355,7 +356,7 @@ export class ViewRenderer {
     }
   }
 
-  private sprite(cam: Camera, drawables: Drawable[], img: (shade: number) => CanvasImageSource & { width: number; height: number }, wx: number, wy: number, height: number, lift: number, alpha: number, widthScale = 1): void {
+  private sprite(cam: Camera, drawables: Drawable[], img: (shade: number) => Pic, wx: number, wy: number, height: number, lift: number, alpha: number, widthScale = 1): void {
     const [tx, ty] = this.toCamera(cam, wx, wy);
     // Anything closer than this is in the player's own cell: under their feet, not in front of them.
     if (ty < 0.55 || ty > this.far + 0.5) return;
@@ -509,8 +510,7 @@ export class ViewRenderer {
     if (!level) return;
     if (has(state, "blind")) return;
     const p = state.player;
-    const lit = p.litUntil > state.time;
-    this.far = lit ? 7 : 4.6;
+    this.far = isLit(state) ? 7 : 4.6;
     const tier = tierOfDepth(state.depth);
     const cam = this.camera(state, fx);
 

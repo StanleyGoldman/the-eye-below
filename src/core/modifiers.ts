@@ -35,6 +35,9 @@ export const MODIFIERS: readonly ModifierDef[] = [
   { id: "fountains", code: "fa", name: "Fountains and altars", help: "How often fountains and altars appear.", low: "dry", high: "blessed", weight: -0.3 },
   { id: "restSafety", code: "rs", name: "Resting safety", help: "How likely rest is to pass undisturbed.", low: "restless", high: "peaceful", weight: -0.7 },
   { id: "unidentified", code: "ui", name: "Unidentified items", help: "Share of magic items whose nature is unknown until used.", low: "labelled", high: "inscrutable", weight: 0.5 },
+  { id: "shopFrequency", code: "sf", name: "Shops", help: "How often a level has a shop.", low: "none", high: "bazaar", weight: -0.3 },
+  { id: "shopPrices", code: "sp", name: "Shop prices", help: "What shopkeepers charge. What they pay for your goods does not change.", low: "cheap", high: "extortionate", weight: 0.3 },
+  { id: "npcs", code: "np", name: "Peaceful folk", help: "How many priests, hermits, and other peaceful characters appear.", low: "deserted", high: "sociable", weight: -0.1 },
 ];
 
 export type Mods = Record<string, number>;

@@ -1,0 +1,24 @@
+{
+ "id": "ui_shop",
+ "type": "image",
+ "kind": "ui",
+ "workflow": "zimage",
+ "prompt": {
+  "subject": "one large blank shop ledger panel, an aged parchment sheet in a dark wooden frame with iron corners, empty, filling the whole frame",
+  "fragments": [
+   "ui",
+   "style"
+  ]
+ },
+ "size": [
+  320,
+  200
+ ],
+ "gen": [
+  1024,
+  640
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "one large blank shop ledger panel, an aged parchment sheet in a dark wooden frame with iron corners, empty, filling the whole frame, a flat game interface piece seen straight-on, evenly lit, stone and dark iron, no text, no letters, no icons, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

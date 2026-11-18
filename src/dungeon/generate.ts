@@ -4,6 +4,7 @@
 import { scale3 } from "../core/modifiers.ts";
 import { stream } from "../core/rng.ts";
 import { makeItem, makeMonster, rollItem } from "../game/factory.ts";
+import { keeperName, makeStock, pickShopKind } from "../game/shops.ts";
 import { monstersOfTier, tierOfDepth } from "../game/data/monsters.ts";
 import type { MonsterType } from "../game/data/monsters.ts";
 import { T } from "../game/types.ts";
@@ -89,7 +90,9 @@ function populate(run: RunConfig, carved: Carved): void {
   const mods = run.mods;
   const at = (x: number, y: number): number => y * level.w + x;
   const startRoom = plan.rooms[plan.start]!;
-  const openRooms = plan.rooms.filter((r) => !r.closet);
+  const openRooms = plan.rooms.filter((r) => !r.closet && !r.shop);
+  const shop = plan.shopRoom >= 0 ? plan.rooms[plan.shopRoom]! : null;
+  if (shop) for (const c of roomCells(shop)) used.add(at(c.x, c.y));
   const closets = plan.rooms.filter((r) => r.closet);
 
   // ---- fountains and altars: interior cells only, never side by side ----
@@ -119,6 +122,66 @@ function populate(run: RunConfig, carved: Carved): void {
   placeFeatures("fountain", scale3(mods["fountains"] ?? 5, 0, 0.9, 2.4));
   placeFeatures("altar", scale3(mods["fountains"] ?? 5, 0, 0.3, 0.9));
 
+  // ---- the shop: a keeper beside the door, and a stock that lives in the ledger ----
+  const rsh = stream(run.seed, "shopstock", depth);
+  if (shop) {
+    const inRoom = (x: number, y: number): boolean => x >= shop.x && x < shop.x + shop.w && y >= shop.y && y < shop.y + shop.h;
+    const door = level.doors.find((d) => [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => inRoom(d.x + dx!, d.y + dy!)));
+    if (door) {
+      const entry = [[1, 0], [-1, 0], [0, 1], [0, -1]].map(([dx, dy]) => ({ x: door.x + dx!, y: door.y + dy! })).find((c) => inRoom(c.x, c.y))!;
+      const beside = [[1, 0], [-1, 0], [0, 1], [0, -1]].map(([dx, dy]) => ({ x: entry.x + dx!, y: entry.y + dy! })).filter((c) => inRoom(c.x, c.y));
+      // Prefer a spot to the side of the way in, so the keeper is "by the door" and not in it.
+      const side = beside.filter((c) => c.x - entry.x !== entry.x - door.x || c.y - entry.y !== entry.y - door.y);
+      const spot = rsh.pick(side.length > 0 ? side : beside);
+      const kind = pickShopKind(rsh);
+      const keeper = makeMonster(uids, rsh, "shopkeeper", depth, mods, spot.x, spot.y);
+      keeper.asleep = false;
+      keeper.npc = { kind: "shopkeeper", name: keeperName(rsh, kind), shop: kind, stock: makeStock(uids, rsh, kind, depth, mods), told: 0 };
+      level.monsters.push(keeper);
+      level.meta.shop = kind;
+      level.meta.shopDoor = at(door.x, door.y);
+    }
+  }
+
+  // ---- priests beside altars, and people with something to say ----
+  const rn = stream(run.seed, "npcs", depth);
+  const npcShare = scale3(mods["npcs"] ?? 5, 0, 0.5, 1);
+  for (const altar of level.features.filter((ft) => ft.kind === "altar")) {
+    if (!rn.chance(npcShare)) continue;
+    const room = openRooms.find((r) => altar.x >= r.x && altar.x < r.x + r.w && altar.y >= r.y && altar.y < r.y + r.h);
+    if (!room) continue;
+    const spots = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+      .map(([dx, dy]) => ({ x: altar.x + dx!, y: altar.y + dy! }))
+      .filter((c) => !used.has(at(c.x, c.y)) && level.tiles[at(c.x, c.y)] === T.FLOOR)
+      // Never on a cell that touches a way into the room.
+      .filter((c) => [[1, 0], [-1, 0], [0, 1], [0, -1]].every(([dx, dy]) => {
+        const nx = c.x + dx!;
+        const ny = c.y + dy!;
+        const inside = nx >= room.x && nx < room.x + room.w && ny >= room.y && ny < room.y + room.h;
+        return inside || level.tiles[at(nx, ny)] === T.WALL;
+      }));
+    if (spots.length === 0) continue;
+    const spot = rn.pick(spots);
+    used.add(at(spot.x, spot.y));
+    const priest = makeMonster(uids, rn, "priest", depth, mods, spot.x, spot.y);
+    priest.asleep = false;
+    priest.npc = { kind: "priest", name: "the priest", told: 0 };
+    level.monsters.push(priest);
+  }
+  const talkers = scale3(mods["npcs"] ?? 5, 0, 0.45, 1.4);
+  const talkerCount = Math.floor(talkers) + (rn.chance(talkers - Math.floor(talkers)) ? 1 : 0);
+  for (let i = 0; i < talkerCount; i++) {
+    const spots = featureSpots();
+    if (spots.length === 0) break;
+    const spot = rn.pick(spots);
+    used.add(at(spot.x, spot.y));
+    const kind = rn.pick(["hermit", "adventurer", "gnome"] as const);
+    const who = makeMonster(uids, rn, kind, depth, mods, spot.x, spot.y);
+    who.asleep = false;
+    who.npc = { kind, name: kind === "adventurer" ? "the lost adventurer" : `the ${kind}`, told: 0 };
+    level.monsters.push(who);
+  }
+
   // ---- torches ----
   for (let y = 1; y < level.h - 1; y++) {
     for (let x = 1; x < level.w - 1; x++) {
@@ -129,7 +192,7 @@ function populate(run: RunConfig, carved: Carved): void {
   }
 
   const freeIn = (rng: { shuffle<V>(l: V[]): V[] }, cells: Pos[]): Pos | null => {
-    for (const c of rng.shuffle(cells.slice())) if (!used.has(at(c.x, c.y)) && level.tiles[at(c.x, c.y)] === T.FLOOR) return c;
+    for (const c of rng.shuffle(cells.slice())) if (!used.has(at(c.x, c.y)) && level.tiles[at(c.x, c.y)] === T.FLOOR && !level.monsters.some((mo) => mo.peaceful && mo.x === c.x && mo.y === c.y)) return c;
     return null;
   };
 
@@ -137,7 +200,8 @@ function populate(run: RunConfig, carved: Carved): void {
   const rt = stream(run.seed, "traps", depth);
   const floorCells: Pos[] = [];
   const inStart = (x: number, y: number): boolean => x >= startRoom.x && x < startRoom.x + startRoom.w && y >= startRoom.y && y < startRoom.y + startRoom.h;
-  for (let y = 0; y < level.h; y++) for (let x = 0; x < level.w; x++) if (level.tiles[at(x, y)] === T.FLOOR && !used.has(at(x, y)) && !inStart(x, y)) floorCells.push({ x, y });
+  const occupied = new Set(level.monsters.map((mo) => at(mo.x, mo.y)));
+  for (let y = 0; y < level.h; y++) for (let x = 0; x < level.w; x++) if (level.tiles[at(x, y)] === T.FLOOR && !used.has(at(x, y)) && !inStart(x, y) && !occupied.has(at(x, y))) floorCells.push({ x, y });
   const trapCount = Math.round(floorCells.length * scale3(mods["traps"] ?? 5, 0, 0.012, 0.045));
   // No trapdoors above a special level: those are entered by their stairs.
   const trapPool = TRAPS.filter((t) => t.minDepth <= depth && !(t.kind === "trapdoor" && (depth >= 24 || isSpecialDepth(depth + 1))));
@@ -152,7 +216,7 @@ function populate(run: RunConfig, carved: Carved): void {
   // ---- monsters ----
   const rm = stream(run.seed, "monsters", depth);
   const monsterRooms = openRooms.filter((r) => r.id !== plan.start);
-  const taken = new Set<number>();
+  const taken = new Set<number>(level.monsters.map((mo) => at(mo.x, mo.y)));
   const monsterCount = Math.max(1, Math.round(plan.rooms.length * scale3(mods["monsterCount"] ?? 5, 0.35, 1, 2.3)));
   const placeMonster = (type: string, room: (typeof monsterRooms)[number]): boolean => {
     const cells = rm.shuffle(roomCells(room)).filter((c) => !taken.has(at(c.x, c.y)) && level.tiles[at(c.x, c.y)] === T.FLOOR && !level.features.some((f) => f.x === c.x && f.y === c.y));
@@ -225,8 +289,11 @@ export function generateLevel(run: RunConfig, depth: number): Level {
   populate(run, carved);
   const level = carved.level;
   if (!solveLevel(level, { boneKeys: level.meta.boneDoor ? 1 : 0 }).ok) {
-    // Features are the only thing added after the layout was verified that can block a cell.
+    // Fixtures and peaceful characters are the only things added after the layout was verified that can block a cell.
     level.features = [];
+    level.monsters = level.monsters.filter((mo) => !mo.peaceful);
+    delete level.meta.shop;
+    delete level.meta.shopDoor;
   }
   level.startArea = startArea(level);
   return level;

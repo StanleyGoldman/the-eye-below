@@ -1,0 +1,27 @@
+{
+ "id": "monster_gnome",
+ "type": "image",
+ "kind": "monster",
+ "workflow": "krea2",
+ "prompt": {
+  "subject": "a friendly gnome with a red pointed cap and a long white beard holding a tiny lantern",
+  "fragments": [
+   "peaceful",
+   "sprite",
+   "style"
+  ]
+ },
+ "size": [
+  160,
+  160
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "reference": "monster_newt",
+ "candidates": 2,
+ "resolvedPrompt": "a friendly gnome with a red pointed cap and a long white beard holding a tiny lantern, standing upright and calm, hands visible and open, not threatening, warm pale colours, single subject, front-facing, centered, full body, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

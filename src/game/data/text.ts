@@ -39,6 +39,7 @@ export const ITEM_BLURB: Record<string, string> = {
   amulet_life_saving: "Saves you from death once, then crumbles.",
   amulet_awareness: "Shows every monster on the level on the map.",
   amulet_strangulation: "Strangles its wearer in under half a minute. Take it off, or pray.",
+  lamp: "An oil lamp. Lit, it lets you see further in every direction. It never runs dry; Old Wick sells no other kind.",
   amulet_eye: "It has not blinked since it was made. Taking it wins the run.",
 };
 

@@ -19,6 +19,7 @@ export const MAP_LEGEND: readonly [string, string, string][] = [
   [">", "#e0e0e0", "stairs down"],
   ["+", "#c8a070", "door (in its key colour when locked)"],
   ["'", "#8a7050", "open door"],
+  ["+", "#f0d040", "shop door"],
   ["=", "#a0a8b0", "gate"],
   ["|", "#e0c040", "switch or lever"],
   [",", "#c9a23a", "pressure plate"],
@@ -50,8 +51,9 @@ function baseGlyph(level: Level, x: number, y: number): Glyph | null {
   if (t === T.DOOR) {
     const d = level.doors.find((o) => o.x === x && o.y === y);
     if (d) {
-      if (d.open) return { ch: "'", color: "#8a7050" };
-      return { ch: "+", color: d.locked && d.color ? KEY_TINT[d.color] : "#c8a070" };
+      const shop = level.meta.shopDoor === i;
+      if (d.open) return { ch: "'", color: shop ? "#f0d040" : "#8a7050" };
+      return { ch: "+", color: shop ? "#f0d040" : d.locked && d.color ? KEY_TINT[d.color] : "#c8a070" };
     }
   }
   if (t === T.GATE) {

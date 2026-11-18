@@ -342,7 +342,10 @@ function winStep(state: GameState): void {
 
 function dieStep(state: GameState): void {
   const level = cur(state);
-  if (adjacentHostile(state, true)) return;
+  const p = state.player;
+  // Stand still beside anything that will hit back; a floating eye never will.
+  const threat = level.monsters.some((m) => !m.peaceful && m.hp > 0 && monsterType(m.type).attacks.length > 0 && Math.abs(m.x - p.x) + Math.abs(m.y - p.y) === 1);
+  if (threat) return;
   const r = routes(state, true);
   let best: Monster | null = null;
   let bestD = Infinity;

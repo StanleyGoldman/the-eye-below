@@ -7,6 +7,7 @@
 // route from the up stairs to the down stairs, and whatever opens a
 // lock is placed in a room that can be reached before it.
 
+import { scale3 } from "../core/modifiers.ts";
 import { stream } from "../core/rng.ts";
 import type { Rng } from "../core/rng.ts";
 import { makeItem } from "../game/factory.ts";
@@ -42,6 +43,8 @@ export interface Room {
   h: number;
   region: number;
   closet: boolean;
+  /** A shop: one door, a shopkeeper, nothing else generated inside. */
+  shop: boolean;
   /** Holds a key, switch, or plate, so it must stay reachable. */
   holdsOpener: boolean;
 }
@@ -80,6 +83,8 @@ export interface Plan {
   path: number[];
   locks: LockPlan[];
   boneCloset: boolean;
+  /** Room that is a shop, or -1. */
+  shopRoom: number;
 }
 
 /** Does the level above carry a bone key for a door on this one? Decided by the seed alone. */
@@ -115,7 +120,7 @@ export function planLayout(run: RunConfig, depth: number, attempt: number, withL
 
   const rooms: Room[] = [];
   for (let id = 0; id < count; id++) {
-    const room: Room = { id, c: id % cols, r: Math.floor(id / cols), x: 0, y: 0, w: 1, h: 1, region: 0, closet: false, holdsOpener: false };
+    const room: Room = { id, c: id % cols, r: Math.floor(id / cols), x: 0, y: 0, w: 1, h: 1, region: 0, closet: false, shop: false, holdsOpener: false };
     if (rl.chance(0.14)) {
       room.x = room.c * SECT + 1 + rl.range(0, 5);
       room.y = room.r * SECT + 1 + rl.range(0, 5);
@@ -219,8 +224,24 @@ export function planLayout(run: RunConfig, depth: number, attempt: number, withL
   }
 
   const onPath = new Set(path);
+  // A shop: a dead-end room off the route with exactly one door, chosen before anything else claims the room.
+  // It draws from its own stream.
+  let shopRoom = -1;
+  const rs = stream(run.seed, "shops", key);
+  if (rs.chance(scale3(run.mods["shopFrequency"] ?? 5, 0, 0.35, 1))) {
+    const spots = rooms.filter((r) => adj[r.id]!.length === 1 && !onPath.has(r.id));
+    if (spots.length > 0) {
+      const room = rs.pick(spots);
+      room.shop = true;
+      sizeRoom(rs, room, 3);
+      shopRoom = room.id;
+      const other = adj[room.id]![0] as number;
+      edges[edgeOf.get(`${Math.min(room.id, other)},${Math.max(room.id, other)}`) as number]!.plainDoor = true;
+    }
+  }
+
   const pickOpenerRoom = (maxRegion: number): number => {
-    const candidates = rooms.filter((r) => r.region <= maxRegion && !r.closet);
+    const candidates = rooms.filter((r) => r.region <= maxRegion && !r.closet && !r.shop);
     const weights = candidates.map((r) => (r.region === maxRegion ? 3 : 1) * (onPath.has(r.id) ? 1 : 2));
     const room = candidates[rp.weighted(weights)] as Room;
     room.holdsOpener = true;
@@ -246,7 +267,7 @@ export function planLayout(run: RunConfig, depth: number, attempt: number, withL
   // Closets: dead-end rooms off the path behind a coloured door, holding better loot.
   let boneCloset = false;
   if (withLocks) {
-    const leaves = rp.shuffle(rooms.filter((r) => adj[r.id]!.length === 1 && !onPath.has(r.id) && !r.holdsOpener).map((r) => r.id));
+    const leaves = rp.shuffle(rooms.filter((r) => adj[r.id]!.length === 1 && !onPath.has(r.id) && !r.holdsOpener && !r.shop).map((r) => r.id));
     const wantBone = boneFlag(run.seed, depth - 1);
     let wantClosets = CLOSETS[(run.mods["puzzles"] ?? 5) - 1] ?? 0;
     for (const leaf of leaves) {
@@ -266,7 +287,7 @@ export function planLayout(run: RunConfig, depth: number, attempt: number, withL
       const ei = edgeOf.get(`${Math.min(leaf, other)},${Math.max(leaf, other)}`) as number;
       let openerRoom = -1;
       if (color !== "bone") {
-        const candidates = rooms.filter((r) => !r.closet);
+        const candidates = rooms.filter((r) => !r.closet && !r.shop);
         const holder = rp.pick(candidates);
         holder.holdsOpener = true;
         openerRoom = holder.id;
@@ -282,14 +303,14 @@ export function planLayout(run: RunConfig, depth: number, attempt: number, withL
       if (n < id || edgeOf.has(`${id},${n}`)) continue;
       const ra = rooms[id]!;
       const rb = rooms[n]!;
-      if (ra.region !== rb.region || ra.closet || rb.closet) continue;
+      if (ra.region !== rb.region || ra.closet || rb.closet || ra.shop || rb.shop) continue;
       if (rl.chance(0.22)) addEdge(id, n, false);
     }
   }
 
   for (const e of edges) if (e.lock === -1 && rl.chance(0.25)) e.plainDoor = true;
 
-  return { cols, rows, w: cols * SECT + 1, h: rows * SECT + 1, rooms, edges, start, end, path, locks, boneCloset };
+  return { cols, rows, w: cols * SECT + 1, h: rows * SECT + 1, rooms, edges, start, end, path, locks, boneCloset, shopRoom };
 }
 
 function corridorCells(rng: Rng, a: Room, b: Room): Pos[] {
@@ -445,7 +466,9 @@ export function carve(run: RunConfig, depth: number, attempt: number, plan: Plan
   for (const edge of plan.edges) {
     if (!edge.plainDoor || edge.lock !== -1) continue;
     const vertical = plan.rooms[edge.a]!.c === plan.rooms[edge.b]!.c;
-    const cell = (rng.chance(0.5) ? edge.cells[0] : edge.cells[edge.cells.length - 1]) as Pos;
+    // A shop's door is at the shop; any other plain door is at either end.
+    const atEnd = plan.rooms[edge.b]!.shop ? true : plan.rooms[edge.a]!.shop ? false : rng.chance(0.5);
+    const cell = (atEnd ? edge.cells[edge.cells.length - 1] : edge.cells[0]) as Pos;
     level.tiles[at(cell.x, cell.y)] = T.DOOR;
     used.add(at(cell.x, cell.y));
     level.doors.push({ id: level.doors.length, x: cell.x, y: cell.y, vertical, color: null, locked: false, open: false });

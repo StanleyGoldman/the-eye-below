@@ -125,6 +125,11 @@ export const MONSTER_TYPES: readonly MonsterType[] = [
   m({ id: "soldier", name: "keep soldier", glyph: "s", tier: 0, level: 8, ac: 2, moveMs: 600, attackMs: 1100, attacks: [atk(2, 6, "slashes")], size: 0.85, gold: 0.7, drops: [{ type: "long_sword", chance: 0.15 }, { type: "chain_mail", chance: 0.1 }], freq: 0 }),
   m({ id: "medusa", name: "Medusa", glyph: "m", tier: 0, level: 16, ac: 2, moveMs: 700, attackMs: 1200, attacks: [atk(2, 6, "claws"), atk(1, 6, "bites", "poison", 0.5)], ranged: { kind: "gaze", dice: [0, 0], range: 4, every: 2600, reflectable: true, text: "meets your eyes" }, size: 0.9, boss: true, bonusHp: 60, gold: 0, freq: 0 }),
   m({ id: "morvane", name: "Morvane", glyph: "M", tier: 0, level: 22, ac: -4, moveMs: 520, attackMs: 1100, attacks: [atk(2, 10, "strikes"), atk(1, 8, "curses", "stun", 0.15)], ranged: { kind: "bolt", dice: [6, 6], range: 5, every: 3800, reflectable: true, text: "hurls a bolt of force" }, size: 0.95, boss: true, bonusHp: 140, gold: 0, resists: ["fire", "cold"], freq: 0 }),
+  m({ id: "shopkeeper", name: "shopkeeper", glyph: "@", tier: 0, level: 14, ac: 0, moveMs: 330, attackMs: 800, attacks: [atk(4, 4, "strikes"), atk(4, 4, "strikes")], windupMs: 300, size: 0.85, peaceful: true, bonusHp: 120, gold: 1, freq: 0 }),
+  m({ id: "priest", name: "priest", glyph: "@", tier: 0, level: 9, ac: 4, moveMs: 600, attackMs: 1100, attacks: [atk(2, 6, "smites")], size: 0.85, peaceful: true, bonusHp: 30, gold: 0.5, freq: 0 }),
+  m({ id: "hermit", name: "hermit", glyph: "@", tier: 0, level: 3, ac: 8, moveMs: 800, attackMs: 1300, attacks: [atk(1, 6, "thumps")], size: 0.8, peaceful: true, gold: 0, freq: 0 }),
+  m({ id: "adventurer", name: "lost adventurer", glyph: "@", tier: 0, level: 5, ac: 5, moveMs: 600, attackMs: 1100, attacks: [atk(1, 8, "slashes")], size: 0.85, peaceful: true, gold: 0.5, freq: 0 }),
+  m({ id: "gnome", name: "gnome", glyph: "@", tier: 0, level: 1, ac: 8, moveMs: 700, attackMs: 1200, attacks: [atk(1, 4, "jabs")], size: 0.5, peaceful: true, gold: 0.3, freq: 0 }),
   m({ id: "oracle", name: "oracle", glyph: "@", tier: 0, level: 12, ac: 0, moveMs: 0, attackMs: 1200, attacks: [atk(2, 8, "rebukes")], size: 0.85, peaceful: true, bonusHp: 60, gold: 0, freq: 0 }),
 ];
 

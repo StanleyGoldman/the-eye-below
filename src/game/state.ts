@@ -16,7 +16,7 @@ import type { UidSource } from "./factory.ts";
 import { DX, DY, PERMANENT, STATUS_IDS } from "./types.ts";
 import type { Buc, Dir, EquipSlot, GameEvent, GameState, Item, ItemClass, Level, Monster, MsgKind, Player, Pos, RoleId, StatusId } from "./types.ts";
 
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 const LOG_LIMIT = 200;
 const INVENTORY_LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -132,6 +132,13 @@ export function activeStatuses(state: GameState): { id: StatusId; left: number }
     if (left > 0) out.push({ id, left });
   }
   return out;
+}
+
+/** Lit by the light spell or by a burning lamp in the pack. */
+export function isLit(state: GameState): boolean {
+  if (state.player.litUntil > state.time) return true;
+  for (const it of state.player.inventory) if (it.lit) return true;
+  return false;
 }
 
 export function reflects(state: GameState): boolean {
@@ -623,6 +630,7 @@ export function newGame(options: NewGameOptions): GameState {
     cause: "",
     peacefulsKilled: 0,
     oracleTold: [],
+    shopkeepersAngry: false,
     debug: { god: options.god === true },
     stats: { steps: 0, potions: 0, scrolls: 0, spellsCast: 0, prayers: 0, doors: 0 },
   };

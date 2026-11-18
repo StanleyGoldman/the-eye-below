@@ -1,0 +1,24 @@
+{
+ "id": "plate",
+ "type": "image",
+ "kind": "decal",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "a square bronze pressure plate set in an iron frame",
+  "fragments": [
+   "topdown",
+   "style"
+  ]
+ },
+ "size": [
+  32,
+  32
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "stretch",
+ "resolvedPrompt": "a square bronze pressure plate set in an iron frame, single object seen from directly above, centered, filling most of the frame, plain flat solid magenta background, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

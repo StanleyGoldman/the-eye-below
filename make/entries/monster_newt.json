@@ -1,0 +1,24 @@
+{
+ "id": "monster_newt",
+ "type": "image",
+ "kind": "monster",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "a small orange-brown newt, a cave lizard, low to the ground, seen from the front and slightly above",
+  "fragments": [
+   "sprite",
+   "style"
+  ]
+ },
+ "size": [
+  160,
+  160
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "resolvedPrompt": "a small orange-brown newt, a cave lizard, low to the ground, seen from the front and slightly above, single subject, front-facing, centered, full body, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

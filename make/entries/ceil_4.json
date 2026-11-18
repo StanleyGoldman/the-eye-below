@@ -1,0 +1,25 @@
+{
+ "id": "ceil_4",
+ "type": "image",
+ "kind": "texture",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "dark basalt slabs crossed by two straight parallel riveted iron braces",
+  "fragments": [
+   "tile",
+   "texture",
+   "style"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "dark basalt slabs crossed by two straight parallel riveted iron braces, one seamless square surface tile seen exactly straight on, orthographic, uniform brightness from edge to edge, no vignette, no dark corners, no room, no torches, flat, straight-on, evenly lit, edge to edge, no perspective, no objects, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

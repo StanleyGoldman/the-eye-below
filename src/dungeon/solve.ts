@@ -41,6 +41,9 @@ export function solveLevel(input: Level, options: SolveOptions = {}): SolveResul
   const gateByCell = new Map<number, number>();
   level.gates.forEach((g, i) => g.cells.forEach((c) => gateByCell.set(c.y * level.w + c.x, i)));
 
+  // Peaceful characters stand where they are and cannot be walked through.
+  const standing = new Set<number>();
+  for (const m of level.monsters) if (m.peaceful) standing.add(m.y * level.w + m.x);
   const doorOpen = level.doors.map((d) => d.open || !d.locked);
   const gateOpen = level.gates.map((g) => g.open);
   const keys: Record<string, number> = { bone: options.boneKeys ?? 0 };
@@ -61,7 +64,7 @@ export function solveLevel(input: Level, options: SolveOptions = {}): SolveResul
       const gi = gateByCell.get(i);
       if (gi !== undefined && !gateOpen[gi]) return false;
     }
-    return featureAt(level, x, y) === undefined;
+    return !standing.has(i) && featureAt(level, x, y) === undefined;
   };
 
   let reached = new Uint8Array(size);

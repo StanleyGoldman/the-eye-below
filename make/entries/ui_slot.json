@@ -1,0 +1,24 @@
+{
+ "id": "ui_slot",
+ "type": "image",
+ "kind": "ui",
+ "workflow": "zimage",
+ "prompt": {
+  "subject": "one empty square inventory slot, a recessed dark iron socket with a bevelled stone border, filling the whole frame",
+  "fragments": [
+   "ui",
+   "style"
+  ]
+ },
+ "size": [
+  40,
+  40
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "one empty square inventory slot, a recessed dark iron socket with a bevelled stone border, filling the whole frame, a flat game interface piece seen straight-on, evenly lit, stone and dark iron, no text, no letters, no icons, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

@@ -1,0 +1,26 @@
+{
+ "id": "floor_3",
+ "type": "image",
+ "kind": "texture",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "pale worn limestone paving of irregular rectangular slabs with dust in the joints",
+  "fragments": [
+   "surface",
+   "nolights",
+   "texture",
+   "style"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "pale worn limestone paving of irregular rectangular slabs with dust in the joints, a flat patch of this surface seen exactly straight on, the same pattern continuing past every edge, orthographic, uniform brightness, no vignette, no border, no frame, no centre motif, no torches, no lanterns, no lamps, no flames, no glow, no light sources, flat, straight-on, evenly lit, edge to edge, no perspective, no objects, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

@@ -1,0 +1,30 @@
+{
+ "id": "lever",
+ "type": "image",
+ "kind": "overlay",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "a large brass crank wheel mounted on a square iron plate",
+  "fragments": [
+   "object",
+   "style"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "center",
+ "box": [
+  16,
+  14,
+  32,
+  36
+ ],
+ "resolvedPrompt": "a large brass crank wheel mounted on a square iron plate, single object, front-facing, centered, whole object in frame, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

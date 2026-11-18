@@ -11,7 +11,11 @@ TESTS := $(wildcard tests/*.ts)
 SCRIPTS := $(wildcard scripts/*.ts scripts/lib/*.ts)
 SESSION ?= 1
 
-.PHONY: help build typecheck test sweep play check goal-check clean deps
+# ComfyUI runs one job at a time, so nothing here may run in parallel, whatever -j says.
+.NOTPARALLEL:
+
+.PHONY: help build typecheck test sweep play check goal-check clean deps \
+	assets base styled frames cutouts music sfx processed sheet comfy-up comfy-down comfy-status clean-assets settle
 
 help: ## List the targets
 	@echo "The Eye Below - make targets"
@@ -28,7 +32,7 @@ deps: node_modules/.installed ## Install the npm packages (only when package.jso
 
 # ---- build --------------------------------------------------------------
 
-dist/game.js: $(SRC) scripts/build.ts tsconfig.json node_modules/.installed
+dist/game.js: $(SRC) scripts/build.ts tsconfig.json assets/manifest.json assets/fallbacks.json node_modules/.installed
 	$(NODE) scripts/build.ts
 
 build: dist/game.js ## Bundle the game into dist/game.js
@@ -57,7 +61,54 @@ check: typecheck test build play ## Typecheck, tests, build, and the browser smo
 goal-check: ## Run every acceptance check for a session: make goal-check SESSION=1
 	$(NODE) scripts/goal-check.ts $(SESSION)
 
+# ---- assets -------------------------------------------------------------
+# Every generated file is a target. The per-asset rules come from the manifest.
+
+make/assets.mk: assets/manifest.json assets/prompts.json assets/fallbacks.json scripts/gen-rules.ts scripts/lib/manifest.ts node_modules/.installed
+	$(NODE) scripts/gen-rules.ts
+
+-include make/assets.mk
+
+base: $(ASSETS_BASE) ## Generate base images (Flux 2 and Z-Image)
+styled: $(ASSETS_STYLED) ## Generate style-matched images (Krea-2, from the reference sprite)
+frames: $(ASSETS_FRAMES) ## Generate animation frames (Qwen edit)
+cutouts: $(ASSETS_CUTOUTS) ## Remove backgrounds (BiRefNet)
+music: $(ASSETS_MUSIC) ## Generate music (ACE-Step)
+sfx: $(ASSETS_SFX) ## Generate sound effects (Stable Audio)
+processed: $(ASSETS_PROCESSED) ## Post-process raw files into assets/ (no ComfyUI needed)
+
+# Prerequisites are built left to right and never in parallel, so jobs run one workflow at a time:
+# base images, style-matched images, frames, cutouts, music, sound effects, then post-processing.
+assets: $(ASSETS_BASE) $(ASSETS_STYLED) $(ASSETS_FRAMES) $(ASSETS_CUTOUTS) $(ASSETS_MUSIC) $(ASSETS_SFX) $(ASSETS_PROCESSED) ## Generate and post-process everything in the manifest; skips what exists
+
+SHEET_INPUTS := $(ASSETS_PROCESSED) $(wildcard raw/images/*.json)
+out/sheets/.built: $(SHEET_INPUTS) scripts/sheet.ts
+	$(NODE) scripts/sheet.ts
+	@touch $@
+
+sheet: out/sheets/.built ## Build contact sheets of every image in out/sheets/
+
+comfy-up: ## Start ComfyUI if it is not already running
+	$(NODE) scripts/comfy.ts up
+
+comfy-down: ## Stop ComfyUI, but only the instance this build started
+	$(NODE) scripts/comfy.ts down
+
+comfy-status: ## Say whether ComfyUI is running and who started it
+	$(NODE) scripts/comfy.ts status
+
+settle: ## After a fresh clone: mark raw files, cutouts, and assets up to date, in that order, without running jobs
+	@touch -c make/entries/*.json make/assets.mk; sleep 1
+	@touch -c $(ASSETS_BASE) $(ASSETS_MUSIC) $(ASSETS_SFX); sleep 1
+	@touch -c $(ASSETS_STYLED) $(ASSETS_FRAMES); sleep 1
+	@touch -c $(ASSETS_CUTOUTS); sleep 1
+	@touch -c $(ASSETS_PROCESSED)
+	@echo "settle: timestamps put in dependency order"
+
 # ---- cleaning -----------------------------------------------------------
 
 clean: ## Remove build output (dist/ and the stamps in out/); never touches assets or raw/
 	rm -rf dist out/.typecheck
+
+clean-assets: ## Remove processed assets only; raw/ and its records are never deleted
+	rm -rf assets/images assets/frames assets/music assets/sfx out/sheets

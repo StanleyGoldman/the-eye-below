@@ -1,0 +1,25 @@
+{
+ "id": "wall_3",
+ "type": "image",
+ "kind": "texture",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "pale limestone catacomb wall of large dressed blocks with one small dark burial niche holding a skull",
+  "fragments": [
+   "nolights",
+   "texture",
+   "style"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "pale limestone catacomb wall of large dressed blocks with one small dark burial niche holding a skull, no torches, no lanterns, no lamps, no flames, no glow, no light sources, flat, straight-on, evenly lit, edge to edge, no perspective, no objects, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

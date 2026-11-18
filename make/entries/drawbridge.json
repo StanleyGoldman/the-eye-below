@@ -1,0 +1,24 @@
+{
+ "id": "drawbridge",
+ "type": "image",
+ "kind": "overlay",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "a raised wooden drawbridge of thick dark planks bound in iron with a chain down each side, seen straight on",
+  "fragments": [
+   "object",
+   "style"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "stretch",
+ "resolvedPrompt": "a raised wooden drawbridge of thick dark planks bound in iron with a chain down each side, seen straight on, single object, front-facing, centered, whole object in frame, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

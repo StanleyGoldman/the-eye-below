@@ -1,0 +1,318 @@
+{
+ "id": "item_cloak",
+ "kept": 1,
+ "fallback": false,
+ "fallbackNote": "",
+ "attempts": [
+  {
+   "n": 1,
+   "status": "kept",
+   "note": "",
+   "workflowFile": "image_z_image_turbo.json",
+   "prompt": "a folded grey-blue hooded cloak with a gold clasp, a single game inventory icon of the object alone, centered, large in frame, plain flat solid magenta background, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console",
+   "seed": 4034,
+   "models": [
+    "z_image_turbo_bf16.safetensors",
+    "qwen_3_4b.safetensors",
+    "ae.safetensors"
+   ],
+   "loras": [],
+   "steps": 8,
+   "size": "512x512",
+   "input": "",
+   "promptId": "3c2c6a85-97b9-477b-b358-bb57abb3381f",
+   "comfyOutput": "item_cloak_a1_00001_.png",
+   "file": "raw/images/item_cloak.a1.png",
+   "started": "2026-11-18T02:15:18.382Z",
+   "seconds": 2.1,
+   "substitutions": [],
+   "workflow": {
+    "9": {
+     "inputs": {
+      "filename_prefix": "crawler/item_cloak_a1",
+      "images": [
+       "57:8",
+       0
+      ]
+     },
+     "class_type": "SaveImage",
+     "_meta": {
+      "title": "Save Image",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.64"
+     }
+    },
+    "57:30": {
+     "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "lumina2",
+      "device": "default"
+     },
+     "class_type": "CLIPLoader",
+     "_meta": {
+      "title": "Load CLIP",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.73"
+     }
+    },
+    "57:29": {
+     "inputs": {
+      "vae_name": "ae.safetensors"
+     },
+     "class_type": "VAELoader",
+     "_meta": {
+      "title": "Load VAE",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.73"
+     }
+    },
+    "57:33": {
+     "inputs": {
+      "conditioning": [
+       "57:27",
+       0
+      ]
+     },
+     "class_type": "ConditioningZeroOut",
+     "_meta": {
+      "title": "Conditioning Zero Out",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.73"
+     }
+    },
+    "57:8": {
+     "inputs": {
+      "samples": [
+       "57:3",
+       0
+      ],
+      "vae": [
+       "57:29",
+       0
+      ]
+     },
+     "class_type": "VAEDecode",
+     "_meta": {
+      "title": "VAE Decode",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.64"
+     }
+    },
+    "57:28": {
+     "inputs": {
+      "unet_name": "z_image_turbo_bf16.safetensors",
+      "weight_dtype": "default"
+     },
+     "class_type": "UNETLoader",
+     "_meta": {
+      "title": "Load Diffusion Model",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.73"
+     }
+    },
+    "57:27": {
+     "inputs": {
+      "text": "a folded grey-blue hooded cloak with a gold clasp, a single game inventory icon of the object alone, centered, large in frame, plain flat solid magenta background, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console",
+      "clip": [
+       "57:30",
+       0
+      ]
+     },
+     "class_type": "CLIPTextEncode",
+     "_meta": {
+      "title": "CLIP Text Encode (Prompt)",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.73"
+     }
+    },
+    "57:13": {
+     "inputs": {
+      "width": 512,
+      "height": 512,
+      "batch_size": 1
+     },
+     "class_type": "EmptySD3LatentImage",
+     "_meta": {
+      "title": "EmptySD3LatentImage",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.64"
+     }
+    },
+    "57:11": {
+     "inputs": {
+      "shift": 3,
+      "sampling": "flow",
+      "model": [
+       "57:28",
+       0
+      ]
+     },
+     "class_type": "ModelSamplingAuraFlow",
+     "_meta": {
+      "title": "ModelSamplingAuraFlow",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.64"
+     }
+    },
+    "57:3": {
+     "inputs": {
+      "seed": 4034,
+      "steps": 8,
+      "cfg": 1,
+      "sampler_name": "res_multistep",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+       "57:11",
+       0
+      ],
+      "positive": [
+       "57:27",
+       0
+      ],
+      "negative": [
+       "57:33",
+       0
+      ],
+      "latent_image": [
+       "57:13",
+       0
+      ]
+     },
+     "class_type": "KSampler",
+     "_meta": {
+      "title": "KSampler",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.64"
+     }
+    }
+   },
+   "requestKey": "e854ef1fd7f6dd99"
+  }
+ ],
+ "cutout": {
+  "workflowFile": "utility_birefnet_remove_background.json",
+  "input": "raw/images/item_cloak.png",
+  "promptId": "34af3189-a178-4868-8b40-95c0fd3bcb4c",
+  "comfyOutput": "item_cloak_cut_00001_.png",
+  "file": "raw/images/item_cloak.cut.png",
+  "started": "2026-11-18T02:29:58.142Z",
+  "seconds": 0.7,
+  "workflow": {
+   "17": {
+    "inputs": {
+     "image": "eye_item_cloak.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+     "title": "Load Image",
+     "cnr_id": "comfy-core",
+     "ver": "0.19.3"
+    }
+   },
+   "18": {
+    "inputs": {
+     "filename_prefix": "crawler/item_cloak_cut",
+     "images": [
+      "19:16",
+      0
+     ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+     "title": "Save Image"
+    }
+   },
+   "19:13": {
+    "inputs": {
+     "bg_removal_model": [
+      "19:14",
+      0
+     ],
+     "image": [
+      "17",
+      0
+     ]
+    },
+    "class_type": "RemoveBackground",
+    "_meta": {
+     "title": "Remove Background"
+    }
+   },
+   "19:14": {
+    "inputs": {
+     "bg_removal_name": "birefnet.safetensors"
+    },
+    "class_type": "LoadBackgroundRemovalModel",
+    "_meta": {
+     "title": "Load Background Removal Model"
+    }
+   },
+   "19:15": {
+    "inputs": {
+     "mask": [
+      "19:13",
+      0
+     ]
+    },
+    "class_type": "InvertMask",
+    "_meta": {
+     "title": "Invert Mask"
+    }
+   },
+   "19:16": {
+    "inputs": {
+     "image": [
+      "17",
+      0
+     ],
+     "alpha": [
+      "19:15",
+      0
+     ]
+    },
+    "class_type": "JoinImageWithAlpha",
+    "_meta": {
+     "title": "Join Image with Alpha"
+    }
+   }
+  }
+ },
+ "processing": {
+  "input": "raw/images/item_cloak.cut.png",
+  "output": "assets/images/item_cloak.png",
+  "alphaThreshold": 128,
+  "backgroundKey": {
+   "color": [
+    201,
+    26,
+    206
+   ],
+   "tolerance": 30,
+   "mode": "edge",
+   "pixelsRemoved": 351
+  },
+  "cropBox": [
+   100,
+   65,
+   313,
+   383
+  ],
+  "fit": "center",
+  "placedAt": [
+   3,
+   0,
+   26,
+   32
+  ],
+  "targetSize": [
+   32,
+   32
+  ],
+  "scaling": "nearest neighbour",
+  "palette": "assets/prompts.json (64 colours)",
+  "dither": "ordered 4x4, strength 9",
+  "coloursUsed": 16,
+  "at": "2026-11-18T02:33:48.175Z"
+ }
+}

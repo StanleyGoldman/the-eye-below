@@ -1,0 +1,24 @@
+{
+ "id": "ui_compass",
+ "type": "image",
+ "kind": "ui",
+ "workflow": "zimage",
+ "prompt": {
+  "subject": "a round brass compass ring with an empty dark centre, no needle, no letters",
+  "fragments": [
+   "object",
+   "style"
+  ]
+ },
+ "size": [
+  48,
+  48
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": true,
+ "fit": "center",
+ "resolvedPrompt": "a round brass compass ring with an empty dark centre, no needle, no letters, single object, front-facing, centered, whole object in frame, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

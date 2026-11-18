@@ -1,0 +1,26 @@
+{
+ "id": "monster_jackal",
+ "type": "image",
+ "kind": "monster",
+ "workflow": "krea2",
+ "prompt": {
+  "subject": "a lean snarling jackal, a wild dog with mangy tan fur and bared teeth",
+  "fragments": [
+   "sprite",
+   "style"
+  ]
+ },
+ "size": [
+  160,
+  160
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "reference": "monster_newt",
+ "candidates": 2,
+ "resolvedPrompt": "a lean snarling jackal, a wild dog with mangy tan fur and bared teeth, single subject, front-facing, centered, full body, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

@@ -31,7 +31,7 @@ export const FIXTURE_ASSETS: readonly string[] = [
   "trap",
 ];
 
-export const UI_ASSETS: readonly string[] = ["ui_frame", "ui_slot", "ui_button", "ui_compass", "title_bg"];
+export const UI_ASSETS: readonly string[] = ["ui_frame", "ui_slot", "ui_button", "ui_compass", "title_bg", "ui_shop", "ui_dialogue"];
 
 export function requiredAssetIds(): string[] {
   const ids = new Set<string>();

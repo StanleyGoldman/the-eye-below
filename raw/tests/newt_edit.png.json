@@ -1,0 +1,421 @@
+{
+ "id": "newt_edit.png",
+ "workflowFile": "image_qwen_image_edit_2511.json",
+ "prompt": "Same newt, same size and position, mouth wide open showing teeth, lunging forward to bite. Keep the flat background unchanged.",
+ "seed": 301,
+ "models": [
+  "qwen_image_edit_2511_fp8mixed.safetensors",
+  "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "qwen_image_vae.safetensors"
+ ],
+ "loras": [
+  "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors"
+ ],
+ "steps": 4,
+ "size": "1024x1024",
+ "input": "raw/tests/newt_flux2.png",
+ "promptId": "e23910ea-9a61-4217-aa70-0872aa4c81a0",
+ "comfyOutput": "test_newt_edit_00001_.png",
+ "file": "raw/tests/newt_edit.png",
+ "started": "2026-11-18T01:48:47.752Z",
+ "seconds": 23.9,
+ "substitutions": [],
+ "note": "",
+ "workflow": {
+  "9": {
+   "inputs": {
+    "filename_prefix": "crawler/test_newt_edit",
+    "images": [
+     "170:158",
+     0
+    ]
+   },
+   "class_type": "SaveImage",
+   "_meta": {
+    "title": "Save Image",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "41": {
+   "inputs": {
+    "image": "eye_newt_flux2.png"
+   },
+   "class_type": "LoadImage",
+   "_meta": {
+    "title": "Load Image",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:145": {
+   "inputs": {
+    "shift": 3.1,
+    "sampling": "flow",
+    "model": [
+     "170:161",
+     0
+    ]
+   },
+   "class_type": "ModelSamplingAuraFlow",
+   "_meta": {
+    "title": "ModelSamplingAuraFlow",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:146": {
+   "inputs": {
+    "vae_name": "qwen_image_vae.safetensors"
+   },
+   "class_type": "VAELoader",
+   "_meta": {
+    "title": "Load VAE",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:147": {
+   "inputs": {
+    "reference_latents_method": "index_timestep_zero",
+    "conditioning": [
+     "170:149",
+     0
+    ]
+   },
+   "class_type": "FluxKontextMultiReferenceLatentMethod",
+   "_meta": {
+    "title": "Edit Model Reference Method",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:148": {
+   "inputs": {
+    "reference_latents_method": "index_timestep_zero",
+    "conditioning": [
+     "170:151",
+     0
+    ]
+   },
+   "class_type": "FluxKontextMultiReferenceLatentMethod",
+   "_meta": {
+    "title": "Edit Model Reference Method",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:149": {
+   "inputs": {
+    "prompt": "",
+    "clip": [
+     "170:162",
+     0
+    ],
+    "vae": [
+     "170:146",
+     0
+    ],
+    "image1": [
+     "170:160",
+     0
+    ]
+   },
+   "class_type": "TextEncodeQwenImageEditPlus",
+   "_meta": {
+    "title": "Text Encode Qwen Image Edit Plus",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:151": {
+   "inputs": {
+    "prompt": "Same newt, same size and position, mouth wide open showing teeth, lunging forward to bite. Keep the flat background unchanged.",
+    "clip": [
+     "170:162",
+     0
+    ],
+    "vae": [
+     "170:146",
+     0
+    ],
+    "image1": [
+     "170:160",
+     0
+    ]
+   },
+   "class_type": "TextEncodeQwenImageEditPlus",
+   "_meta": {
+    "title": "TextEncodeQwenImageEditPlus (Positive)",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:152": {
+   "inputs": {
+    "strength": 1,
+    "pre_cfg": false,
+    "model": [
+     "170:145",
+     0
+    ]
+   },
+   "class_type": "CFGNorm",
+   "_meta": {
+    "title": "CFGNorm",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:153": {
+   "inputs": {
+    "lora_name": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
+    "strength_model": 1,
+    "model": [
+     "170:152",
+     0
+    ]
+   },
+   "class_type": "LoraLoaderModelOnly",
+   "_meta": {
+    "title": "Load LoRA",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:154": {
+   "inputs": {
+    "value": 4
+   },
+   "class_type": "PrimitiveFloat",
+   "_meta": {
+    "title": "CFG",
+    "cnr_id": "comfy-core",
+    "ver": "0.13.0"
+   }
+  },
+  "170:155": {
+   "inputs": {
+    "value": 1
+   },
+   "class_type": "PrimitiveFloat",
+   "_meta": {
+    "title": "CFG",
+    "cnr_id": "comfy-core",
+    "ver": "0.13.0"
+   }
+  },
+  "170:156": {
+   "inputs": {
+    "pixels": [
+     "170:160",
+     0
+    ],
+    "vae": [
+     "170:146",
+     0
+    ]
+   },
+   "class_type": "VAEEncode",
+   "_meta": {
+    "title": "VAE Encode",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:161": {
+   "inputs": {
+    "unet_name": "qwen_image_edit_2511_fp8mixed.safetensors",
+    "weight_dtype": "default"
+   },
+   "class_type": "UNETLoader",
+   "_meta": {
+    "title": "Load Diffusion Model",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:162": {
+   "inputs": {
+    "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+    "type": "qwen_image",
+    "device": "default"
+   },
+   "class_type": "CLIPLoader",
+   "_meta": {
+    "title": "Load CLIP",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:163": {
+   "inputs": {
+    "switch": [
+     "170:168",
+     0
+    ],
+    "on_false": [
+     "170:152",
+     0
+    ],
+    "on_true": [
+     "170:153",
+     0
+    ]
+   },
+   "class_type": "ComfySwitchNode",
+   "_meta": {
+    "title": "Switch (Model)",
+    "cnr_id": "comfy-core",
+    "ver": "0.13.0"
+   }
+  },
+  "170:165": {
+   "inputs": {
+    "value": 4
+   },
+   "class_type": "PrimitiveInt",
+   "_meta": {
+    "title": "Steps",
+    "cnr_id": "comfy-core",
+    "ver": "0.13.0"
+   }
+  },
+  "170:166": {
+   "inputs": {
+    "value": 40
+   },
+   "class_type": "PrimitiveInt",
+   "_meta": {
+    "title": "Steps",
+    "cnr_id": "comfy-core",
+    "ver": "0.13.0"
+   }
+  },
+  "170:168": {
+   "inputs": {
+    "value": true
+   },
+   "class_type": "PrimitiveBoolean",
+   "_meta": {
+    "title": "Enable 4steps LoRA?",
+    "cnr_id": "comfy-core",
+    "ver": "0.13.0"
+   }
+  },
+  "170:164": {
+   "inputs": {
+    "switch": [
+     "170:168",
+     0
+    ],
+    "on_false": [
+     "170:154",
+     0
+    ],
+    "on_true": [
+     "170:155",
+     0
+    ]
+   },
+   "class_type": "ComfySwitchNode",
+   "_meta": {
+    "title": "Switch (CFG)",
+    "cnr_id": "comfy-core",
+    "ver": "0.13.0"
+   }
+  },
+  "170:167": {
+   "inputs": {
+    "switch": [
+     "170:168",
+     0
+    ],
+    "on_false": [
+     "170:166",
+     0
+    ],
+    "on_true": [
+     "170:165",
+     0
+    ]
+   },
+   "class_type": "ComfySwitchNode",
+   "_meta": {
+    "title": "Switch (Steps)",
+    "cnr_id": "comfy-core",
+    "ver": "0.16.4"
+   }
+  },
+  "170:169": {
+   "inputs": {
+    "seed": 301,
+    "steps": [
+     "170:167",
+     0
+    ],
+    "cfg": [
+     "170:164",
+     0
+    ],
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "denoise": 1,
+    "model": [
+     "170:163",
+     0
+    ],
+    "positive": [
+     "170:148",
+     0
+    ],
+    "negative": [
+     "170:147",
+     0
+    ],
+    "latent_image": [
+     "170:156",
+     0
+    ]
+   },
+   "class_type": "KSampler",
+   "_meta": {
+    "title": "KSampler",
+    "cnr_id": "comfy-core",
+    "ver": "0.16.4"
+   }
+  },
+  "170:158": {
+   "inputs": {
+    "samples": [
+     "170:169",
+     0
+    ],
+    "vae": [
+     "170:146",
+     0
+    ]
+   },
+   "class_type": "VAEDecode",
+   "_meta": {
+    "title": "VAE Decode",
+    "cnr_id": "comfy-core",
+    "ver": "0.5.1"
+   }
+  },
+  "170:160": {
+   "inputs": {
+    "image": [
+     "41",
+     0
+    ]
+   },
+   "class_type": "FluxKontextImageScale",
+   "_meta": {
+    "title": "FluxKontextImageScale",
+    "cnr_id": "comfy-core",
+    "ver": "0.13.0"
+   }
+  }
+ }
+}

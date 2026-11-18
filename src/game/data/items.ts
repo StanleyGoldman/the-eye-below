@@ -212,6 +212,9 @@ export const ITEM_TYPES: readonly ItemType[] = [
   magic("amulet", "amulet_strangulation", "amulet of strangulation", 150, 30),
   { id: "amulet_eye", cls: "amulet", name: "Unblinking Eye", icon: "item_eye", freq: 0, minDepth: 25, cost: 30000, stack: false, artifact: true },
 
+  // ---- tools ----
+  { id: "lamp", cls: "tool", name: "oil lamp", icon: "item_lamp", freq: 0, minDepth: 1, cost: 60, stack: false },
+
   // ---- keys and gold ----
   key("red", KEY_TINT.red),
   key("green", KEY_TINT.green),
@@ -389,6 +392,7 @@ export function itemName(k: Knowledge, item: Item, withArticle = true): string {
   if (type.cls === "gold") return `${item.qty} ${text}`;
   if (item.bucKnown && !type.keyColor && type.id !== "amulet_eye") text = `${BUC_WORD[item.buc]} ${text}`;
   if (type.cls === "wand" && item.known) text += ` (${item.charges} charge${item.charges === 1 ? "" : "s"})`;
+  if (item.lit) text += " (lit)";
   if (item.slot) text += ` (${SLOT_NOTE[item.slot]})`;
   if (item.qty > 1) return `${item.qty} ${text}`;
   if (!withArticle) return text;

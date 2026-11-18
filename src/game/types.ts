@@ -133,6 +133,9 @@ export interface Level {
 }
 
 export interface LevelMeta {
+  /** The kind of shop on this level, if there is one, and the cell of its door. */
+  shop?: ShopKind;
+  shopDoor?: number;
   rooms: number;
   locks: number;
   closets: number;
@@ -164,6 +167,8 @@ export interface Item {
   slot: EquipSlot | null;
   /** A scare monster scroll that has been picked up once turns to dust the second time. */
   handled?: boolean;
+  /** A lamp that is burning. */
+  lit?: boolean;
 }
 
 export interface FloorItem {
@@ -208,6 +213,21 @@ export interface Monster {
   hitFlashUntil: number;
   /** Morvane's phase counter and similar per-monster memory. */
   memory: number;
+  /** Set on characters one can talk to. */
+  npc?: Npc;
+}
+
+export type NpcKind = "oracle" | "shopkeeper" | "priest" | "hermit" | "adventurer" | "gnome";
+export type ShopKind = "general" | "weapons" | "armor" | "potions" | "books" | "lighting";
+
+export interface Npc {
+  kind: NpcKind;
+  name: string;
+  shop?: ShopKind;
+  /** What a shopkeeper has for sale. */
+  stock?: Item[];
+  /** How many rumors this character has already told. */
+  told: number;
 }
 
 // ---- statuses ---------------------------------------------------------
@@ -304,8 +324,9 @@ export interface PromptOption {
 }
 
 export type Prompt =
-  | { kind: "menu"; title: string; context: "attackPeaceful" | "fountain" | "altar" | "oracle" | "dip"; options: PromptOption[]; target: number }
-  | { kind: "pick"; title: string; purpose: "identify"; count: number };
+  | { kind: "menu"; title: string; context: "attackPeaceful" | "fountain" | "altar" | "oracle" | "dip" | "priest" | "talk"; options: PromptOption[]; target: number; speaker?: string }
+  | { kind: "pick"; title: string; purpose: "identify"; count: number }
+  | { kind: "shop"; title: string; keeper: number };
 
 /** Transient things for the renderer and HUD to show; drained every frame. */
 export type GameEvent =
@@ -354,6 +375,8 @@ export interface GameState {
   peacefulsKilled: number;
   /** Things the oracle has already told this run, so it does not repeat itself. */
   oracleTold: string[];
+  /** Set once a peaceful character has been killed: shopkeepers everywhere turn hostile. */
+  shopkeepersAngry: boolean;
   debug: DebugFlags;
   /** Counts for the end screens. */
   stats: { steps: number; potions: number; scrolls: number; spellsCast: number; prayers: number; doors: number };

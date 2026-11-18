@@ -1,0 +1,24 @@
+{
+ "id": "item_cloak",
+ "type": "image",
+ "kind": "icon",
+ "workflow": "zimage",
+ "prompt": {
+  "subject": "a folded grey-blue hooded cloak with a gold clasp",
+  "fragments": [
+   "icon",
+   "style"
+  ]
+ },
+ "size": [
+  32,
+  32
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": true,
+ "fit": "center",
+ "resolvedPrompt": "a folded grey-blue hooded cloak with a gold clasp, a single game inventory icon of the object alone, centered, large in frame, plain flat solid magenta background, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

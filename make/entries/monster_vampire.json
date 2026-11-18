@@ -1,0 +1,26 @@
+{
+ "id": "monster_vampire",
+ "type": "image",
+ "kind": "monster",
+ "workflow": "krea2",
+ "prompt": {
+  "subject": "a vampire, a pale aristocrat in a black cloak with a red lining, fangs bared, clawed hands raised",
+  "fragments": [
+   "sprite",
+   "style"
+  ]
+ },
+ "size": [
+  160,
+  160
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "reference": "monster_newt",
+ "candidates": 2,
+ "resolvedPrompt": "a vampire, a pale aristocrat in a black cloak with a red lining, fangs bared, clawed hands raised, single subject, front-facing, centered, full body, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

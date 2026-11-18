@@ -221,6 +221,15 @@ const CLASS_ICONS: Record<string, (p: Pen) => void> = {
       p.px(x - 2, y - 2, "#fff0b0");
     }
   },
+  item_lamp: (p) => {
+    p.ell(15, 22, 9, 5, "#8a6a2a");
+    p.ell(15, 21, 8, 4, "#c9a23a");
+    p.rect(22, 19, 7, 3, "#c9a23a");
+    p.rect(4, 18, 3, 6, "#8a6a2a");
+    p.rect(11, 26, 9, 2, "#8a6a2a");
+    p.ell(28, 15, 2, 3, "#f08030");
+    p.px(28, 13, "#fff0b0");
+  },
   item_eye: (p) => {
     p.line(8, 2, 16, 12, GOLD);
     p.line(24, 2, 16, 12, GOLD);
@@ -299,4 +308,27 @@ export function paintTitle(p: Pen): void {
   p.ell(160, 38, 12, 5, "#f2b34a");
   p.ell(160, 38, 3, 5, "#0a070a");
   p.px(157, 36, "#fff0b0");
+}
+
+export function paintShopPanel(p: Pen): void {
+  p.rect(0, 0, 320, 200, "#4a2f14");
+  p.rect(0, 0, 320, 2, "#7a5228");
+  p.rect(0, 198, 320, 2, "#2a1c0e");
+  p.rect(8, 8, 304, 184, "#d8c9a3");
+  p.dither(8, 150, 304, 42, "#cfc7b0");
+  p.speckle(8, 8, 304, 184, ["#cfc7b0", "#b3a184"], 0.02);
+  for (const [x, y] of [[0, 0], [304, 0], [0, 184], [304, 184]] as const) {
+    p.rect(x, y, 16, 16, "#55575c");
+    p.rect(x, y, 16, 2, "#8a8f96");
+    p.px(x + 8, y + 8, "#c0c4c8");
+  }
+}
+
+export function paintDialoguePanel(p: Pen): void {
+  p.rect(0, 0, 320, 80, "#55575c");
+  p.rect(0, 0, 320, 2, "#8a8f96");
+  p.rect(0, 78, 320, 2, "#1c1d20");
+  p.rect(4, 4, 312, 72, "#2a2c30");
+  p.dither(4, 4, 312, 72, "#242629");
+  p.speckle(4, 4, 312, 72, ["#34373c"], 0.03);
 }

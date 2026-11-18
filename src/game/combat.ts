@@ -75,8 +75,9 @@ function removeMonster(state: GameState, m: Monster, reward: boolean): void {
   // Peaceful by nature, even if it had been provoked into fighting back.
   if (type.peaceful) {
     state.peacefulsKilled++;
+    state.shopkeepersAngry = true;
     p.luck = Math.max(-10, p.luck - 5);
-    say(state, "You murderer! You feel that luck has left the room, and it will not be back soon.", "danger");
+    say(state, "You murderer! You feel that luck has left the room, and it will not be back soon. Word of this will reach every shopkeeper below.", "danger");
   } else {
     gainXp(state, experienceFor(type, m.level));
   }

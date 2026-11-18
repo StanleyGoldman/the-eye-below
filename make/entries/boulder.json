@@ -1,0 +1,24 @@
+{
+ "id": "boulder",
+ "type": "image",
+ "kind": "fixture",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "a round grey boulder with cracks, the whole boulder well inside the frame with empty space on every side",
+  "fragments": [
+   "object",
+   "style"
+  ]
+ },
+ "size": [
+  128,
+  128
+ ],
+ "gen": [
+  1024,
+  1024
+ ],
+ "transparent": true,
+ "fit": "bottom",
+ "resolvedPrompt": "a round grey boulder with cracks, the whole boulder well inside the frame with empty space on every side, single object, front-facing, centered, whole object in frame, plain flat solid magenta background, no floor, no shadow, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

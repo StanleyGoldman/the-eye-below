@@ -1,0 +1,356 @@
+{
+ "id": "floor_5",
+ "kept": 1,
+ "fallback": false,
+ "fallbackNote": "",
+ "attempts": [
+  {
+   "n": 1,
+   "status": "kept",
+   "note": "",
+   "workflowFile": "image_flux2_text_to_image.json",
+   "prompt": "black obsidian floor tiles with faint ember-red cracks, one seamless square surface tile seen exactly straight on, orthographic, uniform brightness from edge to edge, no vignette, no dark corners, no room, no torches, flat, straight-on, evenly lit, edge to edge, no perspective, no objects, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console",
+   "seed": 1518,
+   "models": [
+    "flux2_dev_fp8mixed.safetensors",
+    "mistral_3_small_flux2_fp8.safetensors",
+    "flux2-vae.safetensors"
+   ],
+   "loras": [
+    "Flux2TurboComfyv2.safetensors"
+   ],
+   "steps": 8,
+   "size": "512x512",
+   "input": "",
+   "promptId": "c526caf5-c6f2-4a02-a173-195e99f7d760",
+   "comfyOutput": "floor_5_a1_00001_.png",
+   "file": "raw/images/floor_5.a1.png",
+   "started": "2026-11-18T02:09:56.179Z",
+   "seconds": 19.6,
+   "substitutions": [],
+   "workflow": {
+    "9": {
+     "inputs": {
+      "filename_prefix": "crawler/floor_5_a1",
+      "images": [
+       "98:8",
+       0
+      ]
+     },
+     "class_type": "SaveImage",
+     "_meta": {
+      "title": "Save Image",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:22": {
+     "inputs": {
+      "model": [
+       "98:102",
+       0
+      ],
+      "conditioning": [
+       "98:26",
+       0
+      ]
+     },
+     "class_type": "BasicGuider",
+     "_meta": {
+      "title": "Basic Guider",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:26": {
+     "inputs": {
+      "guidance": 4,
+      "conditioning": [
+       "98:6",
+       0
+      ]
+     },
+     "class_type": "FluxGuidance",
+     "_meta": {
+      "title": "FluxGuidance",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:16": {
+     "inputs": {
+      "sampler_name": "euler"
+     },
+     "class_type": "KSamplerSelect",
+     "_meta": {
+      "title": "KSamplerSelect",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:10": {
+     "inputs": {
+      "vae_name": "flux2-vae.safetensors"
+     },
+     "class_type": "VAELoader",
+     "_meta": {
+      "title": "Load VAE",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:13": {
+     "inputs": {
+      "noise": [
+       "98:25",
+       0
+      ],
+      "guider": [
+       "98:22",
+       0
+      ],
+      "sampler": [
+       "98:16",
+       0
+      ],
+      "sigmas": [
+       "98:48",
+       0
+      ],
+      "latent_image": [
+       "98:47",
+       0
+      ]
+     },
+     "class_type": "SamplerCustomAdvanced",
+     "_meta": {
+      "title": "SamplerCustomAdvanced",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:8": {
+     "inputs": {
+      "samples": [
+       "98:13",
+       0
+      ],
+      "vae": [
+       "98:10",
+       0
+      ]
+     },
+     "class_type": "VAEDecode",
+     "_meta": {
+      "title": "VAE Decode",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:38": {
+     "inputs": {
+      "clip_name": "mistral_3_small_flux2_fp8.safetensors",
+      "type": "flux2",
+      "device": "default"
+     },
+     "class_type": "CLIPLoader",
+     "_meta": {
+      "title": "Load CLIP",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:48": {
+     "inputs": {
+      "steps": [
+       "98:103",
+       0
+      ],
+      "width": 512,
+      "height": 512
+     },
+     "class_type": "Flux2Scheduler",
+     "_meta": {
+      "title": "Flux2Scheduler",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:47": {
+     "inputs": {
+      "width": 512,
+      "height": 512,
+      "batch_size": 1
+     },
+     "class_type": "EmptyFlux2LatentImage",
+     "_meta": {
+      "title": "Empty Flux 2 Latent",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:25": {
+     "inputs": {
+      "noise_seed": 1518
+     },
+     "class_type": "RandomNoise",
+     "_meta": {
+      "title": "RandomNoise",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:6": {
+     "inputs": {
+      "text": "black obsidian floor tiles with faint ember-red cracks, one seamless square surface tile seen exactly straight on, orthographic, uniform brightness from edge to edge, no vignette, no dark corners, no room, no torches, flat, straight-on, evenly lit, edge to edge, no perspective, no objects, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console",
+      "clip": [
+       "98:38",
+       0
+      ]
+     },
+     "class_type": "CLIPTextEncode",
+     "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt)",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    },
+    "98:101": {
+     "inputs": {
+      "lora_name": "Flux2TurboComfyv2.safetensors",
+      "strength_model": 1,
+      "model": [
+       "98:12",
+       0
+      ]
+     },
+     "class_type": "LoraLoaderModelOnly",
+     "_meta": {
+      "title": "Load LoRA",
+      "cnr_id": "comfy-core",
+      "ver": "0.7.0"
+     }
+    },
+    "98:102": {
+     "inputs": {
+      "switch": [
+       "98:104",
+       0
+      ],
+      "on_false": [
+       "98:12",
+       0
+      ],
+      "on_true": [
+       "98:101",
+       0
+      ]
+     },
+     "class_type": "ComfySwitchNode",
+     "_meta": {
+      "title": "Switch(model)",
+      "cnr_id": "comfy-core",
+      "ver": "0.15.1"
+     }
+    },
+    "98:100": {
+     "inputs": {
+      "value": 20
+     },
+     "class_type": "PrimitiveInt",
+     "_meta": {
+      "title": "Steps",
+      "cnr_id": "comfy-core",
+      "ver": "0.15.1"
+     }
+    },
+    "98:99": {
+     "inputs": {
+      "value": 8
+     },
+     "class_type": "PrimitiveInt",
+     "_meta": {
+      "title": "Steps",
+      "cnr_id": "comfy-core",
+      "ver": "0.15.1"
+     }
+    },
+    "98:103": {
+     "inputs": {
+      "switch": [
+       "98:104",
+       0
+      ],
+      "on_false": [
+       "98:100",
+       0
+      ],
+      "on_true": [
+       "98:99",
+       0
+      ]
+     },
+     "class_type": "ComfySwitchNode",
+     "_meta": {
+      "title": "Switch(steps)",
+      "cnr_id": "comfy-core",
+      "ver": "0.15.1"
+     }
+    },
+    "98:104": {
+     "inputs": {
+      "value": true
+     },
+     "class_type": "PrimitiveBoolean",
+     "_meta": {
+      "title": "Enable Turbo LoRA",
+      "cnr_id": "comfy-core",
+      "ver": "0.15.1"
+     }
+    },
+    "98:12": {
+     "inputs": {
+      "unet_name": "flux2_dev_fp8mixed.safetensors",
+      "weight_dtype": "default"
+     },
+     "class_type": "UNETLoader",
+     "_meta": {
+      "title": "Load Diffusion Model",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.71"
+     }
+    }
+   },
+   "requestKey": "a9383b568d182960"
+  }
+ ],
+ "cutout": null,
+ "processing": {
+  "input": "raw/images/floor_5.png",
+  "output": "assets/images/floor_5.png",
+  "alphaThreshold": null,
+  "backgroundKey": null,
+  "cropBox": [
+   0,
+   0,
+   512,
+   512
+  ],
+  "fit": "stretch",
+  "placedAt": [
+   0,
+   0,
+   64,
+   64
+  ],
+  "targetSize": [
+   64,
+   64
+  ],
+  "scaling": "nearest neighbour",
+  "palette": "assets/prompts.json (64 colours)",
+  "dither": "ordered 4x4, strength 9",
+  "coloursUsed": 19,
+  "at": "2026-11-18T02:33:37.269Z"
+ }
+}

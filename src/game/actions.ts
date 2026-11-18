@@ -9,6 +9,7 @@ import type { WeightedEffect } from "./data/effects.ts";
 import { APPEARANCES, itemType, typeKnown } from "./data/items.ts";
 import { monsterType } from "./data/monsters.ts";
 import { roleDef } from "./data/roles.ts";
+import { NPC_GREETING, donate, donationFor, nextRumor, openShop } from "./shops.ts";
 import { spellCost, spellDef } from "./data/spells.ts";
 import { applyOps, applyRule, canRead, identifyItem, isUnidentified, spellFailure } from "./effects.ts";
 import {
@@ -293,6 +294,30 @@ export function interact(state: GameState): void {
       state.prompt = { kind: "menu", title: "The oracle looks through you, then at you. \"Ask, and pay.\"", context: "oracle", target: m.uid, options: oracleOptions(state) };
       return;
     }
+    const npc = m.npc;
+    if (npc?.kind === "shopkeeper") {
+      openShop(state, m);
+      return;
+    }
+    if (npc?.kind === "priest") {
+      state.prompt = {
+        kind: "menu",
+        title: "The priest inclines his head. \"The temple keeps its lamps lit on what visitors leave.\"",
+        context: "priest",
+        speaker: "The priest",
+        target: m.uid,
+        options: [
+          { id: "large", label: `Give ${donationFor(state, "large")} gold`, hint: "A proper offering. The temple's protection improves your armor class, up to a point." },
+          { id: "small", label: `Give ${donationFor(state, "small")} gold`, hint: "A modest offering. It eases bad luck, if you have any." },
+          { id: "leave", label: "Leave", hint: "The priest does not press the matter." },
+        ],
+      };
+      return;
+    }
+    if (npc && (npc.kind === "hermit" || npc.kind === "adventurer" || npc.kind === "gnome")) {
+      talk(state, m.uid);
+      return;
+    }
     say(state, `${capital(theMonster(m))} has nothing to say.`);
     return;
   }
@@ -356,6 +381,24 @@ export function interact(state: GameState): void {
     return;
   }
   say(state, "There is nothing here to use.");
+}
+
+/** Hear what a rumor-monger has to say, in the dialogue panel and the log. */
+function talk(state: GameState, uid: number): void {
+  const speaker = cur(state).monsters.find((x) => x.uid === uid);
+  const npc = speaker?.npc;
+  if (!speaker || !npc) return;
+  const first = npc.told === 0;
+  const hadMore = npc.told < 3;
+  const rumor = nextRumor(state, speaker);
+  const name = capital(npc.name);
+  const greeting = first ? `${rng(state).pick(NPC_GREETING[npc.kind] ?? [""])} ` : "";
+  const text = hadMore ? `${greeting}"${rumor.text}"` : `"I have told you what I know. ${rumor.text}"`;
+  say(state, first ? text : `${name}: ${text}`, "npc");
+  const options: PromptOption[] = [];
+  if (npc.told < 3) options.push({ id: "more", label: "Anything else?", hint: "Not everything said down here is true." });
+  options.push({ id: "leave", label: "Farewell" });
+  state.prompt = { kind: "menu", title: text, context: "talk", speaker: name, target: uid, options };
 }
 
 // ---- fountains, altars, the oracle -----------------------------------
@@ -566,6 +609,12 @@ export function choose(state: GameState, optionId: string): void {
     case "oracle":
       if (optionId === "minor" || optionId === "major") consultOracle(state, optionId);
       break;
+    case "priest":
+      if (optionId === "small" || optionId === "large") donate(state, optionId);
+      break;
+    case "talk":
+      if (optionId === "more") talk(state, prompt.target);
+      break;
     case "dip": {
       const item = findItem(state, prompt.target);
       if (!item) break;
@@ -666,7 +715,7 @@ export function cast(state: GameState, spellId: string): void {
 
 // ---- items ------------------------------------------------------------
 
-export type ItemAction = "wield" | "offhand" | "unwield" | "wear" | "takeoff" | "puton" | "remove" | "quaff" | "read" | "zap" | "throw" | "dip" | "drop";
+export type ItemAction = "wield" | "offhand" | "unwield" | "wear" | "takeoff" | "puton" | "remove" | "quaff" | "read" | "zap" | "throw" | "apply" | "dip" | "drop";
 
 export interface ActionChoice {
   id: ItemAction;
@@ -693,6 +742,8 @@ export function itemActions(state: GameState, item: Item): ActionChoice[] {
     out.push({ id: "zap", label: "Zap" });
   } else if (type.cls === "ring" || type.cls === "amulet") {
     out.push(item.slot ? { id: "remove", label: "Remove" } : { id: "puton", label: "Put on" });
+  } else if (type.id === "lamp") {
+    out.push({ id: "apply", label: item.lit ? "Snuff" : "Light" });
   }
   if (!item.slot) {
     out.push({ id: "dip", label: "Dip" });
@@ -1020,6 +1071,11 @@ export function useItem(state: GameState, uid: number, action: ItemAction): void
       break;
     case "throw":
       throwItem(state, item);
+      break;
+    case "apply":
+      item.lit = !item.lit;
+      say(state, item.lit ? "You light the lamp. The dark backs off a little, in every direction." : "You snuff the lamp.");
+      updateSeen(state);
       break;
     case "dip":
       offerDip(state, item);

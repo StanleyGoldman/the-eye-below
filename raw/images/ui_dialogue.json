@@ -1,0 +1,222 @@
+{
+ "id": "ui_dialogue",
+ "kept": 1,
+ "fallback": false,
+ "fallbackNote": "",
+ "attempts": [
+  {
+   "n": 1,
+   "status": "kept",
+   "note": "",
+   "workflowFile": "image_z_image_turbo.json",
+   "prompt": "one wide blank speech panel of dark stone with an iron border, empty, filling the whole frame, a flat game interface piece seen straight-on, evenly lit, stone and dark iron, no text, no letters, no icons, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console",
+   "seed": 4737,
+   "models": [
+    "z_image_turbo_bf16.safetensors",
+    "qwen_3_4b.safetensors",
+    "ae.safetensors"
+   ],
+   "loras": [],
+   "steps": 8,
+   "size": "1024x256",
+   "input": "",
+   "promptId": "7302b13b-f700-4a22-b227-de0df62d6a98",
+   "comfyOutput": "ui_dialogue_a1_00001_.png",
+   "file": "raw/images/ui_dialogue.a1.png",
+   "started": "2026-11-18T02:15:38.011Z",
+   "seconds": 2.1,
+   "substitutions": [],
+   "workflow": {
+    "9": {
+     "inputs": {
+      "filename_prefix": "crawler/ui_dialogue_a1",
+      "images": [
+       "57:8",
+       0
+      ]
+     },
+     "class_type": "SaveImage",
+     "_meta": {
+      "title": "Save Image",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.64"
+     }
+    },
+    "57:30": {
+     "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "lumina2",
+      "device": "default"
+     },
+     "class_type": "CLIPLoader",
+     "_meta": {
+      "title": "Load CLIP",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.73"
+     }
+    },
+    "57:29": {
+     "inputs": {
+      "vae_name": "ae.safetensors"
+     },
+     "class_type": "VAELoader",
+     "_meta": {
+      "title": "Load VAE",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.73"
+     }
+    },
+    "57:33": {
+     "inputs": {
+      "conditioning": [
+       "57:27",
+       0
+      ]
+     },
+     "class_type": "ConditioningZeroOut",
+     "_meta": {
+      "title": "Conditioning Zero Out",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.73"
+     }
+    },
+    "57:8": {
+     "inputs": {
+      "samples": [
+       "57:3",
+       0
+      ],
+      "vae": [
+       "57:29",
+       0
+      ]
+     },
+     "class_type": "VAEDecode",
+     "_meta": {
+      "title": "VAE Decode",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.64"
+     }
+    },
+    "57:28": {
+     "inputs": {
+      "unet_name": "z_image_turbo_bf16.safetensors",
+      "weight_dtype": "default"
+     },
+     "class_type": "UNETLoader",
+     "_meta": {
+      "title": "Load Diffusion Model",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.73"
+     }
+    },
+    "57:27": {
+     "inputs": {
+      "text": "one wide blank speech panel of dark stone with an iron border, empty, filling the whole frame, a flat game interface piece seen straight-on, evenly lit, stone and dark iron, no text, no letters, no icons, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console",
+      "clip": [
+       "57:30",
+       0
+      ]
+     },
+     "class_type": "CLIPTextEncode",
+     "_meta": {
+      "title": "CLIP Text Encode (Prompt)",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.73"
+     }
+    },
+    "57:13": {
+     "inputs": {
+      "width": 1024,
+      "height": 256,
+      "batch_size": 1
+     },
+     "class_type": "EmptySD3LatentImage",
+     "_meta": {
+      "title": "EmptySD3LatentImage",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.64"
+     }
+    },
+    "57:11": {
+     "inputs": {
+      "shift": 3,
+      "sampling": "flow",
+      "model": [
+       "57:28",
+       0
+      ]
+     },
+     "class_type": "ModelSamplingAuraFlow",
+     "_meta": {
+      "title": "ModelSamplingAuraFlow",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.64"
+     }
+    },
+    "57:3": {
+     "inputs": {
+      "seed": 4737,
+      "steps": 8,
+      "cfg": 1,
+      "sampler_name": "res_multistep",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+       "57:11",
+       0
+      ],
+      "positive": [
+       "57:27",
+       0
+      ],
+      "negative": [
+       "57:33",
+       0
+      ],
+      "latent_image": [
+       "57:13",
+       0
+      ]
+     },
+     "class_type": "KSampler",
+     "_meta": {
+      "title": "KSampler",
+      "cnr_id": "comfy-core",
+      "ver": "0.3.64"
+     }
+    }
+   },
+   "requestKey": "48c8252a0d0aa7a5"
+  }
+ ],
+ "cutout": null,
+ "processing": {
+  "input": "raw/images/ui_dialogue.png",
+  "output": "assets/images/ui_dialogue.png",
+  "alphaThreshold": null,
+  "backgroundKey": null,
+  "cropBox": [
+   0,
+   0,
+   1024,
+   256
+  ],
+  "fit": "stretch",
+  "placedAt": [
+   0,
+   0,
+   320,
+   80
+  ],
+  "targetSize": [
+   320,
+   80
+  ],
+  "scaling": "nearest neighbour",
+  "palette": "assets/prompts.json (64 colours)",
+  "dither": "ordered 4x4, strength 9",
+  "coloursUsed": 16,
+  "at": "2026-11-18T02:33:50.485Z"
+ }
+}

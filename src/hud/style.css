@@ -39,8 +39,9 @@ canvas {
 
 .btn {
   font: inherit;
-  color: #e8dcc0;
-  background: #55575c;
+  color: #f4ecd8;
+  background-color: #6e6a66;
+  background-blend-mode: multiply;
   border: 2px solid;
   border-color: #8a8f96 #2a2c30 #2a2c30 #8a8f96;
   padding: 2px 8px;
@@ -49,13 +50,13 @@ canvas {
 }
 
 .btn:hover {
-  background: #686b72;
+  filter: brightness(1.2);
   color: #ffffff;
 }
 
 .btn:active {
   border-color: #2a2c30 #8a8f96 #8a8f96 #2a2c30;
-  background: #45474c;
+  filter: brightness(0.85);
 }
 
 .btn.big {
@@ -260,6 +261,9 @@ canvas {
   top: 416px;
   width: 608px;
   height: 124px;
+  background-color: #6a6866;
+  background-blend-mode: multiply;
+  background-size: 64px 64px;
   border-top: 2px solid #8a8f96;
   border-right: 2px solid #1c1d20;
   display: flex;
@@ -343,6 +347,9 @@ canvas {
   height: 540px;
   padding: 6px;
   border-left: 2px solid #8a8f96;
+  background-color: #6a6866;
+  background-blend-mode: multiply;
+  background-size: 64px 64px;
 }
 
 .head {
@@ -366,8 +373,13 @@ canvas {
   color: #f0e4c8;
 }
 
+.who .name,
 .who .role {
-  color: #a39c8a;
+  text-shadow: 1px 1px 0 #000, -1px -1px 0 #000;
+}
+
+.who .role {
+  color: #c8bca0;
 }
 
 .bars {
@@ -634,6 +646,119 @@ canvas {
 .modalbtn,
 .menuitem {
   text-align: left;
+}
+
+.modal.dialogue {
+  background-size: 100% 100%;
+  background-color: #2a2c30;
+  padding: 12px 16px;
+}
+
+.speaker {
+  color: #9fd8e8;
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.shop {
+  position: absolute;
+  left: 34px;
+  top: 28px;
+  width: 540px;
+  height: 372px;
+  padding: 22px 38px 16px;
+  background-size: 100% 100%;
+  background-color: #d8c9a3;
+  color: #2a1c0e;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+}
+
+.shoptitle {
+  font-size: 26px;
+  text-align: center;
+}
+
+.shopgold {
+  text-align: center;
+  color: #5a3d1e;
+  margin-bottom: 4px;
+}
+
+.shopcols {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+.shopcol {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.shophead {
+  font-size: 20px;
+  border-bottom: 2px solid #5a3d1e;
+  margin-bottom: 2px;
+}
+
+.shoplist {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #5a3d1e #cfc7b0;
+}
+
+.btn.shoprow {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  padding: 1px 4px;
+  margin-bottom: 1px;
+  background-image: none;
+  background-color: rgba(42, 28, 14, 0.12);
+  border: 1px solid rgba(42, 28, 14, 0.3);
+  color: #2a1c0e;
+  text-shadow: none;
+  font-size: 16px;
+  text-align: left;
+}
+
+.btn.shoprow:hover {
+  background-color: rgba(42, 28, 14, 0.28);
+  color: #000;
+}
+
+.btn.shoprow.dim {
+  color: #8a7a5a;
+}
+
+.shopname {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.shopprice {
+  flex: none;
+  color: #7a1f1f;
+}
+
+.shopempty,
+.shopnote {
+  color: #6b5d50;
+  text-align: center;
+  font-size: 15px;
+}
+
+.shopclose {
+  align-self: center;
+  margin-top: 4px;
 }
 
 .tooltip {
@@ -937,6 +1062,7 @@ canvas {
 .btn.key.listening {
   color: #14110e;
   background: #e0b040;
+  background-image: none;
 }
 
 .tombstone {

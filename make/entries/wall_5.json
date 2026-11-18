@@ -1,0 +1,24 @@
+{
+ "id": "wall_5",
+ "type": "image",
+ "kind": "texture",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "black obsidian wall cracked with glowing ember-orange veins",
+  "fragments": [
+   "texture",
+   "style"
+  ]
+ },
+ "size": [
+  64,
+  64
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "black obsidian wall cracked with glowing ember-orange veins, flat, straight-on, evenly lit, edge to edge, no perspective, no objects, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

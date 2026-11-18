@@ -95,3 +95,64 @@ why. A record, not a request for review.
 - **Damage shows as numbers rising in the view** as well as in the
   log and on the bars. Why: the brief asks for clear feedback for
   damage, and the log scrolls.
+
+## 2026-11-17 (session 2)
+
+- **Sessions 1 and 2 ran in one sitting.** `PROMPT.md` says one step
+  per run. The goal set for the run ("run the details in prompt.md")
+  required the whole build, and its stop check said so when session 1
+  finished, so the run went on to step 2 instead of stopping.
+- **Flux 2 for the reference monster, textures, fixtures, portraits,
+  and the title; Z-Image for item icons and small interface pieces;
+  Krea-2 for every other monster and character.** Why: compared on a
+  newt and a brick wall, Flux 2 was grittier and closer to a DOS
+  crawler, Z-Image cleaner but console-cute. At 32 pixels the
+  difference does not survive, and Z-Image takes 2 s against 20 to
+  28 s.
+- **The newt is the style reference for all Krea-2 sprites,** two
+  seeds each, the better one kept by eye with the reason recorded.
+- **Qwen edit runs with the 4-step Lightning LoRA.** Why: the one
+  test edit (newt, mouth open) held the character and took 24 s. It
+  also moved the pose and added motion lines; session 3's edit
+  prompts should forbid both.
+- **One shared 64-colour palette for every image,** in
+  `assets/prompts.json`, applied with a 4x4 ordered dither. Why: the
+  brief asks for one shared palette and visible dithering.
+- **Background removal trusts BiRefNet; the colour key is a tight
+  clean-up only (tolerance 30, plus a rule for pink-purple fringe).**
+  Why: the models paint "magenta" as crimson, and a looser key ate
+  the fire drake.
+- **Every sprite is fitted into a square box and stood on its bottom
+  edge** (monsters 160, fixtures 128). Why: uniform sizes, feet on
+  the floor, and frames of one animation will line up in session 3.
+- **Frames that have no file yet are made at run time from their
+  base image**: the attack pose is the idle sprite (the view already
+  lunges it forward), the open door is the door squeezed aside, the
+  thrown switch is the switch flipped, the second torch frame is the
+  first mirrored. Why: otherwise a generated monster would turn into
+  a code-drawn one mid-swing. Session 3 replaces these with edits.
+- **"Image ids" in the asset checks means ASSETS entries that are
+  not frames.** Why: frames are a separate manifest type, generated
+  by a different workflow in session 3.
+- **A shop's stock lives in the shopkeeper's ledger, not on the
+  floor.** Why: the panel is how the brief says trade happens, and
+  there is then nothing to shoplift and nothing to guard.
+- **Old Wick's lamp shop sells oil lamps,** a new item: lit, the view
+  reaches further in every direction. Why: a lighting shop needs
+  something to sell that does something.
+- **The shop room is chosen before locks, keys, and closets,** from
+  its own random stream. Why: chosen last, half the levels had no
+  free dead-end room left even at the highest shop frequency.
+- **Peaceful characters stand still and block their cell,** and the
+  solvability check treats them as walls. Rumor-mongers stand on
+  interior cells; priests beside their altar but never on a cell
+  that touches a way in.
+- **Shopkeepers refuse invisible customers.** Why: a status changing
+  what an action does, in the spirit of the rest.
+- **ffmpeg and ffprobe come from the `@ffmpeg-installer` and
+  `@ffprobe-installer` npm packages,** installed now rather than in
+  session 3. Why: they were needed to confirm the two test audio
+  jobs were the right length and not silent.
+- **`raw/` is committed, rejected attempts included (about 220 MB).**
+  Why: the brief asks for raw outputs and their records to be kept
+  and committed so any asset can be reprocessed or compared.

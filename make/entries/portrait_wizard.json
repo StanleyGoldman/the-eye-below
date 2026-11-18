@@ -1,0 +1,24 @@
+{
+ "id": "portrait_wizard",
+ "type": "image",
+ "kind": "portrait",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "an old wizard with a long white beard and a deep purple pointed hat",
+  "fragments": [
+   "portrait",
+   "style"
+  ]
+ },
+ "size": [
+  48,
+  48
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "an old wizard with a long white beard and a deep purple pointed hat, head and shoulders portrait, facing the viewer, plain dark background, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}

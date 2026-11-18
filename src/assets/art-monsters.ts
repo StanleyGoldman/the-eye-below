@@ -61,6 +61,11 @@ export const MONSTER_LOOKS: Record<string, Look> = {
   soldier: { plan: "humanoid", height: 52, width: 20, skin: "#c09070", cloth: "#6a7078", dark: "#2a2e34", eye: "#101010", weapon: "sword", hat: "helm", shield: "#7a1f1f" },
   medusa: { plan: "humanoid", height: 54, width: 18, skin: "#8ab08a", cloth: "#4a6a4a", dark: "#1a3020", eye: "#f0f040", weapon: "none", hat: "snakes", robe: true },
   morvane: { plan: "humanoid", height: 58, width: 20, skin: "#b0a090", cloth: "#2a1620", dark: "#0a070a", eye: "#d9632a", weapon: "staff", hat: "hood", robe: true, cape: "#7a2a1a" },
+  shopkeeper: { plan: "humanoid", height: 50, width: 24, skin: "#e0b090", cloth: "#8a5a2b", dark: "#5a3d1e", eye: "#101010", weapon: "none", hat: "none", calm: true, beard: "#6a4030" },
+  priest: { plan: "humanoid", height: 54, width: 18, skin: "#e0c8b0", cloth: "#e4dcc6", dark: "#a39c8a", eye: "#101010", weapon: "none", hat: "hood", robe: true, calm: true },
+  hermit: { plan: "humanoid", height: 48, width: 18, skin: "#d8c0a0", cloth: "#7a5a3a", dark: "#4a3420", eye: "#101010", weapon: "staff", hat: "hood", robe: true, calm: true, beard: "#d8d2bd", hunched: true },
+  adventurer: { plan: "humanoid", height: 52, width: 20, skin: "#d0a080", cloth: "#6a7a5a", dark: "#3a4430", eye: "#101010", weapon: "none", hat: "none", calm: true },
+  gnome: { plan: "humanoid", height: 30, width: 16, skin: "#e0b090", cloth: "#3a6ac0", dark: "#1a2a60", eye: "#101010", weapon: "none", hat: "hat", calm: true, beard: "#f4f4f4" },
   oracle: { plan: "humanoid", height: 54, width: 18, skin: "#e0c8b0", cloth: "#c8d8e8", dark: "#7a8aa0", eye: "#3a6ac0", weapon: "none", hat: "hood", robe: true, calm: true },
 };
 

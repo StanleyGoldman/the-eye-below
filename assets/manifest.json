@@ -1,0 +1,2582 @@
+{
+ "version": 1,
+ "assets": [
+  {
+   "id": "wall_1",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "damp grey-brown cellar brick wall, old mortar, a few darker stains",
+    "fragments": [
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 1037,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "floor_1",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "worn grey-brown cellar flagstone floor of large square slabs",
+    "fragments": [
+     "tile",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 8993,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "ceil_1",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "dark rough stone blocks crossed by two straight parallel heavy wooden beams",
+    "fragments": [
+     "tile",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 9030,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "wall_2",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "rough-hewn ochre mine rock wall braced with dark timber posts",
+    "fragments": [
+     "nolights",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 9067,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "floor_2",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "packed brown earth and fine gravel with a few small ochre pebbles",
+    "fragments": [
+     "surface",
+     "nolights",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 9104,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "ceil_2",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "rough brown rock crossed by two straight parallel dark timber beams",
+    "fragments": [
+     "surface",
+     "nolights",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 9141,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "wall_3",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "pale limestone catacomb wall of large dressed blocks with one small dark burial niche holding a skull",
+    "fragments": [
+     "nolights",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 9178,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "floor_3",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "pale worn limestone paving of irregular rectangular slabs with dust in the joints",
+    "fragments": [
+     "surface",
+     "nolights",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 9215,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "ceil_3",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "pale limestone blocks fitted in a regular grid",
+    "fragments": [
+     "tile",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 1333,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "wall_4",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "blue-black basalt block wall bound with riveted iron bands",
+    "fragments": [
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 1370,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "floor_4",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "dark blue-grey basalt paving stones, cold and smooth",
+    "fragments": [
+     "tile",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 1407,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "ceil_4",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "dark basalt slabs crossed by two straight parallel riveted iron braces",
+    "fragments": [
+     "tile",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 1444,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "wall_5",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "black obsidian wall cracked with glowing ember-orange veins",
+    "fragments": [
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 1481,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "floor_5",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "black obsidian floor tiles with faint ember-red cracks",
+    "fragments": [
+     "tile",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 1518,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "ceil_5",
+   "type": "image",
+   "kind": "texture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "black obsidian with dim ember-orange veins",
+    "fragments": [
+     "tile",
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 1555,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "monster_newt",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a small orange-brown newt, a cave lizard, low to the ground, seen from the front and slightly above",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 101,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom"
+  },
+  {
+   "id": "monster_jackal",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a lean snarling jackal, a wild dog with mangy tan fur and bared teeth",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 1629,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_kobold",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a kobold, a small scaly red-brown dog-faced humanoid in rags clutching a crude dagger",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 1666,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_floating_eye",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a floating eye, one large blue eyeball the size of a head hovering in the air with nerve tendrils trailing beneath it",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 1703,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_giant_bat",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a giant bat in flight with wings spread wide, dark brown fur, red eyes, fangs",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 1740,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_acid_blob",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "an acid blob, a low quivering mound of translucent green slime with bubbles",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 1777,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_hill_orc",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a hill orc, a hunched grey-green brute with tusks in hide armor holding a wooden club",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 1814,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_dwarf",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a hostile dwarf warrior, short and broad, red beard, iron helm, holding a battle axe",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 1851,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_soldier_ant",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a giant soldier ant, dark red, with large mandibles, as big as a dog",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 9807,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_cockatrice",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a cockatrice, a rooster-headed lizard with yellow feathers, a green scaly tail and small wings",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 1925,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_ghoul",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a ghoul, a gaunt hunched corpse-eater with grey-green skin, long claws and sunken eyes",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 1962,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_leprechaun",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a leprechaun, a small wiry bearded man in a shabby green coat and hat, grinning slyly, clutching a gold coin",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 1999,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_troll",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a troll, a huge lanky olive-green brute with long arms and a stone club, hunched forward",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2036,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_wraith",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a wraith, a floating tattered black shroud with a hollow hood, two red eyes and ghostly hands reaching out",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 9992,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_stalker",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a stalker, a tall gaunt humanoid made of pale blue-white translucent mist with a featureless face",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2110,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_ogre",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "an ogre, a massive fat tan-skinned giant in a loincloth holding a great spiked club",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2147,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_vampire",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a vampire, a pale aristocrat in a black cloak with a red lining, fangs bared, clawed hands raised",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2184,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_minotaur",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a minotaur, a towering bull-headed man with curved horns and brown fur holding a huge double axe",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 10140,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_fire_drake",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a fire drake, a wingless red dragon with horns, smoke curling from its jaws, crouched to spring",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2258,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_lich",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a lich, a skeletal sorcerer in a ragged purple robe and tarnished crown with glowing cyan eyes, holding a staff",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 10214,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_water_snake",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a water snake, a blue-green serpent coiled with its head raised to strike",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2332,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_soldier",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a keep soldier, a grim man-at-arms in chain mail and a steel helm with a sword and a dark red shield",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2369,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_medusa",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a gorgon woman with living green snakes for hair, scaled green skin, a tattered gown and glowing yellow eyes",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2406,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_morvane",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "an ancient evil magus in a black and dark red hooded robe, face in shadow, holding a staff topped with a burning orange eye",
+    "fragments": [
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 10362,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_oracle",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "an oracle, a serene veiled woman in pale blue and white robes",
+    "fragments": [
+     "peaceful",
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2480,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_shopkeeper",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a stout shopkeeper in a leather apron with a ledger under one arm",
+    "fragments": [
+     "peaceful",
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2517,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_priest",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a temple priest in plain cream robes holding a small oil lamp",
+    "fragments": [
+     "peaceful",
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2554,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_hermit",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "an old hermit in a patched brown robe leaning on a walking stick",
+    "fragments": [
+     "peaceful",
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2591,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_adventurer",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a lost adventurer, weary and dusty, pack on back, holding a guttering lantern",
+    "fragments": [
+     "peaceful",
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2628,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "monster_gnome",
+   "type": "image",
+   "kind": "monster",
+   "workflow": "krea2",
+   "prompt": {
+    "subject": "a friendly gnome with a red pointed cap and a long white beard holding a tiny lantern",
+    "fragments": [
+     "peaceful",
+     "sprite",
+     "style"
+    ]
+   },
+   "seed": 2665,
+   "size": [
+    160,
+    160
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom",
+   "reference": "monster_newt",
+   "candidates": 2
+  },
+  {
+   "id": "door",
+   "type": "image",
+   "kind": "overlay",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a heavy dungeon door of pale weathered wooden planks with iron bands, a ring handle and a large keyhole plate, seen straight on",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 2702,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "stretch"
+  },
+  {
+   "id": "gate",
+   "type": "image",
+   "kind": "overlay",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "an iron portcullis, a grid of thick vertical and horizontal iron bars with pointed tips at the bottom, seen straight on, the magenta background showing through the gaps between the bars",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 2739,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "stretch",
+   "key": "all"
+  },
+  {
+   "id": "drawbridge",
+   "type": "image",
+   "kind": "overlay",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a raised wooden drawbridge of thick dark planks bound in iron with a chain down each side, seen straight on",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 2776,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "stretch"
+  },
+  {
+   "id": "switch_off",
+   "type": "image",
+   "kind": "overlay",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a wall lever switch, a small iron plate with a wooden-handled lever pointing up",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 2813,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "center",
+   "box": [
+    20,
+    16,
+    24,
+    32
+   ]
+  },
+  {
+   "id": "lever",
+   "type": "image",
+   "kind": "overlay",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a large brass crank wheel mounted on a square iron plate",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 2850,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "center",
+   "box": [
+    16,
+    14,
+    32,
+    36
+   ]
+  },
+  {
+   "id": "torch_1",
+   "type": "image",
+   "kind": "overlay",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a wall torch in an iron bracket burning with an orange flame",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 2887,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "center",
+   "box": [
+    22,
+    12,
+    20,
+    40
+   ]
+  },
+  {
+   "id": "stairs_down",
+   "type": "image",
+   "kind": "fixture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a stone archway framing a flight of stone steps descending into darkness",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 2924,
+   "size": [
+    128,
+    128
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom"
+  },
+  {
+   "id": "stairs_up",
+   "type": "image",
+   "kind": "fixture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a stone archway framing a flight of stone steps rising toward dim light",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 2961,
+   "size": [
+    128,
+    128
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom"
+  },
+  {
+   "id": "fountain",
+   "type": "image",
+   "kind": "fixture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a stone dungeon fountain with a round basin and water spilling from a central pillar",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 2998,
+   "size": [
+    128,
+    128
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom"
+  },
+  {
+   "id": "altar",
+   "type": "image",
+   "kind": "fixture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a stone altar draped with a dark red cloth, two lit candles on top",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 3035,
+   "size": [
+    128,
+    128
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom"
+  },
+  {
+   "id": "statue",
+   "type": "image",
+   "kind": "fixture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a weathered grey stone statue of a warrior standing on a plinth",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 3072,
+   "size": [
+    128,
+    128
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom"
+  },
+  {
+   "id": "boulder",
+   "type": "image",
+   "kind": "fixture",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a round grey boulder with cracks, the whole boulder well inside the frame with empty space on every side",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 11028,
+   "size": [
+    128,
+    128
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "bottom"
+  },
+  {
+   "id": "plate",
+   "type": "image",
+   "kind": "decal",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a square bronze pressure plate set in an iron frame",
+    "fragments": [
+     "topdown",
+     "style"
+    ]
+   },
+   "seed": 3146,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "stretch"
+  },
+  {
+   "id": "trap",
+   "type": "image",
+   "kind": "decal",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a square iron floor grate marked with a painted red cross",
+    "fragments": [
+     "topdown",
+     "style"
+    ]
+   },
+   "seed": 3183,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    1024,
+    1024
+   ],
+   "transparent": true,
+   "fit": "stretch"
+  },
+  {
+   "id": "item_dagger",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a dagger with a short steel blade",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3220,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_short_sword",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a short sword",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3257,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_long_sword",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a long sword with a straight steel blade and a gold crossguard",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3294,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_two_handed_sword",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a huge two-handed greatsword",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3331,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_mace",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a flanged iron mace",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3368,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_morning_star",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a morning star, a spiked iron ball on a wooden haft",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3405,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_war_hammer",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a war hammer with a blocky steel head",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3442,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_axe",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a single-bladed battle axe",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3479,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_spear",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a spear with a leaf-shaped steel head",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3516,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_quarterstaff",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a plain wooden quarterstaff shod with iron",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3553,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_bow",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a wooden short bow with a string",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3590,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_arrow",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a single arrow with a steel head and pale fletching",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3627,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_leather_armor",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a brown leather jerkin, body armor",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3664,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_ring_mail",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a ring mail shirt, leather sewn with iron rings",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3701,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_chain_mail",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a chain mail shirt of steel links",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3738,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_plate_mail",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a suit of steel plate body armor, breastplate and pauldrons",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3775,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_leather_cap",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a brown leather cap helmet",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3812,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_iron_helm",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "an iron helmet with a nose guard and a small red crest",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3849,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_small_shield",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a small round wooden shield with an iron boss",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3886,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_large_shield",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a large steel kite shield painted dark red with a gold cross",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3923,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_low_boots",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a pair of low brown leather boots",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3960,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_iron_shoes",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a pair of heavy iron-plated boots",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 3997,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_cloak",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a folded grey-blue hooded cloak with a gold clasp",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4034,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_cloak_of_protection",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a deep blue cloak with a gold clasp and faint silver stars",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4071,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_potion",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a round glass potion flask with a cork stopper, filled with liquid",
+    "fragments": [
+     "neutral",
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4108,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_scroll",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a rolled parchment scroll tied with a cord",
+    "fragments": [
+     "neutral",
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4145,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_spellbook",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a thick closed spellbook with a metal clasp",
+    "fragments": [
+     "neutral",
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4182,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_wand",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a thin magic wand with a small knob at one end",
+    "fragments": [
+     "neutral",
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4219,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_ring",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a plain finger ring set with one large round gemstone",
+    "fragments": [
+     "neutral",
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4256,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_amulet",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "an amulet, a round pendant stone on a chain",
+    "fragments": [
+     "neutral",
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4293,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_key",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a large old-fashioned key with a ring bow",
+    "fragments": [
+     "neutral",
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4330,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_lamp",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a small brass oil lamp with a handle and a lit wick",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 5003,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_gold",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a small pile of gold coins",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4367,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "item_eye",
+   "type": "image",
+   "kind": "icon",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a golden amulet set with a living orange eye with a slit pupil, on a gold chain",
+    "fragments": [
+     "icon",
+     "style"
+    ]
+   },
+   "seed": 4404,
+   "size": [
+    32,
+    32
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "portrait_valkyrie",
+   "type": "image",
+   "kind": "portrait",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a stern young woman warrior with blonde braids and a winged steel helm",
+    "fragments": [
+     "portrait",
+     "style"
+    ]
+   },
+   "seed": 4441,
+   "size": [
+    48,
+    48
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "portrait_wizard",
+   "type": "image",
+   "kind": "portrait",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "an old wizard with a long white beard and a deep purple pointed hat",
+    "fragments": [
+     "portrait",
+     "style"
+    ]
+   },
+   "seed": 4478,
+   "size": [
+    48,
+    48
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "portrait_rogue",
+   "type": "image",
+   "kind": "portrait",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a wiry hooded rogue with a dark scarf over the lower face and green eyes",
+    "fragments": [
+     "portrait",
+     "style"
+    ]
+   },
+   "seed": 4515,
+   "size": [
+    48,
+    48
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "ui_frame",
+   "type": "image",
+   "kind": "ui",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a dark grey stone panel surface with subtle chisel marks, nothing else",
+    "fragments": [
+     "texture",
+     "style"
+    ]
+   },
+   "seed": 4552,
+   "size": [
+    64,
+    64
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "ui_slot",
+   "type": "image",
+   "kind": "ui",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "one empty square inventory slot, a recessed dark iron socket with a bevelled stone border, filling the whole frame",
+    "fragments": [
+     "ui",
+     "style"
+    ]
+   },
+   "seed": 4589,
+   "size": [
+    40,
+    40
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "ui_button",
+   "type": "image",
+   "kind": "ui",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "one blank wide rectangular stone button with a bevelled iron edge",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 28383,
+   "size": [
+    48,
+    24
+   ],
+   "gen": [
+    1024,
+    512
+   ],
+   "transparent": true,
+   "fit": "stretch"
+  },
+  {
+   "id": "ui_compass",
+   "type": "image",
+   "kind": "ui",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "a round brass compass ring with an empty dark centre, no needle, no letters",
+    "fragments": [
+     "object",
+     "style"
+    ]
+   },
+   "seed": 4663,
+   "size": [
+    48,
+    48
+   ],
+   "gen": [
+    512,
+    512
+   ],
+   "transparent": true,
+   "fit": "center"
+  },
+  {
+   "id": "ui_shop",
+   "type": "image",
+   "kind": "ui",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "one large blank shop ledger panel, an aged parchment sheet in a dark wooden frame with iron corners, empty, filling the whole frame",
+    "fragments": [
+     "ui",
+     "style"
+    ]
+   },
+   "seed": 4700,
+   "size": [
+    320,
+    200
+   ],
+   "gen": [
+    1024,
+    640
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "ui_dialogue",
+   "type": "image",
+   "kind": "ui",
+   "workflow": "zimage",
+   "prompt": {
+    "subject": "one wide blank speech panel of dark stone with an iron border, empty, filling the whole frame",
+    "fragments": [
+     "ui",
+     "style"
+    ]
+   },
+   "seed": 4737,
+   "size": [
+    320,
+    80
+   ],
+   "gen": [
+    1024,
+    256
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  },
+  {
+   "id": "title_bg",
+   "type": "image",
+   "kind": "ui",
+   "workflow": "flux2",
+   "prompt": {
+    "subject": "a wide stone stairway descending into the dark between two rows of pillars; far below, a single huge glowing orange eye with a slit pupil watches",
+    "fragments": [
+     "scene",
+     "style"
+    ]
+   },
+   "seed": 4774,
+   "size": [
+    320,
+    180
+   ],
+   "gen": [
+    1280,
+    720
+   ],
+   "transparent": false,
+   "fit": "stretch"
+  }
+ ]
+}

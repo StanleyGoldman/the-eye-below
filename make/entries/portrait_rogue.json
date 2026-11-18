@@ -1,0 +1,24 @@
+{
+ "id": "portrait_rogue",
+ "type": "image",
+ "kind": "portrait",
+ "workflow": "flux2",
+ "prompt": {
+  "subject": "a wiry hooded rogue with a dark scarf over the lower face and green eyes",
+  "fragments": [
+   "portrait",
+   "style"
+  ]
+ },
+ "size": [
+  48,
+  48
+ ],
+ "gen": [
+  512,
+  512
+ ],
+ "transparent": false,
+ "fit": "stretch",
+ "resolvedPrompt": "a wiry hooded rogue with a dark scarf over the lower face and green eyes, head and shoulders portrait, facing the viewer, plain dark background, no text, no border, early-1990s VGA DOS dungeon crawler pixel art, 256-color palette, visible dithering, chunky hand-pixelled shading, torchlit, gritty and muted, not cute, not 16-bit console"
+}
