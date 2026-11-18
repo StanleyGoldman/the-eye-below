@@ -139,7 +139,8 @@ function populate(run: RunConfig, carved: Carved): void {
   const inStart = (x: number, y: number): boolean => x >= startRoom.x && x < startRoom.x + startRoom.w && y >= startRoom.y && y < startRoom.y + startRoom.h;
   for (let y = 0; y < level.h; y++) for (let x = 0; x < level.w; x++) if (level.tiles[at(x, y)] === T.FLOOR && !used.has(at(x, y)) && !inStart(x, y)) floorCells.push({ x, y });
   const trapCount = Math.round(floorCells.length * scale3(mods["traps"] ?? 5, 0, 0.012, 0.045));
-  const trapPool = TRAPS.filter((t) => t.minDepth <= depth && !(t.kind === "trapdoor" && depth >= 25));
+  // No trapdoors above a special level: those are entered by their stairs.
+  const trapPool = TRAPS.filter((t) => t.minDepth <= depth && !(t.kind === "trapdoor" && (depth >= 24 || isSpecialDepth(depth + 1))));
   for (let i = 0; i < trapCount; i++) {
     const c = freeIn(rt, floorCells);
     if (!c) break;

@@ -105,17 +105,17 @@ export const MONSTER_TYPES: readonly MonsterType[] = [
   // ---- tier 3: the Catacombs ----
   m({ id: "soldier_ant", name: "soldier ant", glyph: "a", tier: 3, level: 4, ac: 3, moveMs: 280, attackMs: 620, attacks: [atk(2, 4, "bites"), atk(3, 4, "stings")], windupMs: 300, size: 0.4, gold: 0, freq: 9 }),
   m({ id: "cockatrice", name: "cockatrice", glyph: "c", tier: 3, level: 5, ac: 6, moveMs: 800, attackMs: 1200, attacks: [atk(1, 3, "pecks"), atk(0, 0, "touches", "stone", 0.3)], passive: "stone", size: 0.45, gold: 0, freq: 7 }),
-  m({ id: "ghoul", name: "ghoul", glyph: "Z", tier: 3, level: 4, ac: 4, moveMs: 1100, attackMs: 1300, attacks: [atk(1, 3, "claws", "paralyze", 0.5), atk(1, 4, "bites")], size: 0.75, undead: true, freq: 10 }),
+  m({ id: "ghoul", name: "ghoul", glyph: "Z", tier: 3, level: 4, ac: 4, moveMs: 1100, attackMs: 1300, attacks: [atk(1, 3, "claws", "paralyze", 0.25), atk(1, 4, "bites")], size: 0.75, undead: true, freq: 10 }),
   m({ id: "leprechaun", name: "leprechaun", glyph: "l", tier: 3, level: 5, ac: 8, moveMs: 330, attackMs: 900, attacks: [atk(1, 2, "pokes", "steal", 1)], size: 0.45, gold: 1, freq: 6 }),
 
   // ---- tier 4: the Undercroft ----
-  m({ id: "troll", name: "troll", glyph: "T", tier: 4, level: 7, ac: 4, moveMs: 600, attackMs: 1100, attacks: [atk(4, 2, "clubs"), atk(2, 6, "bites")], size: 0.9, regen: 1, revives: true, weak: ["fire"], freq: 9 }),
-  m({ id: "wraith", name: "wraith", glyph: "W", tier: 4, level: 6, ac: 4, moveMs: 600, attackMs: 1200, attacks: [atk(1, 6, "touches", "drain", 0.35)], size: 0.8, undead: true, resists: ["cold"], freq: 8 }),
+  m({ id: "troll", name: "troll", glyph: "T", tier: 4, level: 7, ac: 4, moveMs: 600, attackMs: 1100, attacks: [atk(4, 2, "clubs"), atk(2, 6, "bites")], size: 0.9, regen: 0.75, revives: true, weak: ["fire"], freq: 9 }),
+  m({ id: "wraith", name: "wraith", glyph: "W", tier: 4, level: 6, ac: 4, moveMs: 600, attackMs: 1200, attacks: [atk(1, 6, "touches", "drain", 0.15)], size: 0.8, undead: true, resists: ["cold"], freq: 8 }),
   m({ id: "stalker", name: "stalker", glyph: "E", tier: 4, level: 8, ac: 3, moveMs: 600, attackMs: 1100, attacks: [atk(4, 4, "strikes")], size: 0.85, invisible: true, freq: 7 }),
   m({ id: "ogre", name: "ogre", glyph: "O", tier: 4, level: 7, ac: 5, moveMs: 850, attackMs: 1500, attacks: [atk(2, 6, "smashes", "stun", 0.2)], windupMs: 600, size: 0.95, gold: 0.5, freq: 10 }),
 
   // ---- tier 5: the Tower Roots ----
-  m({ id: "vampire", name: "vampire", glyph: "V", tier: 5, level: 10, ac: 1, moveMs: 500, attackMs: 1000, attacks: [atk(1, 6, "claws"), atk(1, 6, "bites", "drain", 0.3)], size: 0.85, undead: true, regen: 2, freq: 8 }),
+  m({ id: "vampire", name: "vampire", glyph: "V", tier: 5, level: 10, ac: 1, moveMs: 500, attackMs: 1000, attacks: [atk(1, 6, "claws"), atk(1, 6, "bites", "drain", 0.12)], size: 0.85, undead: true, regen: 1, freq: 8 }),
   m({ id: "minotaur", name: "minotaur", glyph: "H", tier: 5, level: 13, ac: 6, moveMs: 480, attackMs: 1150, attacks: [atk(3, 8, "gores"), atk(2, 8, "butts")], windupMs: 500, size: 1, freq: 6 }),
   m({ id: "fire_drake", name: "fire drake", glyph: "D", tier: 5, level: 12, ac: 0, moveMs: 680, attackMs: 1300, attacks: [atk(3, 6, "bites"), atk(1, 4, "claws")], ranged: { kind: "fire", dice: [5, 6], range: 4, every: 5200, reflectable: true, text: "breathes fire" }, size: 1, resists: ["fire"], weak: ["cold"], gold: 0.8, freq: 5 }),
   m({ id: "lich", name: "lich", glyph: "L", tier: 5, level: 11, ac: 0, moveMs: 900, attackMs: 1400, attacks: [atk(1, 10, "touches", "cold", 1)], ranged: { kind: "cold", dice: [4, 6], range: 4, every: 4600, reflectable: true, text: "hurls a bolt of cold" }, size: 0.85, undead: true, resists: ["cold"], gold: 0.6, freq: 6 }),
