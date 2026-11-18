@@ -151,6 +151,7 @@ assets are listed in `docs/asset-review.md`.
 | `make test` | generator, determinism, and rules tests |
 | `make sweep` | generates 3,300 levels across all 17 modifiers and checks each is solvable |
 | `make play` | the browser smoke run; screenshots in `out/shots/smoke/` |
+| `make package` | the copy to hand to players: a folder and a zip in `out/package/` (see Package) |
 | `make assets` | generates and post-processes every asset in the manifest (images, frames, music, effects); skips what exists |
 | `make sheet` | contact sheets in `out/sheets/`: every image by kind, and one sheet per animation |
 | `make report` | rewrites `docs/asset-review.md` and `docs/final-report.md` from the generation records |
@@ -158,10 +159,43 @@ assets are listed in `docs/asset-review.md`.
 | `make clean-assets` | removes processed assets; never touches `raw/` |
 | `make check` | typecheck, tests, build, smoke run. Run before every commit |
 | `make goal-check SESSION=3` | every acceptance check for a session, one PASS or FAIL line each |
-| `make clean` | removes build output only |
+| `make clean` | removes build output only, `out/package/` included |
 
 The browser script drives the installed Google Chrome through
 `playwright-core`; nothing is downloaded.
+
+## Package
+
+```
+make package
+```
+
+builds the bundle if a source changed, then writes
+`out/package/the-eye-below-<version>/` and, beside it,
+`the-eye-below-<version>.zip`. Send the zip; whoever gets it unzips
+it and opens `index.html`. They need a browser and nothing else.
+
+- The folder holds only what the page loads: `index.html`,
+  `dist/game.js`, the processed images, frames, music, and effects
+  the manifest lists (fallbacks left out), a `README.txt` for the
+  player, and the typeface's licence. No source, no `raw/`, no
+  tooling.
+- `README.txt` is written from the key table and the paragraphs
+  after it under Play above, so change the keys there and nowhere
+  else.
+- The name and version come from `package.json`. Keep its version
+  in step with `GAME_VERSION` in `src/hud/screens.ts`, which is what
+  the title screen shows.
+- Before zipping, the packaged copy is opened in the headless
+  browser from its own folder and must load every image
+  (`scripts/play.ts --scenario assets`; screenshots in
+  `out/shots/package/`). If that fails, no zip is written. Audio is
+  only checked for being present. `node scripts/package.ts
+  --no-verify` skips the browser run.
+- It never generates anything. If an asset file is missing it stops
+  and says which; `make processed` rebuilds them from `raw/`.
+- The zip is made with the `zip` command (`sudo apt install zip` if
+  it is missing).
 
 ## Scripts
 
@@ -172,6 +206,7 @@ non-zero on failure; `--help` prints usage.
 |---|---|
 | `scripts/build.ts` | bundles the game with esbuild, writing atomically |
 | `scripts/play.ts` | headless browser run. `--scenario smoke`, `victory`, `death`, `specials`, `economy`, `assets`, `treasure`, `audio`, or `keys` with `--seed`, `--role`, `--mods id=n,...`, `--level n`, `--keys "KeyW,KeyQ,..."`, `--out dir`, `--god`, `--headed` |
+| `scripts/package.ts` | builds the player's copy behind `make package`: stages the folder, runs it in the browser, zips it; `--no-verify` skips the browser run |
 | `scripts/dump-level.ts` | prints a generated level as ASCII with keys, doors, and switches marked: `--seed s --level n [--mods ...] [--monsters]`, or `--all` for a line per level |
 | `scripts/sweep.ts` | the solvability sweep behind `make sweep` |
 | `scripts/determinism.ts` | generates a seed in two separate processes and compares level hashes |
@@ -266,7 +301,7 @@ tests/            generator, determinism, and rules tests
 docs/             creative brief, decision log, asset review, final report
 goals/            session goals, status, handoffs
 workflows/        the seven ComfyUI API workflow files
-dist/, out/       build output and screenshots (not in git)
+dist/, out/       build output, screenshots, and the package in out/package/ (not in git)
 ```
 
 ## Credits

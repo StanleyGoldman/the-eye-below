@@ -14,12 +14,12 @@ SESSION ?= 1
 # ComfyUI runs one job at a time, so nothing here may run in parallel, whatever -j says.
 .NOTPARALLEL:
 
-.PHONY: help build typecheck test sweep play check goal-check clean deps \
+.PHONY: help build typecheck test sweep play check goal-check clean deps package \
 	assets base styled frames cutouts music sfx processed sheet comfy-up comfy-down comfy-status clean-assets settle
 
 help: ## List the targets
 	@echo "The Eye Below - make targets"
-	@grep -E '^[a-z][a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | sed -E 's/^([a-zA-Z_-]+):.*## (.*)/  \1|\2/' | column -t -s '|'
+	@grep -hE '^[a-z][a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | sed -E 's/^([a-zA-Z_-]+):.*## (.*)/  \1|\2/' | column -t -s '|'
 	@echo "  dist/game.js  The bundle itself (rebuilt only when a source file changed)"
 
 # ---- dependencies -------------------------------------------------------
@@ -60,6 +60,13 @@ check: typecheck test build play ## Typecheck, tests, build, and the browser smo
 
 goal-check: ## Run every acceptance check for a session: make goal-check SESSION=1
 	$(NODE) scripts/goal-check.ts $(SESSION)
+
+# ---- distribution -------------------------------------------------------
+# The asset files are deliberately not prerequisites: a stale timestamp must never
+# start a ComfyUI job from here. The script stops if a file the bundle needs is missing.
+
+package: dist/game.js ## Make the copy to hand to players: a folder and a zip in out/package/
+	$(NODE) scripts/package.ts
 
 # ---- assets -------------------------------------------------------------
 # Every generated file is a target. The per-asset rules come from the manifest.
@@ -110,8 +117,8 @@ settle: ## After a fresh clone: mark raw files, cutouts, and assets up to date, 
 
 # ---- cleaning -----------------------------------------------------------
 
-clean: ## Remove build output (dist/ and the stamps in out/); never touches assets or raw/
-	rm -rf dist out/.typecheck
+clean: ## Remove build output (dist/, out/package/, and the stamps in out/); never touches assets or raw/
+	rm -rf dist out/.typecheck out/package
 
 clean-assets: ## Remove processed assets only; raw/ and its records are never deleted
 	rm -rf assets/images assets/frames assets/music assets/sfx out/sheets

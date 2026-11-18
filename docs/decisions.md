@@ -227,3 +227,13 @@ why. A record, not a request for review.
   (95 images, 28 frames, 10 music, 25 effects), so
   `make goal-check SESSION=2` holds the manifest to the later,
   higher bar. The `session-2` tag is unchanged.
+- **`make package` copies the manifest's files rather than the
+  `assets/` folders, and does not list them as prerequisites.** Why:
+  a leftover file from a dropped asset must not ship, and after a
+  fresh clone a stale timestamp on a prerequisite would start
+  ComfyUI jobs from a target that should only copy. The package
+  keeps the project's layout (`index.html`, `dist/`, `assets/`) so
+  the page and bundle go in unchanged, and what was tested is what
+  ships. `package.json` went from 0.1.0 to 1.0.0 to match the
+  version the title screen shows, since the package is named from
+  it.
