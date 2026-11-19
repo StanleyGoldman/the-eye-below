@@ -14,7 +14,7 @@ SESSION ?= 1
 # ComfyUI runs one job at a time, so nothing here may run in parallel, whatever -j says.
 .NOTPARALLEL:
 
-.PHONY: help build typecheck test sweep play check goal-check clean deps package \
+.PHONY: help build typecheck test sweep play shots check goal-check clean deps package \
 	assets base styled frames cutouts music sfx processed sheet comfy-up comfy-down comfy-status clean-assets settle
 
 help: ## List the targets
@@ -54,6 +54,9 @@ sweep: node_modules/.installed ## Generate thousands of levels and verify every 
 
 play: dist/game.js ## Run the headless browser smoke script (screenshots in out/shots/smoke)
 	$(NODE) scripts/play.ts --scenario smoke
+
+shots: node_modules/.installed ## Blog screenshots of all three versions and a page to pick from (out/shots/blog/index.html)
+	$(NODE) scripts/shots.ts
 
 check: typecheck test build play ## Typecheck, tests, build, and the browser smoke run. Run before every commit.
 	@echo "check: all passed"

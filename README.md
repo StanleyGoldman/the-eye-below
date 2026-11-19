@@ -151,6 +151,7 @@ assets are listed in `docs/asset-review.md`.
 | `make test` | generator, determinism, and rules tests |
 | `make sweep` | generates 3,300 levels across all 17 modifiers and checks each is solvable |
 | `make play` | the browser smoke run; screenshots in `out/shots/smoke/` |
+| `make shots` | screenshots of all three versions for blog posts, and a page to pick from (see Screenshots) |
 | `make package` | the copy to hand to players: a folder and a zip in `out/package/` (see Package) |
 | `make assets` | generates and post-processes every asset in the manifest (images, frames, music, effects); skips what exists |
 | `make sheet` | contact sheets in `out/sheets/`: every image by kind, and one sheet per animation |
@@ -197,6 +198,49 @@ it and opens `index.html`. They need a browser and nothing else.
 - The zip is made with the `zip` command (`sudo apt install zip` if
   it is missing).
 
+## Screenshots
+
+```
+make shots
+```
+
+takes screenshots of each tagged version (`session-1`, `session-2`,
+`session-3`) for blog posts and writes a page to pick from:
+`out/shots/blog/index.html`. Each tag is checked out once as a
+detached worktree in `out/versions/<tag>/` and built there with this
+checkout's packages. Shots are 1920x1080 (`--scale 1` for 960x540).
+
+- **Set-up scenes:** title and new game, arriving on a level of each
+  tier, every ordinary monster face to face, fights, a wizard's spell,
+  the five special levels and their maps, the Oracle, the inventory,
+  map and menus, a shop, a rumor and a priest (0.2 on), chests and the
+  vault guard (1.0), and death, with the grave in the next run (1.0).
+  The levels are chosen with each version's own generator so that the
+  same seed and level is used in every version; where the versions
+  generate the same level, the shots line up. 0.1 cannot be told what
+  to face, so the seeds for monster shots are ones where 0.1 faces the
+  right monster anyway. A scene that needs something a version does
+  not have is skipped for that version.
+- **Bot runs:** the autopilot plays (unkillable, 3x speed) and the
+  best frames are kept, scored by what the game reports (blows, low
+  health, someone talking, a new level), by a monster in the target
+  bar, and by how much is on screen.
+- **Picking:** on the page, click a shot to pick it (double-click for
+  full size); picks are kept in that browser. "Download picks.txt",
+  then `node scripts/shots.ts --collect picks.txt --to <folder>`
+  copies them out, named `<tag>_<scene>-<n>.png`, with a
+  `captions.txt` giving each one's version (0.1, 0.2, 1.0), scene,
+  caption, and size. `captions.txt` covers every screenshot in that
+  folder, so collecting twice into one folder keeps both lots.
+
+Characters dropped on a deep level start with a level-1 kit; the bot
+runs and the inventory scene show a character with more on them.
+Options: `--versions tag,...`, `--only scene,...` (scene ids, plus
+`bot`), `--no-bot`, `--bot-runs n`, `--bot-seconds n`, `--keep n`,
+`--victory` (also plays a whole run to the victory screen; slow),
+`--scale n`, `--out dir`, `--headed`. Re-running some scenes replaces
+only those on the page.
+
 ## Scripts
 
 All in `scripts/`, run with `node`. Each prints what it did and exits
@@ -206,6 +250,7 @@ non-zero on failure; `--help` prints usage.
 |---|---|
 | `scripts/build.ts` | bundles the game with esbuild, writing atomically |
 | `scripts/play.ts` | headless browser run. `--scenario smoke`, `victory`, `death`, `specials`, `economy`, `assets`, `treasure`, `audio`, or `keys` with `--seed`, `--role`, `--mods id=n,...`, `--level n`, `--keys "KeyW,KeyQ,..."`, `--out dir`, `--god`, `--headed` |
+| `scripts/shots.ts` | blog screenshots of each tagged version and the page to pick from (`make shots`; see Screenshots) |
 | `scripts/package.ts` | builds the player's copy behind `make package`: stages the folder, runs it in the browser, zips it; `--no-verify` skips the browser run |
 | `scripts/dump-level.ts` | prints a generated level as ASCII with keys, doors, and switches marked: `--seed s --level n [--mods ...] [--monsters]`, or `--all` for a line per level |
 | `scripts/sweep.ts` | the solvability sweep behind `make sweep` |
