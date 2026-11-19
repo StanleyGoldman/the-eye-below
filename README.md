@@ -228,9 +228,12 @@ checkout's packages. Shots are 1920x1080 (`--scale 1` for 960x540).
 - **Picking:** on the page, click a shot to pick it (double-click for
   full size); picks are kept in that browser. "Download picks.txt",
   then `node scripts/shots.ts --collect picks.txt --to <folder>`
-  copies them out, named `<tag>_<scene>-<n>.png`, with a
-  `captions.txt` giving each one's version (0.1, 0.2, 1.0), scene,
-  caption, and size. `captions.txt` covers every screenshot in that
+  copies them out from any checkout: `picks.txt` starts with a
+  `# shots:` line naming the folder the page was in (`--out`
+  overrides it). If a picked file is missing, nothing is copied.
+  The copies are named `<tag>_<scene>-<n>.png`, with a `captions.txt`
+  giving each one's version (0.1, 0.2, 1.0), scene, caption, and
+  size. `captions.txt` covers every screenshot in that
   folder, so collecting twice into one folder keeps both lots.
 
 Characters dropped on a deep level start with a level-1 kit; the bot

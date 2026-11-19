@@ -42,14 +42,27 @@ if (args.flags["help"]) {
 const VERSION_NAMES: Record<string, string> = { "session-1": "0.1", "session-2": "0.2", "session-3": "1.0" };
 
 const root = process.cwd();
-const outDir = path.resolve(args.flags["out"] ?? "out/shots/blog");
+let outDir = path.resolve(args.flags["out"] ?? "out/shots/blog");
 
 // ---- --collect: copy the picked files into a folder -----------------------
 
 if (args.flags["collect"]) {
   const to = args.flags["to"];
   if (!to) fail("--collect needs --to <folder>");
-  const list = (await readFile(args.flags["collect"], "utf8")).split("\n").map((l) => l.trim()).filter(Boolean);
+  const lines = (await readFile(args.flags["collect"], "utf8")).split("\n").map((l) => l.trim()).filter(Boolean);
+  // The page writes the folder it lives in as the first line, so picks made in any checkout or
+  // worktree are found from anywhere. --out still wins.
+  const from = lines.find((l) => l.startsWith("# shots: "))?.slice("# shots: ".length);
+  if (from && !args.flags["out"]) outDir = from;
+  const list = lines.filter((l) => !l.startsWith("#"));
+  const missing: string[] = [];
+  for (const rel of list) if (!(await exists(path.join(outDir, rel)))) missing.push(rel);
+  if (missing.length > 0) {
+    fail(
+      `${missing.length} of ${list.length} picked file(s) are not in ${outDir} (first: ${missing[0]}). ` +
+        (from ? "They may have been replaced by a later run." : "Pass --out <the shots folder the picks were made in>, or download picks.txt again from that folder's page."),
+    );
+  }
   await mkdir(to, { recursive: true });
   for (const rel of list) {
     const dest = path.join(to, rel.replaceAll("/", "_"));
@@ -664,7 +677,7 @@ function esc(s: string): string {
   return s.replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch] as string);
 }
 
-function pickingPage(shots: Shot[], tags: string[]): string {
+function pickingPage(shots: Shot[], tags: string[], folder: string): string {
   const scenes: { id: string; title: string }[] = [];
   for (const s of shots) if (!scenes.some((x) => x.id === s.scene)) scenes.push({ id: s.scene, title: s.title });
   const rows = scenes
@@ -744,7 +757,8 @@ for (const f of figs) {
 }
 document.getElementById("big").addEventListener("click", (e) => e.currentTarget.classList.remove("on"));
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") document.getElementById("big").classList.remove("on"); });
-const list = () => [...picks].sort().join("\\n") + "\\n";
+const FOLDER = ${JSON.stringify(folder).replaceAll("<", "\\u003c")};
+const list = () => "# shots: " + FOLDER + "\\n" + [...picks].sort().join("\\n") + "\\n";
 document.getElementById("dl").onclick = () => {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([list()], { type: "text/plain" }));
@@ -812,7 +826,7 @@ const order = (s: Shot): number => {
 all.sort((a, b) => order(a) - order(b) || a.file.localeCompare(b.file));
 const tags = [...new Set([...versions, ...all.map((s) => s.version)])].sort();
 await writeFile(manifestFile, JSON.stringify(all, null, 2));
-await writeFile(path.join(outDir, "index.html"), pickingPage(all, tags));
+await writeFile(path.join(outDir, "index.html"), pickingPage(all, tags, outDir));
 
 const seconds = ((Date.now() - startedAt) / 1000).toFixed(0);
 console.log(`shots: ${manifest.length} new screenshot(s) in ${seconds} s; ${all.length} on the page`);
