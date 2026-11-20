@@ -352,6 +352,16 @@ workflows/        the seven ComfyUI API workflow files
 dist/, out/       build output, screenshots, and the package in out/package/ (not in git)
 ```
 
+## Licence
+
+The code is under the MIT licence: see [`LICENSE`](LICENSE).
+
+The generated images and animation frames in `assets/images/`,
+`assets/frames/`, `raw/images/` and `raw/frames/` are dedicated to the
+public domain under CC0 1.0: see [`LICENSE-IMAGES`](LICENSE-IMAGES).
+
+The bundled typeface keeps its own licence, named under Credits.
+
 ## Credits
 
 The typeface is VT323 by Peter Hull (SIL Open Font License), bundled
